@@ -204,6 +204,7 @@ export function DocEditor({ pageId, initialTitle, initialBody, initialParentId, 
         className="doc-title-input"
         placeholder="Untitled"
         value={title}
+        autoFocus
         onChange={(e) => onTitleChange(e.target.value)}
       />
       {editor ? (
