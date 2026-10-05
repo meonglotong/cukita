@@ -1,0 +1,19 @@
+# scripts/teamdocs.service → /etc/systemd/system/teamdocs.service
+# NOTE: the brief's ExecStart=/usr/bin/pnpm start was verified on the VM —
+# `which pnpm` = /usr/bin/pnpm (12.6.0), so the path is correct as-is.
+# The app listens on 127.0.0.1:3100 (package.json "start" = `next start -p 3100`);
+# nginx owns public port 3001 and proxies to it.
+[Unit]
+Description=TeamDocs (Next.js)
+After=network.target postgresql-18.service
+
+[Service]
+User=teamdocs
+WorkingDirectory=/opt/teamdocs
+EnvironmentFile=/opt/teamdocs/.env.production
+ExecStart=/usr/bin/pnpm start
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
