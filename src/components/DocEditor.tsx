@@ -67,7 +67,6 @@ export function DocEditor({ pageId, initialTitle, initialBody, initialParentId, 
   const [msg, setMsg] = useState("");
   const [status, setStatus] = useState("");
   const [slash, setSlash] = useState<SlashState | null>(null);
-  const [menuOpen, setMenuOpen] = useState(false);
 
   // editorProps handlers run after creation, so they read the editor through a ref
   const editorRef = useRef<Editor | null>(null);
@@ -129,15 +128,21 @@ export function DocEditor({ pageId, initialTitle, initialBody, initialParentId, 
     if (timer.current) clearTimeout(timer.current);
     timer.current = setTimeout(() => void saveNow(), SAVE_DEBOUNCE_MS);
   }, [saveNow]);
+  // refs so stable event handlers never capture a stale save closure
+  const queueSaveRef = useRef(queueSave);
+  queueSaveRef.current = queueSave;
+  const saveNowRef = useRef(saveNow);
+  saveNowRef.current = saveNow;
 
   useEffect(() => () => { if (timer.current) clearTimeout(timer.current); }, []);
   // flush on unmount (tab close / navigation)
-  useEffect(() => () => { if (dirty.current) void saveNow(); }, [saveNow]);
+  useEffect(() => () => { if (dirty.current) void saveNowRef.current(); }, []);
 
-  // ---- slash command ----
+  // ---- editor updates: autosave + slash detection ----
   const onEditorEvent = useCallback(() => {
     const ed = editorRef.current;
     if (!ed) return;
+    queueSaveRef.current();
     setSlash(detectSlash(ed));
   }, []);
   useEffect(() => {
@@ -179,7 +184,7 @@ export function DocEditor({ pageId, initialTitle, initialBody, initialParentId, 
     <div className="doc-editor">
       <div className="editor-topbar">
         <span className="editor-save-status">{status}{msg ? ` — ${msg}` : ""}</span>
-        <details className="page-menu" open={menuOpen} onToggle={() => setMenuOpen((v) => !v)}>
+        <details className="page-menu">
           <summary>⋮</summary>
           <div className="menu-body">
             <div>
