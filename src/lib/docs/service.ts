@@ -36,13 +36,23 @@ export async function getPageBySlug(slug: string) {
   return rows[0] ?? null;
 }
 
-export async function createPage(input: { title: string; slug: string; isSection: boolean; bodyMd: string | null; parentId: string | null; position: number }, userId: string): Promise<string> {
+export interface CreatedPage { id: string; slug: string | null }
+
+export async function createPage(input: { title: string; slug: string; isSection: boolean; bodyMd: string | null; parentId: string | null; position: number }, userId: string): Promise<CreatedPage> {
+  let slug: string | null = input.isSection ? null : input.slug;
+  if (slug) {
+    // "Untitled" ×2 must not 500 on the unique constraint: first free suffix wins
+    let n = 2;
+    while ((await query("SELECT 1 FROM doc_pages WHERE slug = $1", [slug])).rows.length > 0) {
+      slug = `${input.slug}-${n++}`;
+    }
+  }
   const { rows } = await query(
     `INSERT INTO doc_pages (title, slug, is_section, body_md, parent_id, position, updated_by)
      VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING id`,
-    [input.title, input.isSection ? null : input.slug, input.isSection, input.bodyMd, input.parentId, input.position, userId]
+    [input.title, slug, input.isSection, input.bodyMd, input.parentId, input.position, userId]
   );
-  return rows[0].id;
+  return { id: rows[0].id, slug };
 }
 
 export async function updatePage(id: string, patch: Partial<{ title: string; slug: string; isSection: boolean; bodyMd: string | null; parentId: string | null; position: number }>, userId: string): Promise<{ slug: string | null }> {

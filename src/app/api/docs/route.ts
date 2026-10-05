@@ -18,7 +18,7 @@ export async function POST(req: Request) {
   const g = await requireAuth();
   if ("status" in g) return forbidden(g.status);
   const body = await req.json();
-  const id = await createPage({
+  const created = await createPage({
     title: String(body.title),
     slug: body.slug ? slugify(String(body.slug)) : slugify(String(body.title)),
     isSection: Boolean(body.isSection),
@@ -26,5 +26,5 @@ export async function POST(req: Request) {
     parentId: body.parentId ?? null,
     position: Number(body.position ?? 0),
   }, g.session.user.id);
-  return NextResponse.json({ id }, { status: 201 });
+  return NextResponse.json({ id: created.id, slug: created.slug }, { status: 201 });
 }

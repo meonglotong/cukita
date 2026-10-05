@@ -23,7 +23,7 @@ beforeEach(async () => {
 
 it("creates section + page, tree is ordered", async () => {
   const sec = await svc.createPage({ title: "Guide", slug: "guide", isSection: true, bodyMd: null, parentId: null, position: 0 }, adminId);
-  const pg = await svc.createPage({ title: "Setup", slug: "setup", isSection: false, bodyMd: "## Halo\n\nisi", parentId: sec, position: 0 }, adminId);
+  const pg = await svc.createPage({ title: "Setup", slug: "setup", isSection: false, bodyMd: "## Halo\n\nisi", parentId: sec.id, position: 0 }, adminId);
   const tree = await svc.getPagesTree();
   expect(tree).toHaveLength(1);
   expect(tree[0].title).toBe("Guide");
@@ -34,8 +34,8 @@ it("creates section + page, tree is ordered", async () => {
 
 it("rejects deleting a section with children", async () => {
   const sec = await svc.createPage({ title: "S2", slug: "s2", isSection: true, bodyMd: null, parentId: null, position: 5 }, adminId);
-  await svc.createPage({ title: "P2", slug: "p2", isSection: false, bodyMd: "x", parentId: sec, position: 0 }, adminId);
-  await expect(svc.deletePage(sec)).rejects.toMatchObject({ code: "HAS_CHILDREN" });
+  await svc.createPage({ title: "P2", slug: "p2", isSection: false, bodyMd: "x", parentId: sec.id, position: 0 }, adminId);
+  await expect(svc.deletePage(sec.id)).rejects.toMatchObject({ code: "HAS_CHILDREN" });
 });
 
 it("searches title and body", async () => {
@@ -48,16 +48,23 @@ it("searches title and body", async () => {
 
 it("tree nodes expose parentId", async () => {
   const sec = await svc.createPage({ title: "TP Sec", slug: "tp-sec", isSection: true, bodyMd: null, parentId: null, position: 0 }, adminId);
-  await svc.createPage({ title: "TP Page", slug: "tp-page", isSection: false, bodyMd: "x", parentId: sec, position: 0 });
+  await svc.createPage({ title: "TP Page", slug: "tp-page", isSection: false, bodyMd: "x", parentId: sec.id, position: 0 });
   const tree = await svc.getPagesTree();
-  expect(tree[0].children[0].parentId).toBe(sec);
+  expect(tree[0].children[0].parentId).toBe(sec.id);
   expect(tree[0].parentId).toBeNull();
 });
 
 it("rename regenerates slug; collision throws SLUG_TAKEN", async () => {
   const a = await svc.createPage({ title: "Old Name", slug: "old-name", isSection: false, bodyMd: "x", parentId: null, position: 0 }, adminId);
   await svc.createPage({ title: "Other", slug: "other", isSection: false, bodyMd: "y", parentId: null, position: 1 }, adminId);
-  const r = await svc.updatePage(a, { title: "Brand New" }, adminId);
+  const r = await svc.updatePage(a.id, { title: "Brand New" }, adminId);
   expect(r.slug).toBe("brand-new");
-  await expect(svc.updatePage(a, { title: "Other" }, adminId)).rejects.toMatchObject({ code: "SLUG_TAKEN" });
+  await expect(svc.updatePage(a.id, { title: "Other" }, adminId)).rejects.toMatchObject({ code: "SLUG_TAKEN" });
+});
+
+it("createPage de-dupes a taken slug with a numeric suffix", async () => {
+  const first = await svc.createPage({ title: "Untitled", slug: "untitled", isSection: false, bodyMd: "", parentId: null, position: 0 }, adminId);
+  const second = await svc.createPage({ title: "Untitled", slug: "untitled", isSection: false, bodyMd: "", parentId: null, position: 1 }, adminId);
+  expect(first.slug).toBe("untitled");
+  expect(second.slug).toBe("untitled-2");
 });
