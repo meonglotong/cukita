@@ -30,7 +30,7 @@ export async function getPagesTree(): Promise<TreeNode[]> {
 
 export async function getPageBySlug(slug: string) {
   const { rows } = await query(
-    `SELECT id, title, body_md AS "bodyMd", updated_at AS "updatedAt"
+    `SELECT id, title, body_md AS "bodyMd", parent_id AS "parentId", updated_at AS "updatedAt"
      FROM doc_pages WHERE slug = $1 AND is_section = false`, [slug]);
   return rows[0] ?? null;
 }
