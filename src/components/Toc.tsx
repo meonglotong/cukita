@@ -22,7 +22,10 @@ export function Toc({ items }: { items: TocItem[] }) {
         const el = resolveHeading(document, item.id, item.text);
         if (el) tops[item.id] = el.getBoundingClientRect().top;
       }
-      setActive(pickActiveHeading(ids, tops));
+      // Anchor at the viewport middle: the section the reader is "in" is the
+      // last heading that has crossed the middle line, so short sections
+      // near the end of a page don't keep highlighting their predecessor.
+      setActive(pickActiveHeading(ids, tops, window.innerHeight * 0.5));
     };
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(measure);

@@ -33,4 +33,10 @@ describe("pickActiveHeading", () => {
     expect(pickActiveHeading(ids, { intro: -10, code: 90 }, 80)).toBe("intro");
     expect(pickActiveHeading(ids, { intro: -10, code: 90 }, 100)).toBe("code");
   });
+
+  it("highlights the visible section when the page is too short to reach a top anchor (short page)", () => {
+    // Real case (757px viewport, anchor at 50% = 378): previous heading is
+    // scrolled far above the fold, next heading visible mid-screen.
+    expect(pickActiveHeading(ids, { intro: -361, code: 363, callouts: 900 }, 378)).toBe("code");
+  });
 });
