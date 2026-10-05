@@ -2,7 +2,7 @@
 import { query } from "../db";
 
 export interface PageNode { id: string; title: string; slug: string | null; isSection: boolean; position: number; parentId: string | null; bodyMd: string | null }
-export interface TreeNode { id: string; title: string; slug: string | null; isSection: boolean; children: TreeNode[] }
+export interface TreeNode { id: string; title: string; slug: string | null; isSection: boolean; parentId: string | null; children: TreeNode[] }
 
 export async function listPages(): Promise<PageNode[]> {
   const { rows } = await query(
@@ -16,7 +16,7 @@ export async function getPagesTree(): Promise<TreeNode[]> {
   const all = await listPages();
   const byId = new Map<string, TreeNode>();
   for (const p of all) {
-    byId.set(p.id, { id: p.id, title: p.title, slug: p.slug, isSection: p.isSection, children: [] });
+    byId.set(p.id, { id: p.id, title: p.title, slug: p.slug, isSection: p.isSection, parentId: p.parentId, children: [] });
   }
   const roots: TreeNode[] = [];
   for (const p of all) {

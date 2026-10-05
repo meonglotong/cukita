@@ -45,3 +45,11 @@ it("searches title and body", async () => {
   const byBody = await svc.searchDocs("zebrafeed");
   expect(byBody.some((r) => r.slug === "zebra-api")).toBe(true);
 });
+
+it("tree nodes expose parentId", async () => {
+  const sec = await svc.createPage({ title: "TP Sec", slug: "tp-sec", isSection: true, bodyMd: null, parentId: null, position: 0 }, adminId);
+  await svc.createPage({ title: "TP Page", slug: "tp-page", isSection: false, bodyMd: "x", parentId: sec, position: 0 });
+  const tree = await svc.getPagesTree();
+  expect(tree[0].children[0].parentId).toBe(sec);
+  expect(tree[0].parentId).toBeNull();
+});
