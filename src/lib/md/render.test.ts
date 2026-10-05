@@ -29,6 +29,18 @@ describe("renderMarkdown", () => {
   });
 });
 
+describe("leading H1 (page title already rendered in the doc header)", () => {
+  it("strips a first-line H1 from the body", () => {
+    const { html, toc } = renderMarkdown("# Panduan TimKB\n\nIsi di sini.\n\n## Sub");
+    expect(html).not.toContain("<h1");
+    expect(toc).toEqual([{ level: 2, text: "Sub", id: "sub" }]);
+  });
+  it("keeps H1s that are not at the top of the document", () => {
+    const { html } = renderMarkdown("paragraf pembuka\n\n# Tengah");
+    expect(html).toContain("<h1 id=\"tengah\">");
+  });
+});
+
 describe("nested headings", () => {
   const htmlHeadingIds = (html: string) =>
     Array.from(html.matchAll(/<h[1-6] id="([^"]+)"/g)).map((m) => m[1]);

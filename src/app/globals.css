@@ -137,7 +137,7 @@ input, select, textarea { font-family: inherit; font-size: 14px; color: var(--fg
 .page-menu .menu-body {
   position: absolute; right: 0; top: calc(100% + 6px); z-index: 20;
   background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
-  box-shadow: 0 6px 16px rgba(60, 64, 67, 0.18); padding: 12px; width: 280px;
+  box-shadow: 0 6px 16px rgba(60, 64, 67, 0.18); padding: 12px; width: 320px;
   display: grid; gap: 12px; text-align: left;
 }
 .page-menu .menu-body h5 { margin: 0 0 4px; font-size: 12px; color: var(--muted); font-weight: 600; }
@@ -145,6 +145,7 @@ input, select, textarea { font-family: inherit; font-size: 14px; color: var(--fg
 .page-menu .row input, .page-menu .row select {
   flex: 1; min-width: 0; padding: 6px 8px; border: 1px solid var(--border); border-radius: 6px;
 }
+.page-menu .btn { flex-shrink: 0; padding: 6px 14px; font-size: 13px; }
 
 /* ---- editor ---- */
 .editor-toolbar { display: flex; gap: 8px; align-items: center; margin-bottom: 20px; }

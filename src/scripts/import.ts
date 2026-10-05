@@ -48,10 +48,13 @@ export async function importDir(rootDir: string): Promise<ImportResult> {
       await level(path.join(dir, d), sectionId);
     }
     for (const f of files) {
-      const title = f.replace(/\.md$/, "").replace(/[-_]/g, " ");
+      const body = await readFile(path.join(dir, f), "utf8");
+      // Prefer the document's own H1 as the page title (slug derives from
+      // it); fall back to the filename for H1-less files.
+      const h1 = body.match(/^\s*#[ \t]+([^\n]+)\r?\n/);
+      const title = (h1 ? h1[1].trim() : f).replace(/\.md$/, "").replace(/[-_]/g, " ");
       const slug = slugify(title);
       if (await slugExists(slug)) { result.skipped++; continue; }
-      const body = await readFile(path.join(dir, f), "utf8");
       await query(
         `INSERT INTO doc_pages (title, slug, is_section, body_md, parent_id, position, updated_by)
          VALUES ($1, $2, false, $3, $4, 0, null)`,

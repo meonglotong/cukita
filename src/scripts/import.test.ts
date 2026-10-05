@@ -15,8 +15,10 @@ beforeEach(async () => {
   await query("DELETE FROM doc_pages WHERE slug LIKE 'imp%'");
   dir = await mkdtemp(path.join(tmpdir(), "teamkb-import-"));
   await mkdir(path.join(dir, "ImpGuide"), { recursive: true });
-  await writeFile(path.join(dir, "imp-intro.md"), "# Intro\n\nhalo");
-  await writeFile(path.join(dir, "ImpGuide", "imp-setup.md"), "# Setup");
+  // file boleh punya H1 sendiri — judul page diambil dari H1 itu (slug
+  // ikut), biar tidak dobel dengan header page
+  await writeFile(path.join(dir, "imp-intro.md"), "# Imp Intro\n\nhalo");
+  await writeFile(path.join(dir, "ImpGuide", "imp-setup.md"), "# Imp Setup");
 });
 
 // section slug = NULL (invariant), jadi query section via title + is_section
@@ -30,6 +32,7 @@ it("maps subfolders to sections and .md files to pages", async () => {
   );
   expect(rows).toHaveLength(3);
   expect(rows.some((x) => x.is_section === true && x.title === "ImpGuide")).toBe(true);
+  expect(rows.some((x) => x.title === "Imp Intro")).toBe(true);
 });
 
 it("is idempotent: second run skips existing entries", async () => {

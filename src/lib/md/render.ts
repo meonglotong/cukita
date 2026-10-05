@@ -39,20 +39,29 @@ marked.use({
   },
 });
 
+// The doc header already renders page.title as the h1, so a first-line
+// "# Title" in the body would duplicate it (GitBook-style stripping).
+// Only the very first heading of the document is removed; H1s later in
+// the body are kept.
+function stripLeadingH1(md: string): string {
+  return md.replace(/^\s*#[ \t]+[^\n]*\r?\n/, "");
+}
+
 export function renderMarkdown(md: string): { html: string; toc: TocItem[] } {
+  const body = stripLeadingH1(md);
   renderedCounts.clear();
   const toc: TocItem[] = [];
   const tocCounts = new Map<string, number>();
   // Mirror the renderer's id assignment in document order (every heading
   // consumes a counter slot, including headings nested in blockquotes, list
   // items, and callout bodies) so TOC ids always match the emitted html ids.
-  forEachHeading(marked.lexer(md), (heading) => {
+  forEachHeading(marked.lexer(body), (heading) => {
     const id = dedupedId(headingBase(heading.text), tocCounts);
     if (heading.depth === 2 || heading.depth === 3) {
       toc.push({ level: heading.depth as 2 | 3, text: heading.text, id });
     }
   });
-  return { html: marked.parse(md, { async: false }) as string, toc };
+  return { html: marked.parse(body, { async: false }) as string, toc };
 }
 
 export function markedWithCallouts(md: string): string {

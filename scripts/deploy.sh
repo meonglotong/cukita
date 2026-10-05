@@ -3,6 +3,9 @@
 # Installs deps, builds, migrates, seeds the admin, and (re)starts the service.
 set -euo pipefail
 cd /opt/teamkb
+# Fail fast: .env.production is VM-only (written by deploy-from-mac.sh AFTER
+# the rsync, so a manual rsync --delete may wipe it).
+[ -f .env.production ] || { echo "FATAL: /opt/teamkb/.env.production missing — run scripts/deploy-from-mac.sh" >&2; exit 1; }
 # Full install (NOT --prod): `next build` needs the `typescript` devDependency
 # to read tsconfig "paths" (the @/ alias). sudo's env_reset strips plain env
 # vars, so each pnpm command runs in a shell that sources .env.production as
