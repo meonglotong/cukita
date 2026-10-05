@@ -1,0 +1,17 @@
+# scripts/teamkb.service → /etc/systemd/system/teamkb.service
+# App listens on 127.0.0.1:3102 (package.json "start" = `next start -p 3102`);
+# nginx owns public port 3002 and proxies to it.
+[Unit]
+Description=TeamKB (Next.js)
+After=network.target postgresql-18.service
+
+[Service]
+User=teamkb
+WorkingDirectory=/opt/teamkb
+EnvironmentFile=/opt/teamkb/.env.production
+ExecStart=/usr/bin/pnpm start
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
