@@ -6,7 +6,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   return (
     <main className="login-wrap">
       <form action={login} className="login-card">
-        <h1>TeamKB</h1>
+        <h1>CUKITA</h1>
         <p className="sub">Knowledge base tim — login untuk melanjutkan</p>
         {error ? <p style={{ color: "var(--danger)", margin: 0, fontSize: 13 }}>Email atau password salah.</p> : null}
         <input name="email" type="email" placeholder="email" required autoComplete="email" />

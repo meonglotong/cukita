@@ -2,6 +2,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { pickActiveHeading } from "./toc-scrollspy";
+import { resolveHeading } from "./editor/heading-ids";
 
 interface TocItem { level: 2 | 3; text: string; id: string }
 
@@ -17,9 +18,9 @@ export function Toc({ items }: { items: TocItem[] }) {
     const measure = () => {
       raf = 0;
       const tops: Record<string, number> = {};
-      for (const id of ids) {
-        const el = document.getElementById(id);
-        if (el) tops[id] = el.getBoundingClientRect().top;
+      for (const item of items) {
+        const el = resolveHeading(document, item.id, item.text);
+        if (el) tops[item.id] = el.getBoundingClientRect().top;
       }
       setActive(pickActiveHeading(ids, tops));
     };
@@ -46,10 +47,10 @@ export function Toc({ items }: { items: TocItem[] }) {
               href={`#${t.id}`}
               className={`toc-link${active === t.id ? " active" : ""}`}
               onClick={(e) => {
-                // Smooth-scroll to the (editor-assigned) heading; keep the
-                // URL hash in sync without the default jump.
+                // Smooth-scroll to the heading (id fast path, text fallback);
+                // keep the URL hash in sync without the default jump.
                 e.preventDefault();
-                document.getElementById(t.id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+                resolveHeading(document, t.id, t.text)?.scrollIntoView({ behavior: "smooth", block: "start" });
                 window.history.replaceState(null, "", `#${t.id}`);
               }}
             >

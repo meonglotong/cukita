@@ -10,7 +10,6 @@ import { Markdown } from "@tiptap/markdown";
 import { ImageRes } from "./editor/image-ext";
 import { SlashMenu } from "./editor/SlashMenu";
 import { detectSlash, type SlashState } from "./editor/slash-command";
-import { assignHeadingIds } from "./editor/heading-ids";
 
 interface ParentOption { id: string; title: string }
 
@@ -144,11 +143,10 @@ export function DocEditor({ pageId, initialTitle, initialBody, initialParentId, 
   // flush on unmount (tab close / navigation)
   useEffect(() => () => { if (dirty.current) void saveNowRef.current(); }, []);
 
-  // ---- editor updates: autosave + slash detection + TOC heading ids ----
+  // ---- editor updates: autosave + slash detection ----
   const onContentChange = useCallback(() => {
     const ed = editorRef.current;
     if (!ed) return;
-    assignHeadingIds(ed.view.dom);
     queueSaveRef.current();
     setSlash(detectSlash(ed));
   }, []);
@@ -157,7 +155,6 @@ export function DocEditor({ pageId, initialTitle, initialBody, initialParentId, 
   }, []);
   useEffect(() => {
     if (!editor) return;
-    assignHeadingIds(editor.view.dom);
     editor.on("update", onContentChange);
     editor.on("selectionUpdate", onSelection);
     return () => {

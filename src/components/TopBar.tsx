@@ -6,7 +6,7 @@ export async function TopBar() {
   const session = await auth();
   return (
     <header className="topbar">
-      <span className="brand"><span className="logo">K</span>TeamKB</span>
+      <span className="brand"><span className="logo">CK</span>CUKITA</span>
       <SearchBox />
       <div className="userchip">
         {session?.user.role === "admin" ? (
