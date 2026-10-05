@@ -1,5 +1,4 @@
 // src/components/TopBar.tsx
-import Link from "next/link";
 import { auth, signOut } from "@/lib/auth";
 import { SearchBox } from "./SearchBox";
 
@@ -7,14 +6,17 @@ export async function TopBar() {
   const session = await auth();
   return (
     <header className="topbar">
-      <span className="brand">TeamKB</span>
+      <span className="brand"><span className="logo">K</span>TeamKB</span>
       <SearchBox />
-      <nav style={{ marginLeft: "auto", display: "flex", gap: 16, fontSize: 14 }}>
-        {session?.user.role === "admin" ? <Link href="/admin/users">Admin</Link> : null}
+      <div className="userchip">
+        {session?.user.role === "admin" ? (
+          <a href="/admin/users">Admin</a>
+        ) : null}
+        <span>{session?.user.name}</span>
         <form action={async () => { "use server"; await signOut({ redirectTo: "/login" }); }}>
-          <button style={{ background: "none", border: 0, color: "var(--muted)", cursor: "pointer" }}>Logout</button>
+          <button className="btn" type="submit">Logout</button>
         </form>
-      </nav>
+      </div>
     </header>
   );
 }
