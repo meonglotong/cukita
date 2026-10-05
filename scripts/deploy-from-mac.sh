@@ -82,7 +82,7 @@ echo "  role+database ok"
 # ------------------------------------------------- 2. system user + dirs
 echo "== [2/6] teamkb system user + /opt/teamkb =="
 vm "getent passwd teamkb >/dev/null || sudo useradd -m teamkb"
-vm "sudo mkdir -p $APP_DIR && sudo chown -R teamkb: $APP_DIR"
+vm "sudo mkdir -p $APP_DIR /var/lib/teamkb/files && sudo chown -R teamkb: $APP_DIR /var/lib/teamkb/files"
 
 # ------------------------------------------------------------ 3. rsync repo
 echo "== [3/6] rsync repo → $APP_DIR (via staging) =="
@@ -103,6 +103,7 @@ echo "  rsync done"
 echo "== [4/6] $APP_DIR/.env.production =="
 vm "cat > /tmp/teamkb.env" <<EOF
 DATABASE_URL=postgres://teamkb:$DB_PASSWORD@127.0.0.1:5432/kb
+FILES_DIR=/var/lib/teamkb/files
 AUTH_SECRET=$AUTH_SECRET
 AUTH_URL=$AUTH_URL
 ADMIN_EMAIL=$ADMIN_EMAIL

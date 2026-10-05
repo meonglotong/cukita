@@ -1,10 +1,27 @@
 // src/components/DocEditor.tsx
 "use client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useEditor, EditorContent, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import Image from "@tiptap/extension-image";
 import { Markdown } from "@tiptap/markdown";
+
+// Upload a pasted/dropped image, then insert it at the cursor.
+async function uploadAndInsert(file: File, editor: Editor, setStatus: (s: string) => void) {
+  setStatus("mengunggah gambar…");
+  try {
+    const form = new FormData();
+    form.append("file", file);
+    const res = await fetch("/api/uploads", { method: "POST", body: form });
+    const json = await res.json();
+    if (!res.ok) { setStatus(json.error ?? "gagal mengunggah gambar"); return; }
+    editor.chain().focus().setImage({ src: json.url, alt: file.name }).run();
+    setStatus("");
+  } catch {
+    setStatus("gagal mengunggah gambar");
+  }
+}
 
 interface ParentOption { id: string; title: string }
 
@@ -52,10 +69,37 @@ export function DocEditor({ pageId, initialTitle, initialBody, initialParentId, 
   const [parentId, setParentId] = useState(initialParentId ?? "");
   const [msg, setMsg] = useState("");
   const [saving, setSaving] = useState(false);
+  const [status, setStatus] = useState("");
 
+  // editorProps handlers run after creation, so they read the editor through a ref
+  const editorRef = useRef<Editor | null>(null);
   const editor = useEditor({
-    extensions: [StarterKit, Markdown],
+    extensions: [StarterKit, Image, Markdown],
     content: initialBody,
+    onCreate: ({ editor: e }) => { editorRef.current = e; },
+    editorProps: {
+      handlePaste: (_view, event) => {
+        const ed = editorRef.current;
+        if (!ed) return false;
+        const files = Array.from(event.clipboardData?.items ?? [])
+          .filter((i) => i.kind === "file" && i.type.startsWith("image/"))
+          .map((i) => i.getAsFile())
+          .filter((f): f is File => f !== null);
+        if (files.length === 0) return false;
+        event.preventDefault();
+        void Promise.all(files.map((f) => uploadAndInsert(f, ed, setStatus)));
+        return true;
+      },
+      handleDrop: (_view, event) => {
+        const ed = editorRef.current;
+        if (!ed) return false;
+        const files = Array.from(event.dataTransfer?.files ?? []).filter((f) => f.type.startsWith("image/"));
+        if (files.length === 0) return false;
+        event.preventDefault();
+        void Promise.all(files.map((f) => uploadAndInsert(f, ed, setStatus)));
+        return true;
+      },
+    },
   });
 
   const save = async () => {
@@ -77,7 +121,7 @@ export function DocEditor({ pageId, initialTitle, initialBody, initialParentId, 
     <div className="doc-editor">
       <div className="editor-topbar">
         <button type="button" className="btn" onClick={() => router.back()}>← Keluar</button>
-        <span className="editor-save-status" />
+        <span className="editor-save-status">{status}</span>
         <button type="button" className="btn btn-primary" disabled={saving} onClick={() => void save()}>
           {saving ? "Menyimpan…" : "Simpan"}
         </button>
