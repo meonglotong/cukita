@@ -6,7 +6,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   return (
     <main style={{ display: "grid", placeItems: "center", minHeight: "100vh" }}>
       <form action={login} style={{ width: 340, display: "grid", gap: 12 }}>
-        <h1 style={{ fontSize: 20 }}>TeamDocs</h1>
+        <h1 style={{ fontSize: 20 }}>TeamKB</h1>
         {error ? <p style={{ color: "#b91c1c", margin: 0 }}>Email atau password salah.</p> : null}
         <input name="email" type="email" placeholder="email" required
                style={{ padding: 10, border: "1px solid var(--border)", borderRadius: 8 }} />

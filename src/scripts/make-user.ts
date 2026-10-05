@@ -1,4 +1,5 @@
 // src/scripts/make-user.ts
+import "./load-env"; // must precede ../lib/db: fills DATABASE_URL from .env.local
 import { query, closePool } from "../lib/db";
 import { hashPassword } from "../lib/password";
 

@@ -5,9 +5,9 @@ import { runMigrations } from "../scripts/migrate";
 
 beforeAll(async () => { await runMigrations(); });
 
-it("creates all four tables", async () => {
+it("creates all tables", async () => {
   const { rows } = await query(
-    "SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_name IN ('users','doc_pages','files','file_versions')"
+    "SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_name IN ('users','doc_pages')"
   );
-  expect(rows.length).toBe(4);
+  expect(rows.length).toBe(2);
 });

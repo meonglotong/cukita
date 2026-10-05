@@ -4,10 +4,10 @@ import { afterAll } from "vitest";
 
 const base = new pg.Client({ connectionString: "postgres://mac@localhost/postgres?host=/tmp" });
 await base.connect();
-const { rows } = await base.query("SELECT 1 FROM pg_database WHERE datname = 'teamdocs_test'");
+const { rows } = await base.query("SELECT 1 FROM pg_database WHERE datname = 'teamkb_test'");
 if (rows.length === 0) {
   try {
-    await base.query("CREATE DATABASE teamdocs_test");
+    await base.query("CREATE DATABASE teamkb_test");
   } catch (e) {
     const code = (e as { code?: string }).code;
     // another worker won the race: 42P07 = duplicate_database; 23505 = unique_violation on pg_database_datname_index (observed under true concurrency)
@@ -16,8 +16,7 @@ if (rows.length === 0) {
 }
 await base.end();
 
-process.env.DATABASE_URL = "postgres://mac@localhost/teamdocs_test?host=/tmp";
-process.env.FILES_DIR = process.env.FILES_DIR || `${process.cwd()}/.data/test-files`;
+process.env.DATABASE_URL = "postgres://mac@localhost/teamkb_test?host=/tmp";
 
 afterAll(async () => {
   const { closePool } = await import("@/lib/db");

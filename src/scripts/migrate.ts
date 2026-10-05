@@ -1,10 +1,11 @@
 // src/scripts/migrate.ts
+import "./load-env"; // must precede ../lib/db: fills DATABASE_URL from .env.local
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import pg from "pg";
 import { closePool } from "../lib/db";
 
-const MIGRATE_LOCK = "teamdocs_migrate";
+const MIGRATE_LOCK = "teamkb_migrate";
 
 export async function runMigrations(): Promise<void> {
   const sql = readFileSync(

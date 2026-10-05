@@ -2,6 +2,7 @@
 // Idempotent: upserts the admin by email (existing row gets a fresh
 // password hash and is re-activated; missing row is created).
 // Usage: ADMIN_EMAIL=... ADMIN_PASSWORD=... pnpm seed:admin
+import "./load-env"; // must precede ../lib/db: fills DATABASE_URL from .env.local
 import { query, closePool } from "../lib/db";
 import { hashPassword } from "../lib/password";
 

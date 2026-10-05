@@ -3,9 +3,7 @@ import path from "node:path";
 export default defineConfig({
   test: {
     environment: "node",
-    // single shared test DB (teamdocs_test): parallel test files race on the
-    // files/file_versions tables (service.test + route tests), so run files
-    // sequentially
+    // single shared test DB (teamkb_test): run test files sequentially
     fileParallelism: false,
     include: ["src/**/*.test.ts"],
     setupFiles: ["vitest.setup.ts"],

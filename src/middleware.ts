@@ -10,4 +10,4 @@ export default auth((req) => {
   return;
 });
 
-export const config = { matcher: ["/docs/:path*", "/files/:path*", "/admin/:path*"] };
+export const config = { matcher: ["/docs/:path*", "/admin/:path*"] };
