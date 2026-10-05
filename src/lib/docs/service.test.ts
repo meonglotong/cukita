@@ -53,3 +53,11 @@ it("tree nodes expose parentId", async () => {
   expect(tree[0].children[0].parentId).toBe(sec);
   expect(tree[0].parentId).toBeNull();
 });
+
+it("rename regenerates slug; collision throws SLUG_TAKEN", async () => {
+  const a = await svc.createPage({ title: "Old Name", slug: "old-name", isSection: false, bodyMd: "x", parentId: null, position: 0 }, adminId);
+  await svc.createPage({ title: "Other", slug: "other", isSection: false, bodyMd: "y", parentId: null, position: 1 }, adminId);
+  const r = await svc.updatePage(a, { title: "Brand New" }, adminId);
+  expect(r.slug).toBe("brand-new");
+  await expect(svc.updatePage(a, { title: "Other" }, adminId)).rejects.toMatchObject({ code: "SLUG_TAKEN" });
+});

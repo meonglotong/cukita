@@ -13,11 +13,11 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   const { id } = await params;
   const body = await req.json();
   try {
-    await updatePage(id, body, g.session.user.id);
-    return NextResponse.json({ ok: true });
+    const updated = await updatePage(id, body, g.session.user.id);
+    return NextResponse.json({ ok: true, slug: updated.slug });
   } catch (e) {
     const code = (e as { code?: string }).code;
-    return NextResponse.json({ error: code ?? String(e) }, { status: code === "NOT_FOUND" ? 404 : 400 });
+    return NextResponse.json({ error: code ?? String(e) }, { status: code === "NOT_FOUND" ? 404 : code === "SLUG_TAKEN" ? 409 : 400 });
   }
 }
 

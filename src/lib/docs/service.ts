@@ -1,5 +1,6 @@
 // src/lib/docs/service.ts
 import { query } from "../db";
+import { slugify } from "../md/slugify";
 
 export interface PageNode { id: string; title: string; slug: string | null; isSection: boolean; position: number; parentId: string | null; bodyMd: string | null }
 export interface TreeNode { id: string; title: string; slug: string | null; isSection: boolean; parentId: string | null; children: TreeNode[] }
@@ -44,21 +45,27 @@ export async function createPage(input: { title: string; slug: string; isSection
   return rows[0].id;
 }
 
-export async function updatePage(id: string, patch: Partial<{ title: string; slug: string; isSection: boolean; bodyMd: string | null; parentId: string | null; position: number }>, userId: string): Promise<void> {
+export async function updatePage(id: string, patch: Partial<{ title: string; slug: string; isSection: boolean; bodyMd: string | null; parentId: string | null; position: number }>, userId: string): Promise<{ slug: string | null }> {
   const cur = (await query("SELECT * FROM doc_pages WHERE id = $1", [id])).rows[0];
   if (!cur) throw Object.assign(new Error("not found"), { code: "NOT_FOUND" });
-  const next = {
-    title: patch.title ?? cur.title,
-    slug: patch.isSection ? null : (patch.slug ?? (patch.isSection === false ? cur.slug ?? null : cur.slug)),
-    isSection: patch.isSection ?? cur.is_section,
-    bodyMd: patch.bodyMd ?? cur.body_md,
-    parentId: patch.parentId ?? cur.parent_id,
-    position: patch.position ?? cur.position,
-  };
+  const isSection = patch.isSection ?? cur.is_section;
+  const title = patch.title ?? cur.title;
+  let slug: string | null;
+  if (isSection) {
+    slug = null;
+  } else if (patch.title !== undefined && title !== cur.title) {
+    // spec §4: rename → slug dibuat ulang; bentrok dengan baris lain → 409
+    slug = slugify(title);
+    const clash = (await query("SELECT 1 FROM doc_pages WHERE slug = $1 AND id <> $2", [slug, id])).rows.length > 0;
+    if (clash) throw Object.assign(new Error("slug taken"), { code: "SLUG_TAKEN" });
+  } else {
+    slug = patch.slug ?? cur.slug;
+  }
   await query(
     `UPDATE doc_pages SET title=$2, slug=$3, is_section=$4, body_md=$5, parent_id=$6, position=$7, updated_by=$8, updated_at=now() WHERE id=$1`,
-    [id, next.title, next.slug, next.isSection, next.bodyMd, next.parentId, next.position, userId]
+    [id, title, slug, isSection, patch.bodyMd ?? cur.body_md, patch.parentId ?? cur.parent_id, patch.position ?? cur.position, userId]
   );
+  return { slug };
 }
 
 export async function deletePage(id: string): Promise<void> {
