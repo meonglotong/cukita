@@ -53,7 +53,7 @@ export function Sidebar({ tree }: { tree: Node[] }) {
     const json = await res.json();
     setBusy(false);
     if (!res.ok) { setErr(json.error ?? "gagal membuat halaman"); return; }
-    router.push(`/docs/${json.slug}/edit`);
+    router.push(`/docs/${json.slug}`);
   };
 
   const render = (nodes: Node[], depth: number) => (
