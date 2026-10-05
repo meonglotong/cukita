@@ -10,10 +10,16 @@ import { Markdown } from "@tiptap/markdown";
 import { ImageRes } from "./editor/image-ext";
 import { SlashMenu } from "./editor/SlashMenu";
 import { detectSlash, type SlashState } from "./editor/slash-command";
+import { assignHeadingIds } from "./editor/heading-ids";
 
 interface ParentOption { id: string; title: string }
 
 const SAVE_DEBOUNCE_MS = 800;
+
+// Same rule as src/lib/md/render.ts: a first-line "# Title" would duplicate
+// the title input. (Local regex instead of importing render.ts so marked
+// stays out of the client bundle.)
+const stripLeadingH1 = (md: string) => md.replace(/^\s*#[ \t]+[^\n]*\r?\n/, "");
 
 // Upload a pasted/dropped image, then insert it at the cursor.
 async function uploadAndInsert(file: File, editor: Editor, setStatus: (s: string) => void) {
@@ -73,7 +79,7 @@ export function DocEditor({ pageId, initialTitle, initialBody, initialParentId, 
   const editor = useEditor({
     extensions: [StarterKit, ImageRes, Markdown],
     contentType: "markdown",
-    content: initialBody,
+    content: stripLeadingH1(initialBody),
     onCreate: ({ editor: e }) => { editorRef.current = e; },
     editorProps: {
       handlePaste: (_view, event) => {
@@ -138,22 +144,27 @@ export function DocEditor({ pageId, initialTitle, initialBody, initialParentId, 
   // flush on unmount (tab close / navigation)
   useEffect(() => () => { if (dirty.current) void saveNowRef.current(); }, []);
 
-  // ---- editor updates: autosave + slash detection ----
-  const onEditorEvent = useCallback(() => {
+  // ---- editor updates: autosave + slash detection + TOC heading ids ----
+  const onContentChange = useCallback(() => {
     const ed = editorRef.current;
     if (!ed) return;
+    assignHeadingIds(ed.view.dom);
     queueSaveRef.current();
     setSlash(detectSlash(ed));
   }, []);
+  const onSelection = useCallback(() => {
+    setSlash(detectSlash(editorRef.current!));
+  }, []);
   useEffect(() => {
     if (!editor) return;
-    editor.on("update", onEditorEvent);
-    editor.on("selectionUpdate", onEditorEvent);
+    assignHeadingIds(editor.view.dom);
+    editor.on("update", onContentChange);
+    editor.on("selectionUpdate", onSelection);
     return () => {
-      editor.off("update", onEditorEvent);
-      editor.off("selectionUpdate", onEditorEvent);
+      editor.off("update", onContentChange);
+      editor.off("selectionUpdate", onSelection);
     };
-  }, [editor, onEditorEvent]);
+  }, [editor, onContentChange, onSelection]);
   useEffect(() => { setTitle(initialTitle); }, [initialTitle]);
   // any title keystroke should also save
   const onTitleChange = (v: string) => { setTitle(v); queueSave(); };

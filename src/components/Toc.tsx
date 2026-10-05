@@ -45,6 +45,13 @@ export function Toc({ items }: { items: TocItem[] }) {
             <a
               href={`#${t.id}`}
               className={`toc-link${active === t.id ? " active" : ""}`}
+              onClick={(e) => {
+                // Smooth-scroll to the (editor-assigned) heading; keep the
+                // URL hash in sync without the default jump.
+                e.preventDefault();
+                document.getElementById(t.id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+                window.history.replaceState(null, "", `#${t.id}`);
+              }}
             >
               {t.text}
             </a>
