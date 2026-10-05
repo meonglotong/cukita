@@ -1,7 +1,7 @@
 // src/components/Toc.tsx
 "use client";
 import { useEffect, useState } from "react";
-import { pickActiveHeading } from "./toc-scrollspy";
+import { activeAtBottom, pickActiveHeading } from "./toc-scrollspy";
 import { resolveHeading } from "./editor/heading-ids";
 
 interface TocItem { level: 2 | 3; text: string; id: string }
@@ -22,10 +22,13 @@ export function Toc({ items }: { items: TocItem[] }) {
         const el = resolveHeading(document, item.id, item.text);
         if (el) tops[item.id] = el.getBoundingClientRect().top;
       }
-      // Anchor at the viewport middle: the section the reader is "in" is the
-      // last heading that has crossed the middle line, so short sections
-      // near the end of a page don't keep highlighting their predecessor.
-      setActive(pickActiveHeading(ids, tops, window.innerHeight * 0.5));
+      // The section the reader is "in" = the last heading that has crossed
+      // an anchor line at 60% of the viewport (a top anchor is too strict —
+      // a section only "activates" once most of it has scrolled past).
+      // At the bottom of the page the last section always wins, because a
+      // short page can never bring its final heading up to the anchor.
+      const atBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4;
+      setActive(atBottom ? activeAtBottom(ids, tops) : pickActiveHeading(ids, tops, window.innerHeight * 0.6));
     };
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(measure);

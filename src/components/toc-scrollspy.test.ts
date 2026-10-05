@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { pickActiveHeading } from "./toc-scrollspy";
+import { activeAtBottom, pickActiveHeading } from "./toc-scrollspy";
 
 describe("pickActiveHeading", () => {
   const ids = ["intro", "code", "callouts"];
@@ -35,8 +35,24 @@ describe("pickActiveHeading", () => {
   });
 
   it("highlights the visible section when the page is too short to reach a top anchor (short page)", () => {
-    // Real case (757px viewport, anchor at 50% = 378): previous heading is
-    // scrolled far above the fold, next heading visible mid-screen.
-    expect(pickActiveHeading(ids, { intro: -361, code: 363, callouts: 900 }, 378)).toBe("code");
+    // Real case (614px headless viewport, anchor at 60% = 368): previous
+    // heading scrolled far above the fold, next heading visible mid-screen.
+    expect(pickActiveHeading(ids, { intro: -361, code: 363, callouts: 900 }, 368)).toBe("code");
+  });
+});
+
+describe("activeAtBottom", () => {
+  const ids = ["halo", "halooo"];
+
+  it("returns the last measured section at page bottom", () => {
+    expect(activeAtBottom(ids, { halo: -361, halooo: 363 })).toBe("halooo");
+  });
+
+  it("skips sections that were not measured", () => {
+    expect(activeAtBottom(ids, { halo: -361 })).toBe("halo");
+  });
+
+  it("returns null when nothing was measured", () => {
+    expect(activeAtBottom(ids, {})).toBeNull();
   });
 });

@@ -20,3 +20,16 @@ export function pickActiveHeading(
   }
   return active ?? ids[0] ?? null;
 }
+
+// When the page is scrolled to the very bottom, the last visible section
+// wins — a short page can never bring its final heading up to the anchor
+// line, and the reader is clearly done reading the previous section.
+export function activeAtBottom(
+  ids: string[],
+  tops: Record<string, number>,
+): string | null {
+  for (let i = ids.length - 1; i >= 0; i--) {
+    if (tops[ids[i]] !== undefined) return ids[i];
+  }
+  return null;
+}
