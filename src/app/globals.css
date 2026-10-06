@@ -19,6 +19,9 @@
   --callout-info: #e8f0fe;   --callout-info-b: #1a73e8;
   --callout-warn: #fef7e0;   --callout-warn-b: #f9ab00;
   --callout-danger: #fce8e6; --callout-danger-b: #d93025;
+  --bg-dot: rgba(26, 28, 31, 0.055);
+  --login-glow-a: rgba(26, 115, 232, 0.07);
+  --login-glow-b: rgba(14, 116, 144, 0.06);
 }
 
 /* Dark theme — Google dark palette, same token contract */
@@ -37,6 +40,9 @@
   --callout-info: #1d2d45;   --callout-info-b: #8ab4f8;
   --callout-warn: #3a2f16;   --callout-warn-b: #fdd663;
   --callout-danger: #462523; --callout-danger-b: #f28b82;
+  --bg-dot: rgba(255, 255, 255, 0.05);
+  --login-glow-a: rgba(138, 180, 248, 0.09);
+  --login-glow-b: rgba(103, 232, 249, 0.05);
 }
 :root[data-theme="dark"] .btn-primary { color: #202124; }
 :root[data-theme="dark"] .btn-primary:hover { color: #000; }
@@ -282,7 +288,15 @@ input, select, textarea { font-family: inherit; font-size: 14px; color: var(--fg
 .tiptap [data-resize-wrapper]:hover [data-resize-handle] { display: block; }
 
 /* ---- login ---- */
-.login-wrap { display: grid; place-items: center; min-height: 100vh; background: var(--surface); padding: 24px; }
+.login-wrap {
+  display: grid; place-items: center; min-height: 100vh; padding: 24px;
+  background-color: var(--surface);
+  background-image:
+    radial-gradient(circle, var(--bg-dot) 1px, transparent 1.4px),
+    radial-gradient(700px 460px at 12% 8%, var(--login-glow-a), transparent 70%),
+    radial-gradient(700px 460px at 88% 92%, var(--login-glow-b), transparent 70%);
+  background-size: 22px 22px, auto, auto;
+}
 .login-card {
   width: 380px; max-width: 100%; background: var(--bg); border: 1px solid var(--border);
   border-radius: 12px; padding: 32px; display: grid; gap: 14px;
