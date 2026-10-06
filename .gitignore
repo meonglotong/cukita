@@ -6,3 +6,8 @@ node_modules/
 .env.production
 *.tsbuildinfo
 next-env.d.ts
+
+# scratch / non-cukita artifacts
+.tmp-
+.tmp-
+/docs/superpowers/

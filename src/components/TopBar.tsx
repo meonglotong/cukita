@@ -1,6 +1,7 @@
 // src/components/TopBar.tsx
 import { auth, signOut } from "@/lib/auth";
 import { SearchBox } from "./SearchBox";
+import { ThemeToggle } from "./ThemeToggle";
 
 export async function TopBar() {
   const session = await auth();
@@ -8,6 +9,7 @@ export async function TopBar() {
     <header className="topbar">
       <span className="brand"><span className="logo">CK</span>CUKITA</span>
       <SearchBox />
+      <ThemeToggle />
       <div className="userchip">
         {session?.user.role === "admin" ? (
           <a href="/admin/users">Admin</a>

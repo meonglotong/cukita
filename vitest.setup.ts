@@ -2,6 +2,20 @@
 import pg from "pg";
 import { afterAll } from "vitest";
 
+// This happy-dom version does not expose localStorage; provide a minimal
+// in-memory shim so client-component tests can exercise it.
+if (typeof window !== "undefined" && window.localStorage === undefined) {
+  const store = new Map<string, string>();
+  Object.defineProperty(window, "localStorage", {
+    value: {
+      getItem: (k: string) => (store.has(k) ? store.get(k)! : null),
+      setItem: (k: string, v: string) => void store.set(k, String(v)),
+      removeItem: (k: string) => void store.delete(k),
+      clear: () => store.clear(),
+    },
+  });
+}
+
 const base = new pg.Client({ connectionString: "postgres://mac@localhost/postgres?host=/tmp" });
 await base.connect();
 const { rows } = await base.query("SELECT 1 FROM pg_database WHERE datname = 'teamkb_test'");

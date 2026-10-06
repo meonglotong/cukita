@@ -1,4 +1,4 @@
-/* TeamKB — design system, gaya Google Cloud Documentation */
+/* CUKITA — design system, gaya Google Cloud Documentation */
 :root {
   --bg: #ffffff;
   --fg: #202124;
@@ -20,6 +20,26 @@
   --callout-warn: #fef7e0;   --callout-warn-b: #f9ab00;
   --callout-danger: #fce8e6; --callout-danger-b: #d93025;
 }
+
+/* Dark theme — Google dark palette, same token contract */
+:root[data-theme="dark"] {
+  --bg: #202124;
+  --fg: #e8eaed;
+  --body: #bdc1c6;
+  --muted: #9aa0a6;
+  --border: #3c4043;
+  --accent: #8ab4f8;
+  --accent-hover: #a6c4f9;
+  --accent-soft: rgba(138, 180, 248, 0.16);
+  --surface: #2b2d31;
+  --danger: #f28b82;
+  --code-bg: #282a2e;
+  --callout-info: #1d2d45;   --callout-info-b: #8ab4f8;
+  --callout-warn: #3a2f16;   --callout-warn-b: #fdd663;
+  --callout-danger: #462523; --callout-danger-b: #f28b82;
+}
+:root[data-theme="dark"] .btn-primary { color: #202124; }
+:root[data-theme="dark"] .btn-primary:hover { color: #000; }
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -46,7 +66,7 @@ input, select, textarea { font-family: inherit; font-size: 14px; color: var(--fg
 .field { display: grid; gap: 6px; }
 .field label { font-size: 12px; font-weight: 600; color: var(--muted); }
 .field input, .field select, .field textarea {
-  padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--radius); background: #fff;
+  padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg);
 }
 .field input:focus, .field select:focus, .field textarea:focus {
   outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.12);
@@ -84,15 +104,22 @@ input, select, textarea { font-family: inherit; font-size: 14px; color: var(--fg
   border-left: 9px solid transparent;
 }
 .topbar .userchip { margin-left: auto; display: flex; align-items: center; gap: 14px; font-size: 14px; color: var(--fg); white-space: nowrap; }
+.theme-toggle {
+  width: 36px; height: 36px; border-radius: 999px; flex-shrink: 0;
+  border: 1px solid var(--border); background: var(--surface);
+  font-size: 16px; line-height: 1; display: grid; place-items: center; cursor: pointer;
+  padding: 0;
+}
+.theme-toggle:hover { border-color: var(--accent); }
 .searchbox { flex: 1; max-width: 480px; }
 .searchbox input {
   width: 100%; padding: 9px 16px; border: 1px solid var(--border);
   border-radius: 999px; background: var(--surface); font-size: 14px;
 }
-.searchbox input:focus { outline: none; border-color: var(--accent); background: #fff; box-shadow: 0 1px 4px rgba(60, 64, 67, 0.15); }
+.searchbox input:focus { outline: none; border-color: var(--accent); background: var(--bg); box-shadow: 0 1px 4px rgba(60, 64, 67, 0.15); }
 .search-results {
   position: absolute; top: calc(100% + 6px); left: 0; right: 0;
-  background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
   box-shadow: 0 4px 12px rgba(60, 64, 67, 0.18); overflow: hidden;
 }
 .search-results a { display: block; padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--fg); }
@@ -104,10 +131,10 @@ input, select, textarea { font-family: inherit; font-size: 14px; color: var(--fg
 .docs-sidebar {
   position: sticky; top: var(--topbar-h); height: calc(100vh - var(--topbar-h));
   overflow-y: auto; border-right: 1px solid var(--border);
-  padding: 16px 12px 32px; background: #fff;
+  padding: 16px 12px 32px; background: var(--bg);
 }
 .sidebar-filter { width: 100%; padding: 8px 14px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); font-size: 13px; margin-bottom: 12px; }
-.sidebar-filter:focus { outline: none; border-color: var(--accent); background: #fff; }
+.sidebar-filter:focus { outline: none; border-color: var(--accent); background: var(--bg); }
 .docs-sidebar ul { list-style: none; margin: 0; padding: 0; }
 .side-section-row {
   display: flex; align-items: center; gap: 6px; width: 100%;
@@ -153,7 +180,7 @@ input, select, textarea { font-family: inherit; font-size: 14px; color: var(--fg
 .page-menu[open] summary { border-color: var(--accent); color: var(--accent); }
 .page-menu .menu-body {
   position: absolute; right: 0; top: calc(100% + 6px); z-index: 20;
-  background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
   box-shadow: 0 6px 16px rgba(60, 64, 67, 0.18); padding: 12px; width: 320px;
   display: grid; gap: 12px; text-align: left;
 }
@@ -218,7 +245,7 @@ input, select, textarea { font-family: inherit; font-size: 14px; color: var(--fg
 /* ---- slash command menu ---- */
 .slash-menu {
   z-index: 50; width: 300px; max-height: 320px; overflow-y: auto;
-  background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
   box-shadow: 0 8px 24px rgba(60, 64, 67, 0.22); padding: 6px;
 }
 .slash-menu-head { font-size: 11px; font-weight: 600; color: var(--muted); padding: 6px 10px 4px; text-transform: uppercase; letter-spacing: 0.04em; }
@@ -230,7 +257,7 @@ input, select, textarea { font-family: inherit; font-size: 14px; color: var(--fg
 .slash-menu-item:hover, .slash-menu-item.active { background: var(--surface); }
 .slash-menu-icon {
   flex: 0 0 32px; height: 32px; display: grid; place-items: center;
-  border: 1px solid var(--border); border-radius: 6px; background: #fff;
+  border: 1px solid var(--border); border-radius: 6px; background: var(--bg);
   font-size: 12px; color: var(--fg); font-weight: 600;
 }
 .slash-menu-item span:last-child { display: flex; flex-direction: column; min-width: 0; }
@@ -242,7 +269,7 @@ input, select, textarea { font-family: inherit; font-size: 14px; color: var(--fg
 .tiptap [data-resize-wrapper] { max-width: 100%; }
 .tiptap [data-resize-handle] {
   position: absolute; width: 16px; height: 16px; border-radius: 4px;
-  background: #fff; border: 1.5px solid var(--accent);
+  background: var(--bg); border: 1.5px solid var(--accent);
   box-shadow: 0 1px 4px rgba(60, 64, 67, 0.25); cursor: nwse-resize;
   display: none; z-index: 5;
 }
@@ -257,7 +284,7 @@ input, select, textarea { font-family: inherit; font-size: 14px; color: var(--fg
 /* ---- login ---- */
 .login-wrap { display: grid; place-items: center; min-height: 100vh; background: var(--surface); padding: 24px; }
 .login-card {
-  width: 380px; max-width: 100%; background: #fff; border: 1px solid var(--border);
+  width: 380px; max-width: 100%; background: var(--bg); border: 1px solid var(--border);
   border-radius: 12px; padding: 32px; display: grid; gap: 14px;
   box-shadow: 0 1px 3px rgba(60, 64, 67, 0.08);
 }
