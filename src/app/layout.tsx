@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { ThemeSync } from "@/components/ThemeSync";
 
 export const metadata: Metadata = {
   title: "CUKITA",
@@ -13,7 +14,7 @@ const themePrePaint = `(function(){try{var s=localStorage.getItem("cukita-theme"
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="id">
+    <html lang="id" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themePrePaint }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -23,7 +24,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <ThemeSync />
+        {children}
+      </body>
     </html>
   );
 }
