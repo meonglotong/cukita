@@ -1,11 +1,39 @@
 import { Marked } from "marked";
 import type { Token, Tokens } from "marked";
+import sanitizeHtml from "sanitize-html";
 import { slugify } from "./slugify";
 import { calloutExtension, type CalloutToken } from "./callouts";
 
 export interface TocItem { level: 2 | 3; text: string; id: string }
 
 const marked = new Marked({ gfm: true, breaks: false });
+
+// Docs are written by users and rendered into other users' browsers, so the
+// html output goes through a strict allowlist: only the tags/attributes the
+// renderer itself emits (plus raw HTML a user pasted in, with scripts,
+// event handlers, and non-http(s) schemes stripped).
+const SANITIZE_OPTIONS: sanitizeHtml.IOptions = {
+  allowedTags: [
+    "h1", "h2", "h3", "h4", "h5", "h6", "p", "br", "strong", "em", "del",
+    "a", "ul", "ol", "li", "blockquote", "pre", "code",
+    "table", "thead", "tbody", "tr", "th", "td",
+    "hr", "img", "div", "span",
+  ],
+  allowedAttributes: {
+    a: ["href", "title"],
+    img: ["src", "alt", "width", "height"],
+    h1: ["id"], h2: ["id"], h3: ["id"], h4: ["id"], h5: ["id"], h6: ["id"],
+    code: ["class"],
+    div: ["class"],
+    span: ["class"],
+  },
+  allowedSchemes: ["http", "https", "mailto"],
+  allowedSchemesByTag: { img: ["http", "https", "data"] },
+};
+
+function sanitize(mdHtml: string): string {
+  return sanitizeHtml(mdHtml, SANITIZE_OPTIONS);
+}
 
 // Base id from the heading text; "" (empty heading) falls back to "section".
 function headingBase(text: string): string {
@@ -61,11 +89,11 @@ export function renderMarkdown(md: string): { html: string; toc: TocItem[] } {
       toc.push({ level: heading.depth as 2 | 3, text: heading.text, id });
     }
   });
-  return { html: marked.parse(body, { async: false }) as string, toc };
+  return { html: sanitize(marked.parse(body, { async: false }) as string), toc };
 }
 
 export function markedWithCallouts(md: string): string {
-  return marked.parse(md, { async: false }) as string;
+  return sanitize(marked.parse(md, { async: false }) as string);
 }
 
 // Visit every heading token in document order, recursing into exactly the

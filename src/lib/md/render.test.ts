@@ -2,6 +2,41 @@ import { it, expect, describe } from "vitest";
 import { renderMarkdown, markedWithCallouts } from "./render";
 import { calloutExtension } from "./callouts";
 
+describe("xss sanitization", () => {
+  it("strips script tags from html output", () => {
+    const { html } = renderMarkdown("hello\n\n<script>window.__pwned=1</script>");
+    expect(html).not.toContain("<script");
+    expect(html).not.toContain("__pwned");
+  });
+
+  it("strips inline event handlers", () => {
+    const { html } = renderMarkdown('<img src="a.png" onerror="window.__pwned=1">');
+    expect(html).not.toContain("onerror");
+    expect(html).not.toContain("__pwned");
+    expect(html).toContain('<img src="a.png"');
+  });
+
+  it("drops javascript: URLs in links", () => {
+    const { html } = renderMarkdown("[klik](javascript:window.__pwned=1)");
+    expect(html).not.toContain("javascript:");
+  });
+
+  it("keeps safe markup: heading ids, links, images, callouts", () => {
+    const { html } = renderMarkdown(
+      '## Sub\n\n[b](https://example.com/x)\n\n![alt](/files/a.png)\n\n> [!info]\n> **tebal** di callout'
+    );
+    expect(html).toContain('<h2 id="sub">');
+    expect(html).toContain('href="https://example.com/x"');
+    expect(html).toContain('src="/files/a.png"');
+    expect(html).toContain('class="callout callout-info"');
+    expect(html).toContain("<strong>tebal</strong>");
+  });
+
+  it("sanitizes markedWithCallouts too", () => {
+    expect(markedWithCallouts('<script>window.__pwned=1</script>')).not.toContain("<script");
+  });
+});
+
 describe("callouts", () => {
   it("renders info/warning/danger", () => {
     expect(markedWithCallouts("> [!info]\n> A")).toContain("callout-info");
