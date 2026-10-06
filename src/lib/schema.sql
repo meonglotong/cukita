@@ -16,8 +16,13 @@ CREATE TABLE IF NOT EXISTS doc_pages (
   slug        text UNIQUE,
   is_section  boolean NOT NULL DEFAULT false,
   body_md     text,
+  author_id   uuid REFERENCES users(id) ON DELETE SET NULL,
   updated_by  uuid REFERENCES users(id) ON DELETE SET NULL,
   updated_at  timestamptz NOT NULL DEFAULT now()
 );
+
+-- Existing databases: doc_pages was created without author_id (pre-ownership
+-- feature). IF NOT EXISTS makes this a no-op on fresh installs.
+ALTER TABLE doc_pages ADD COLUMN IF NOT EXISTS author_id uuid REFERENCES users(id) ON DELETE SET NULL;
 
 CREATE INDEX IF NOT EXISTS idx_doc_pages_parent ON doc_pages (parent_id, position);

@@ -206,6 +206,15 @@ input, select, textarea { font-family: inherit; font-size: 14px; color: var(--fg
   letter-spacing: -0.01em; color: var(--fg); padding: 10px 0 12px;
 }
 .doc-title-input::placeholder { color: #bdc1c6; }
+/* read-only page view (non-author users) */
+.doc-title-readonly {
+  margin: 0; font-size: 34px; line-height: 1.25; font-weight: 700;
+  letter-spacing: -0.01em; color: var(--fg); padding: 10px 0 4px;
+}
+.read-only-note {
+  margin: 0 0 18px; padding: 8px 12px; font-size: 12.5px; color: var(--muted);
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+}
 .editor-toolbar-row {
   display: flex; gap: 2px; align-items: center; flex-wrap: wrap;
   margin-bottom: 20px; padding: 4px 0; border-bottom: 1px solid var(--border);

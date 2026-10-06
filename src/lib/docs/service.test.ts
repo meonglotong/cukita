@@ -1,5 +1,5 @@
 // src/lib/docs/service.test.ts
-import { beforeAll, beforeEach, it, expect } from "vitest";
+import { beforeAll, beforeEach, describe, it, expect } from "vitest";
 import { runMigrations } from "../../scripts/migrate";
 import * as svc from "./service";
 import { query, closePool } from "../db";
@@ -67,4 +67,32 @@ it("createPage de-dupes a taken slug with a numeric suffix", async () => {
   const second = await svc.createPage({ title: "Untitled", slug: "untitled", isSection: false, bodyMd: "", parentId: null, position: 1 }, adminId);
   expect(first.slug).toBe("untitled");
   expect(second.slug).toBe("untitled-2");
+});
+
+describe("ownership", () => {
+  let memberId: string;
+
+  beforeAll(async () => {
+    await query("DELETE FROM users WHERE email = 'member@test.local'");
+    const { rows } = await query(
+      "INSERT INTO users (email, name, password_hash, role) VALUES ('member@test.local','Member','x','user') RETURNING id"
+    );
+    memberId = rows[0].id;
+  });
+
+  it("canEditPage: author yes, admin yes, stranger no, legacy (null) admin-only", () => {
+    expect(svc.canEditPage(adminId, { id: adminId, role: "user" })).toBe(true);
+    expect(svc.canEditPage(memberId, { id: adminId, role: "admin" })).toBe(true);
+    expect(svc.canEditPage(memberId, { id: "someone-else", role: "user" })).toBe(false);
+    expect(svc.canEditPage(null, { id: adminId, role: "user" })).toBe(false);
+    expect(svc.canEditPage(null, { id: adminId, role: "admin" })).toBe(true);
+  });
+
+  it("createPage records the author; getPageBySlug exposes authorId + authorName", async () => {
+    const pg = await svc.createPage({ title: "Owned", slug: "owned", isSection: false, bodyMd: "x", parentId: null, position: 0 }, memberId);
+    expect(pg.id).toBeTruthy();
+    const bySlug = await svc.getPageBySlug("owned");
+    expect(bySlug?.authorId).toBe(memberId);
+    expect(bySlug?.authorName).toBe("Member");
+  });
 });

@@ -5,6 +5,14 @@ import { slugify } from "../md/slugify";
 export interface PageNode { id: string; title: string; slug: string | null; isSection: boolean; position: number; parentId: string | null; bodyMd: string | null }
 export interface TreeNode { id: string; title: string; slug: string | null; isSection: boolean; parentId: string | null; children: TreeNode[] }
 
+// Only the page's author can edit it; admins bypass ownership. Pages with a
+// null author (created before ownership existed, if any survive) are
+// admin-only.
+export function canEditPage(authorId: string | null, user: { id: string; role: string }): boolean {
+  if (user.role === "admin") return true;
+  return authorId !== null && authorId === user.id;
+}
+
 export async function listPages(): Promise<PageNode[]> {
   const { rows } = await query(
     `SELECT id, title, slug, is_section AS "isSection", position, parent_id AS "parentId", body_md AS "bodyMd"
@@ -31,8 +39,10 @@ export async function getPagesTree(): Promise<TreeNode[]> {
 
 export async function getPageBySlug(slug: string) {
   const { rows } = await query(
-    `SELECT id, title, body_md AS "bodyMd", parent_id AS "parentId", updated_at AS "updatedAt"
-     FROM doc_pages WHERE slug = $1 AND is_section = false`, [slug]);
+    `SELECT p.id, p.title, p.body_md AS "bodyMd", p.parent_id AS "parentId", p.updated_at AS "updatedAt",
+            p.author_id AS "authorId", u.name AS "authorName"
+     FROM doc_pages p LEFT JOIN users u ON u.id = p.author_id
+     WHERE p.slug = $1 AND p.is_section = false`, [slug]);
   return rows[0] ?? null;
 }
 
@@ -48,8 +58,8 @@ export async function createPage(input: { title: string; slug: string; isSection
     }
   }
   const { rows } = await query(
-    `INSERT INTO doc_pages (title, slug, is_section, body_md, parent_id, position, updated_by)
-     VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING id`,
+    `INSERT INTO doc_pages (title, slug, is_section, body_md, parent_id, position, author_id, updated_by)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$7) RETURNING id`,
     [input.title, slug, input.isSection, input.bodyMd, input.parentId, input.position, userId]
   );
   return { id: rows[0].id, slug };
