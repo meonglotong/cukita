@@ -45,7 +45,7 @@ function headingBase(text: string): string {
 // markdown syntax like `**bold**`, which looks ugly in the TOC and breaks
 // the client-side text match that scrolls to the heading. slugify strips
 // the same punctuation, so ids computed from raw text stay identical.
-function inlineText(inline: Tokens.Inline[]): string {
+function inlineText(inline: Tokens.InlineToken[]): string {
   let out = "";
   for (const t of inline) {
     switch (t.type) {
