@@ -3,7 +3,7 @@ import { beforeAll, describe, it, expect, vi } from "vitest";
 import { runMigrations } from "@/scripts/migrate";
 import { query } from "@/lib/db";
 import { PATCH, DELETE } from "./route";
-import { fakeAdminSession, fakeUserSession } from "@/test/fixtures";
+import { fakeAdminSession, fakeSuperAdminSession, fakeUserSession } from "@/test/fixtures";
 
 vi.mock("@/lib/auth", () => ({
   auth: vi.fn(async () => globalThis.__TEST_SESSION__ ?? null),
@@ -15,7 +15,7 @@ beforeAll(async () => {
   await runMigrations();
   globalThis.__TEST_SESSION__ = fakeUserSession;
   // id user dari mock harus valid untuk FK doc_pages.updated_by/author_id
-  for (const s of [fakeUserSession, fakeAdminSession]) {
+  for (const s of [fakeUserSession, fakeAdminSession, fakeSuperAdminSession]) {
     await query(
       `INSERT INTO users (id, email, name, password_hash, role)
        VALUES ($1, $2, 'DocsTest', 'x', 'user')
@@ -23,9 +23,12 @@ beforeAll(async () => {
       [s.user.id, `docs-test-${s.user.id.slice(-2)}@local`]
     );
   }
-  // DB persist antar-run: bersihkan (child dulu — RESTRICT di parent)
-  await query("DELETE FROM doc_pages WHERE slug = 'api-child'");
-  await query("DELETE FROM doc_pages WHERE slug = 'api-patchme'");
+  // DB persist antar-run: bersihkan (child dulu — RESTRICT di parent).
+  // by-author/by-admin adalah slug hasil rename di test ownership; kalau
+  // disisakan, run berikutnya dapat SLUG_TAKEN (409).
+  for (const s of ["api-child", "api-patchme", "by-author", "by-admin", "by-super"]) {
+    await query("DELETE FROM doc_pages WHERE slug = $1", [s]);
+  }
   const { rows } = await query(
     `INSERT INTO doc_pages (title, slug, is_section, body_md, position, author_id)
      VALUES ('Patch Me', 'api-patchme', false, 'old', 0, $1) RETURNING id`,
@@ -63,7 +66,7 @@ it("401 without session", async () => {
 });
 
 describe("ownership", () => {
-  it("PATCH: non-author regular user gets 403, admin passes", async () => {
+  it("PATCH: only author & superadmin pass (admin no longer overrides)", async () => {
     globalThis.__TEST_SESSION__ = fakeUserSession;
     const byAuthor = await PATCH(new Request(`http://t/api/docs/${pageId}`, {
       method: "PATCH", headers: { "content-type": "application/json" },
@@ -80,12 +83,20 @@ describe("ownership", () => {
     }), { params: Promise.resolve({ id: pageId }) });
     expect(byStranger.status).toBe(403);
 
+    // admin TIDAK lagi override ownership — cuma superadmin
     globalThis.__TEST_SESSION__ = fakeAdminSession;
     const byAdmin = await PATCH(new Request(`http://t/api/docs/${pageId}`, {
       method: "PATCH", headers: { "content-type": "application/json" },
       body: JSON.stringify({ title: "By Admin" }),
     }), { params: Promise.resolve({ id: pageId }) });
-    expect(byAdmin.status).toBe(200);
+    expect(byAdmin.status).toBe(403);
+
+    globalThis.__TEST_SESSION__ = fakeSuperAdminSession;
+    const bySuper = await PATCH(new Request(`http://t/api/docs/${pageId}`, {
+      method: "PATCH", headers: { "content-type": "application/json" },
+      body: JSON.stringify({ title: "By Super" }),
+    }), { params: Promise.resolve({ id: pageId }) });
+    expect(bySuper.status).toBe(200);
   });
 
   it("DELETE: non-author regular user gets 403", async () => {

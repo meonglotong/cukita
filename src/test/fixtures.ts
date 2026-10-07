@@ -1,6 +1,7 @@
 // src/test/fixtures.ts
-export type TestSession = { user: { id: string; name: string; email: string; role: "admin" | "user" } };
+export type TestSession = { user: { id: string; name: string; email: string; role: "superadmin" | "admin" | "user" } };
 
+export const fakeSuperAdminSession: TestSession = { user: { id: "00000000-0000-0000-0000-000000000000", name: "Super", email: "super@test.local", role: "superadmin" as const } };
 export const fakeAdminSession: TestSession = { user: { id: "00000000-0000-0000-0000-000000000001", name: "Admin", email: "admin@test.local", role: "admin" as const } };
 export const fakeUserSession: TestSession = { user: { id: "00000000-0000-0000-0000-000000000002", name: "User", email: "user@test.local", role: "user" as const } };
 

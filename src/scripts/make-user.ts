@@ -3,7 +3,7 @@ import "./load-env"; // must precede ../lib/db: fills DATABASE_URL from .env.loc
 import { query, closePool } from "../lib/db";
 import { hashPassword } from "../lib/password";
 
-export async function createUser(input: { email: string; name: string; password: string; role: "admin" | "user" }): Promise<{ ok: boolean; error?: string }> {
+export async function createUser(input: { email: string; name: string; password: string; role: "superadmin" | "admin" | "user" }): Promise<{ ok: boolean; error?: string }> {
   const hash = await hashPassword(input.password);
   try {
     const { rows } = await query(

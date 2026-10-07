@@ -5,11 +5,12 @@ import { slugify } from "../md/slugify";
 export interface PageNode { id: string; title: string; slug: string | null; isSection: boolean; position: number; parentId: string | null; bodyMd: string | null }
 export interface TreeNode { id: string; title: string; slug: string | null; isSection: boolean; parentId: string | null; children: TreeNode[] }
 
-// Only the page's author can edit it; admins bypass ownership. Pages with a
+// Only the page's author can edit it; superadmin bypasses ownership (admin
+// no longer does — see role model: superadmin > admin > user). Pages with a
 // null author (created before ownership existed, if any survive) are
-// admin-only.
+// superadmin-only.
 export function canEditPage(authorId: string | null, user: { id: string; role: string }): boolean {
-  if (user.role === "admin") return true;
+  if (user.role === "superadmin") return true;
   return authorId !== null && authorId === user.id;
 }
 

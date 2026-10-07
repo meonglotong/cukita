@@ -117,6 +117,9 @@ input, select, textarea { font-family: inherit; font-size: 14px; color: var(--fg
   padding: 0;
 }
 .theme-toggle:hover { border-color: var(--accent); }
+.topbar .brand { text-decoration: none; }
+.topbar .brand:hover { text-decoration: none; }
+.acct-link { font-size: 13px; color: var(--muted); }
 .searchbox { flex: 1; max-width: 480px; }
 .searchbox input {
   width: 100%; padding: 9px 16px; border: 1px solid var(--border);

@@ -2,7 +2,7 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
-export type Role = "admin" | "user";
+export type Role = "superadmin" | "admin" | "user";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   session: { strategy: "jwt" },

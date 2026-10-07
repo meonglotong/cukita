@@ -5,15 +5,17 @@ import { ThemeToggle } from "./ThemeToggle";
 
 export async function TopBar() {
   const session = await auth();
+  const canManageUsers = session?.user.role === "admin" || session?.user.role === "superadmin";
   return (
     <header className="topbar">
-      <span className="brand"><span className="logo">CK</span>CUKITA</span>
+      <a className="brand" href="/docs"><span className="logo">CK</span>CUKITA</a>
       <SearchBox />
       <ThemeToggle />
       <div className="userchip">
-        {session?.user.role === "admin" ? (
+        {canManageUsers ? (
           <a href="/admin/users">Admin</a>
         ) : null}
+        <a href="/account" className="acct-link">Ganti password</a>
         <span>{session?.user.name}</span>
         <form action={async () => { "use server"; await signOut({ redirectTo: "/login" }); }}>
           <button className="btn" type="submit">Logout</button>

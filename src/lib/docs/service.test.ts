@@ -80,12 +80,14 @@ describe("ownership", () => {
     memberId = rows[0].id;
   });
 
-  it("canEditPage: author yes, admin yes, stranger no, legacy (null) admin-only", () => {
+  it("canEditPage: author yes, superadmin yes; admin & stranger no; legacy (null) superadmin-only", () => {
     expect(svc.canEditPage(adminId, { id: adminId, role: "user" })).toBe(true);
-    expect(svc.canEditPage(memberId, { id: adminId, role: "admin" })).toBe(true);
+    expect(svc.canEditPage(memberId, { id: adminId, role: "superadmin" })).toBe(true);
+    expect(svc.canEditPage(memberId, { id: adminId, role: "admin" })).toBe(false);
     expect(svc.canEditPage(memberId, { id: "someone-else", role: "user" })).toBe(false);
     expect(svc.canEditPage(null, { id: adminId, role: "user" })).toBe(false);
-    expect(svc.canEditPage(null, { id: adminId, role: "admin" })).toBe(true);
+    expect(svc.canEditPage(null, { id: adminId, role: "admin" })).toBe(false);
+    expect(svc.canEditPage(null, { id: adminId, role: "superadmin" })).toBe(true);
   });
 
   it("createPage records the author; getPageBySlug exposes authorId + authorName", async () => {

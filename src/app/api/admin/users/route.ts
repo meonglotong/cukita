@@ -19,7 +19,12 @@ export async function POST(req: Request) {
   if (typeof body.email !== "string" || typeof body.name !== "string" || typeof body.password !== "string" || body.password.length < 8) {
     return NextResponse.json({ error: "email, name, password (min 8 char) required" }, { status: 400 });
   }
-  if (body.role !== "admin" && body.role !== "user") return NextResponse.json({ error: "role must be admin|user" }, { status: 400 });
+  // Admins may create users and admins; only the superadmin may create a
+  // superadmin (PATCH enforces the one-superadmin cap, this one the menu).
+  const allowedRoles = g.session.user.role === "superadmin" ? ["superadmin", "admin", "user"] : ["admin", "user"];
+  if (body.role && !allowedRoles.includes(body.role)) {
+    return NextResponse.json({ error: `role must be one of: ${allowedRoles.join("|")}` }, { status: 400 });
+  }
   const { ok, error } = await createUser({ email: body.email, name: body.name, password: body.password, role: body.role });
   return ok ? NextResponse.json({ ok: true }, { status: 201 }) : NextResponse.json({ error }, { status: 409 });
 }
