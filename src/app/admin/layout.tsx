@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
-  if (session?.user.role !== "admin") redirect("/docs");
+  if (session?.user.role !== "admin" && session?.user.role !== "superadmin") redirect("/docs");
   return (
     <div className="docs-shell">
       <TopBar />
