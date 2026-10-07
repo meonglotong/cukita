@@ -62,6 +62,13 @@ describe("renderMarkdown", () => {
     const { toc } = renderMarkdown("## A\n## A");
     expect(toc.map((t) => t.id)).toEqual(["a", "a-2"]);
   });
+  it("strips inline markdown from TOC text (ids stay stable)", () => {
+    const { toc } = renderMarkdown("## **Update System Package**\n\n### `npm run` dev");
+    expect(toc).toEqual([
+      { level: 2, text: "Update System Package", id: "update-system-package" },
+      { level: 3, text: "npm run dev", id: "npm-run-dev" },
+    ]);
+  });
 });
 
 describe("leading H1 (page title already rendered in the doc header)", () => {

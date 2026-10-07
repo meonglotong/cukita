@@ -30,6 +30,11 @@ it("ignores ids pointing outside the editor root", () => {
   expect(resolveHeading(root, "cara-menulis", "Cara Menulis")?.id).toBe("");
 });
 
+it("matches TOC text carrying markdown emphasis against a clean heading", () => {
+  const root = withHtml("<h2>Update System Package</h2>");
+  expect(resolveHeading(root, "update-system-package", "**Update System Package**")?.tagName).toBe("H2");
+});
+
 it("returns null when no heading matches", () => {
   const root = withHtml("<p>bukan heading</p>");
   expect(resolveHeading(root, "x", "Tidak Ada")).toBeNull();

@@ -40,6 +40,39 @@ function headingBase(text: string): string {
   return slugify(text) || "section";
 }
 
+// Clean, readable text of a heading's inline content (emphasis, code spans,
+// links → their text). Used for TOC entries: the raw heading text may carry
+// markdown syntax like `**bold**`, which looks ugly in the TOC and breaks
+// the client-side text match that scrolls to the heading. slugify strips
+// the same punctuation, so ids computed from raw text stay identical.
+function inlineText(inline: Tokens.Inline[]): string {
+  let out = "";
+  for (const t of inline) {
+    switch (t.type) {
+      case "text":
+        out += (t as Tokens.Text).text;
+        break;
+      case "codespan":
+        out += (t as Tokens.Codespan).text;
+        break;
+      case "br":
+        out += " ";
+        break;
+      case "em":
+      case "strong":
+      case "del":
+        out += inlineText((t as Tokens.Em | Tokens.Strong | Tokens.Del).tokens);
+        break;
+      case "link":
+        out += inlineText((t as Tokens.Link).tokens);
+        break;
+      default:
+        break;
+    }
+  }
+  return out;
+}
+
 // GitHub-style dedup: first occurrence keeps the base, later ones get -2, -3…
 // Each caller passes its own counter, so the TOC pass and the renderer pass
 // both compute the identical id sequence without sharing mutable state.
@@ -86,7 +119,7 @@ export function renderMarkdown(md: string): { html: string; toc: TocItem[] } {
   forEachHeading(marked.lexer(body), (heading) => {
     const id = dedupedId(headingBase(heading.text), tocCounts);
     if (heading.depth === 2 || heading.depth === 3) {
-      toc.push({ level: heading.depth as 2 | 3, text: heading.text, id });
+      toc.push({ level: heading.depth as 2 | 3, text: inlineText(heading.tokens), id });
     }
   });
   return { html: sanitize(marked.parse(body, { async: false }) as string), toc };
