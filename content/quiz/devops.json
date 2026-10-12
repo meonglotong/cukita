@@ -1,0 +1,349 @@
+{
+  "slug": "devops",
+  "title": "DevOps",
+  "description": "Praktik DevOps modern: Docker, Kubernetes, Git workflow, CI/CD, IaC (Ansible/Terraform), reverse proxy, TLS, dan observability.",
+  "durationSec": 1800,
+  "passingPercent": 80,
+  "questions": [
+    {
+      "id": "devops-dockerfile-cache",
+      "prompt": "Build Docker image lambat karena setiap commit layer-nya di-rebuild dari nol. Pola penulisan Dockerfile yang MEMAKSIMALKAN layer cache…",
+      "options": [
+        "Salin file dependensi (package.json) dulu, install, baru salin source code",
+        "Salin seluruh source code dulu, lalu install dependensi",
+        "Jalankan RUN apt-get dan RUN npm install dalam satu layer terakhir",
+        "Hapus semua layer dengan --squash setiap build"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Layer yang isinya jarang berubah (dependensi) di-cache; perubahan source code hanya memicu layer terakhir.",
+        "Salah. Source code berubah setiap commit — jadi layer install dependensi ikut invalid dan di-rebuild.",
+        "Salah. Menggabungkan ke layer terakhir justru membuat install dependensi selalu berjalan ulang.",
+        "Salah. `--squash` memang memperkecil image, tapi tidak memperbaiki invalidasi cache antar build."
+      ]
+    },
+    {
+      "id": "devops-dockerignore",
+      "prompt": "Build context dikirim ke daemon Docker berisi node_modules (2GB) dan .git, membuat transfer lambat. File yang tepat untuk mengecualikannya…",
+      "options": [
+        ".dockerignore di root project",
+        ".gitignore",
+        "docker-compose.yml (section ignore)",
+        "Dockerfile dengan instruksi EXCLUDE"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `.dockerignore` bekerja persis seperti .gitignore tapi untuk build context Docker.",
+        "Salah. `.gitignore` hanya untuk Git; Docker tidak membacanya.",
+        "Salah. Compose tidak punya section untuk mengecualikan file dari context.",
+        "Salah. Dockerfile tidak punya instruksi `EXCLUDE`; eksklusi via .dockerignore."
+      ]
+    },
+    {
+      "id": "devops-compose-network",
+      "prompt": "Dua service di satu docker-compose.yml (web dan db) perlu saling berkomunikasi. Cara paling sederhana…",
+      "options": [
+        "Biarkan default: container satu compose otomatis di network yang sama, reachable by service name",
+        "Tetapkan IP statis via --net=host pada keduanya",
+        "Kirim data via volume shared + polling",
+        "Port-forward db ke host lalu pakai 127.0.0.1"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Compose membuat network internal; service saling resolve via nama service (db://db:5432).",
+        "Salah. host network kehilangan isolasi dan resolusi nama — overkill untuk compose.",
+        "Salah. Volume + polling itu IPC yang ribet dan lambat; network-nya memang tersedia.",
+        "Salah. Bisa jalan tapi membuka port db ke host (surface attack) — tidak perlu."
+      ]
+    },
+    {
+      "id": "devops-docker-volume",
+      "prompt": "Data aplikasi (misal database file SQLite) harus tetap ada walau container di-recreate. Mekanisme penyimpanan yang benar…",
+      "options": [
+        "Named volume yang dikelola Docker",
+        "Tulis data ke /tmp di dalam container",
+        "COPY data ke image pada setiap build",
+        "Bind mount ke direktori home user di host"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Named volume persist di luar container dan mengikuti lifecycle volume, bukan container.",
+        "Salah. /tmp di container hilang saat container dihapus.",
+        "Salah. Image bersifat immutable; data runtime di-COPY ke image akan hilang saat recreate.",
+        "Salah. Bind mount juga persist, tapi mengunci data ke path host spesifik dan kurang portable — named volume yang lebih tepat untuk kasus umum ini."
+      ]
+    },
+    {
+      "id": "devops-k8s-deployment",
+      "prompt": "Kamu butuh rollout baru tanpa downtime dan auto-rollback bila pod baru gagal health check. Objek Kubernetes yang tepat…",
+      "options": [
+        "Deployment dengan RollingUpdate + readiness probe",
+        "StatefulSet",
+        "Job",
+        "Pod biasa (dikelola manual)"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Deployment menangani rolling update; pod baru hanya menerima traffic setelah readiness pass; rollback via revision.",
+        "Salah. StatefulSet untuk stateful (identitas & storage stabil) — tidak dimaksudkan untuk rolling update stateless biasa.",
+        "Salah. Job untuk batch sekali jalan, bukan service yang terus jalan.",
+        "Salah. Pod tanpa controller tidak di-recreate otomatis saat gagal, apalagi rollout ber-strategi."
+      ]
+    },
+    {
+      "id": "devops-k8s-daemonset",
+      "prompt": "Log agent (misal Fluent Bit) harus jalan di SETIAP node cluster, satu per node. Objek yang tepat…",
+      "options": [
+        "DaemonSet",
+        "Deployment",
+        "ReplicaSet dengan replicas = jumlah node",
+        "CronJob"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. DaemonSet menjamin tepat satu pod di tiap node (ikut node baru otomatis).",
+        "Salah. Deployment menyebarkan pod sembarang node — bisa 2 pod di satu node, nol di node lain.",
+        "Salah. `replicas = jumlah node` rapuh; tidak ada jaminan distribusi 1-per-node.",
+        "Salah. CronJob menjalankan pod berkala, bukan service persisten per node."
+      ]
+    },
+    {
+      "id": "devops-k8s-service-lb",
+      "prompt": "Aplikasi di cluster cloud harus bisa diakses pengguna dari INTERNET. Type Service yang lazim…",
+      "options": [
+        "LoadBalancer",
+        "ClusterIP",
+        "Headless (clusterIP: None)",
+        "ExternalName"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. LoadBalancer membuat balancer eksternal (cloud provider) yang mengarah ke pod — jalur standar untuk trafik internet.",
+        "Salah. ClusterIP hanya reachable dari dalam cluster.",
+        "Salah. Headless untuk akses langsung ke pod (service discovery), bukan entrypoint internet.",
+        "Salah. ExternalName cuma alias CNAME ke nama eksternal lain."
+      ]
+    },
+    {
+      "id": "devops-k8s-readiness",
+      "prompt": "App butuh 30 detik warm-up setelah start; saat itu pod belum siap serve. Agar pod TIDAK menerima traffic selama warm-up (tapi tidak di-restart), probe yang tepat…",
+      "options": [
+        "readinessProbe",
+        "livenessProbe",
+        "startupProbe dengan failureThreshold besar",
+        "Kedua-duanya, liveness + readiness"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. readinessProbe mengatur kelayakan traffic — pod tetap hidup, hanya dikeluarkan dari endpoint Service.",
+        "Salah. livenessProbe yang gagal = pod DI-RESTART; untuk warm-up dia justru berbahaya.",
+        "Salah. startupProbe memang untuk app lambat-start, tapi pertanyaan spesifik ke 'tidak menerima traffic' → readiness; startup hanya melindungi fase awal.",
+        "Salah. Menambah liveness di sini berisiko restart selama warm-up; readiness saja yang dibutuhkan."
+      ]
+    },
+    {
+      "id": "devops-k8s-resources",
+      "prompt": "Batch processor kadang membalap OOM-killer dan menjatuhkan node. Batas keras memori 512Mi untuk kontainernya didefinisikan di…",
+      "options": [
+        "spec.containers[].resources.limits.memory: 512Mi",
+        "spec.containers[].memory: 512Mi",
+        "metadata.annotations: \"memory-limit\": \"512Mi\"",
+        "spec.nodeSelector: {memory: 512Mi}"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `resources.limits` adalah field resmi untuk batas CPU/memori kontainer.",
+        "Salah. Tidak ada field `memory` langsung di container spec.",
+        "Salah. Annotation hanya metadata; scheduler/kubelet tidak membacanya sebagai batas.",
+        "Salah. `nodeSelector` memilih node, bukan mengatur batas resource pod."
+      ]
+    },
+    {
+      "id": "devops-k8s-drain",
+      "prompt": "Node node-1 akan di-patch OS. Agar pod-podnya pindah ke node lain dengan rapi sebelum node di-restart…",
+      "options": [
+        "kubectl drain node-1 --ignore-daemonsets --delete-emptydir-data",
+        "kubectl delete pod --all -n default && reboot",
+        "kubectl cordon node-1 && reboot",
+        "Edit taint di node lalu reboot"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `drain` evict pod (kecuali daemonset) dan menandai node not-ready/not-schedulable selama maintenance.",
+        "Salah. `delete pod --all` membunuh pod di SEMUA namespace; tanpa drain, pod di node lain ikut kena.",
+        "Salah. `cordon` hanya mencegah pod BARU; pod yang sudah jalan tetap di node yang di-restart.",
+        "Salah. Taint tanpa drain tidak memindahkan pod yang sudah ada (kecuali toleration + eviction terpisah)."
+      ]
+    },
+    {
+      "id": "devops-git-rebase",
+      "prompt": "Kamu punya 3 commit lokal berantakan yang BELUM di-push. Agar riwayat rapi sebelum buka PR…",
+      "options": [
+        "git rebase -i (interactive rebase, squash)",
+        "git revert HEAD~2..HEAD",
+        "git reset --hard origin/main lalu push --force",
+        "git merge --squash origin/main"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Interactive rebase pada commit lokal (belum dipush) = aman untuk merapikan/squash riwayat.",
+        "Salah. `revert` membuat commit baru pembatal — riwayat tetap berantakan, malah lebih panjang.",
+        "Salah. `reset --hard` ke origin/main MELEMPAR kerjaanmu — bukan merapikan.",
+        "Salah. `merge --squash` menggabungkan branch LAIN ke branchmu, bukan merapisi commit lokal."
+      ]
+    },
+    {
+      "id": "devops-git-revert",
+      "prompt": "Commit c1a2b3 yang SUDAH di-push dan di-fetch orang lain ternyata bug. Cara mengundurnya tanpa menulis ulang history publik…",
+      "options": [
+        "git revert c1a2b3",
+        "git reset --hard c1a2b3^ && git push --force",
+        "git rm c1a2b3",
+        "git branch -D bugfix"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `revert` membuat commit baru yang membalik perubahan — aman untuk branch yang sudah dibagikan.",
+        "Salah. `push --force` menulis ulang history publik; kolaborator lain kebingungan (their local diverges).",
+        "Salah. `git rm` menghapus path dari working tree/index, bukan mengurung commit.",
+        "Salah. Menghapus branch lokal tidak memengaruhi commit di branch utama."
+      ]
+    },
+    {
+      "id": "devops-cd-stage-order",
+      "prompt": "Urutan stage pipeline CI/CD yang paling sehat (gagal di stage awal = hemat waktu)…",
+      "options": [
+        "lint → test → build image → deploy staging → deploy production",
+        "deploy staging → lint → test → build",
+        "build → deploy production → test",
+        "test → lint → deploy production → build"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Gate murah (lint, test) dulu, lalu build, lalu promote bertahap (staging → prod).",
+        "Salah. Deploy sebelum validasi = buang waktu build/test kalau ternyata lint gagal.",
+        "Salah. Deploy prod sebelum test selesai = risiko rilis tanpa jaminan.",
+        "Salah. Build setelah deploy tidak masuk akal; artifact harus ada sebelum deploy."
+      ]
+    },
+    {
+      "id": "devops-cd-secrets",
+      "prompt": "API key produksi tidak boleh masuk repo Git. Pola penyimpanan yang benar…",
+      "options": [
+        "Secret manager / CI variable terenkripsi, di-inject saat runtime",
+        "Commit ke repo dengan .gitattributes export-ignore",
+        "Hardcode di code lalu git-filter-repo sekali",
+        "Simpan di README internal"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Secret manager (Vault, SSM, CI encrypted vars) menjaga secret di luar VCS dan bisa di-rotate.",
+        "Salah. `export-ignore` hanya mengabaikan saat `git archive`; file tetap ada di history dan bisa dibacadi repo.",
+        "Salah. `git-filter-repo` membersihkan history, tapi hardcode tetap di code = akan di-commit lagi kapan-kapan.",
+        "Salah. README mudah tersebar dan tidak mendukung rotasi/akses per environment."
+      ]
+    },
+    {
+      "id": "devops-ansible-idempotent",
+      "prompt": "Cara memverifikasi bahwa playbook Ansible-mu idempoten (aman dijalankan ulang tanpa efek samping)…",
+      "options": [
+        "Jalankan 2x; run kedua harusnya `changed=0`",
+        "Jalankan sekali dan cek exit code 0",
+        "Jalankan dengan --check di production",
+        "Bandingkan snapshot filesystem sebelum-sesudah"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Definisi praktis idempotensi Ansible: run kedua tidak mengubah apa pun (`changed=0`).",
+        "Salah. Exit code 0 hanya berarti tidak error, bukan tidak mengubah apa pun.",
+        "Salah. `--check` hanya mode dry-run; tidak membuktikan idempotensi nyata.",
+        "Salah. Bisa jadi deteksi, tapi `changed=0` dari run kedua adalah cara standar dan lebih langsung."
+      ]
+    },
+    {
+      "id": "devops-ansible-limit",
+      "prompt": "Ingin menjalankan playbook site.yml HANYA terhadap group `web` (bukan db, cache, dll)…",
+      "options": [
+        "ansible-playbook site.yml --limit web",
+        "ansible-playbook site.yml --tags web",
+        "ansible-playbook site.yml -e group=web",
+        "ansible web -m playbook -a site.yml"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `--limit` memfilter inventory ke subset (group/pattern) untuk run ini.",
+        "Salah. `--tags` memfilter task yang bertag, bukan host group — konsep berbeda.",
+        "Salah. `-e` hanya extra variable; tidak membatasi target host.",
+        "Salah. `ansible` (ad-hoc) dengan module `playbook` bukan cara menjalankan playbook; yang benar `ansible-playbook`."
+      ]
+    },
+    {
+      "id": "devops-terraform-state",
+      "prompt": "Tim 4 orang bekerja paralel dengan Terraform. Agar state tidak saling injak dan tetap bisa di-audit…",
+      "options": [
+        "Remote state (S3) + locking (DynamoDB) + state per environment",
+        "Setiap orang pakai state.local di laptopnya",
+        "Satu file state di shared drive (Samba)",
+        "Hapus state setiap akhir hari (destroy + apply)"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Remote backend + locking mencegah concurrent-write conflict; per-env menjaga isolasi blast radius.",
+        "Salah. State lokal per laptop = tidak ada single source of truth; drift tak terlihat.",
+        "Salah. File server tanpa locking = race condition saat dua orang apply bersamaan.",
+        "Salah. Destroy + apply setiap hari mengubah resource (downtime) dan membuang history."
+      ]
+    },
+    {
+      "id": "devops-nginx-proxy",
+      "prompt": "Nginx harus jadi reverse proxy: request ke / diteruskan ke aplikasi di 127.0.0.1:3000. Konfigurasi yang benar di server block…",
+      "options": [
+        "location / { proxy_pass http://127.0.0.1:3000; }",
+        "location / { root 127.0.0.1:3000; }",
+        "server { listen 3000; }",
+        "location / { fastcgi_pass 127.0.0.1:3000; }"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `proxy_pass` meneruskan request ke upstream (reverse proxy).",
+        "Salah. `root` untuk path direktori file statis, bukan address upstream.",
+        "Salah. `listen 3000` membuat Nginx dengar di 3000, bukan meneruskan ke sana.",
+        "Salah. `fastcgi_pass` untuk protokol FastCGI (PHP); aplikasi di 3000 itu HTTP biasa."
+      ]
+    },
+    {
+      "id": "devops-tls-renewal",
+      "prompt": "Sertifikat TLS yang dekat expired harus diperbarui otomatis tanpa downtime. Mekanisme yang lazim…",
+      "options": [
+        "ACME client (misal certbot) dengan timer/renewal otomatis",
+        "Cronjob yang men-download ulang sertifikat manual tiap minggu",
+        "Menunggu expired lalu ganti di DNS",
+        "Menjalankan openssl req -x509 tiap bulan"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. ACME (Let's Encrypt dkk) + certbot renew otomatis memperpanjang sebelum expiry dan meng-reload web server.",
+        "Salah. Download manual tiap minggu tidak menjamin sebelum expiry dan rawan lupa.",
+        "Salah. Sertifikat TLS tidak 'diganti di DNS' (yang di DNS itu hanya validasi ACME/DNS-01).",
+        "Salah. `openssl req -x509` membuat self-signed, bukan perpanjangan dari CA."
+      ]
+    },
+    {
+      "id": "devops-slo-alert",
+      "prompt": "Alert timmu terlalu noisy (alert storm saat gangguan kecil). Pendekatan observability yang membuat alert bermakna…",
+      "options": [
+        "Alert berbasis SLO & burn rate (error budget terkuras)",
+        "Alert untuk setiap metrik di atas rata-rata",
+        "Matikan alert non-critical",
+        "Alert hanya saat uptime < 99%"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Alert SLO/burn-rate mengaitkan gangguan dengan dampak bisnis (error budget) — sedikit, tapi bermakna.",
+        "Salah. Alert di semua metrik = noise; tidak ada prioritas dan on-call kelelahan.",
+        "Salah. Mematikan alert non-critical menyembunyikan masalah sebelum jadi critical.",
+        "Salah. Menunggu 99% (3.6 jam/bulan downtime) terlambat — SLO yang sehat jauh lebih ketat."
+      ]
+    }
+  ]
+}

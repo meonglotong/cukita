@@ -9,6 +9,7 @@ export async function TopBar() {
   return (
     <header className="topbar">
       <a className="brand" href="/docs"><span className="logo">CK</span>CUKITA</a>
+      <a className="topbar-nav" href="/test">Skill Test</a>
       <SearchBox />
       <ThemeToggle />
       <div className="userchip">

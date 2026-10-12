@@ -1,0 +1,349 @@
+{
+  "slug": "sysadmin",
+  "title": "SysAdmin — Gaya RHCSSA",
+  "description": "Soal praktis berbasis command, meniru pola ujian RHCSSA: systemd, networking, storage, performance, security, backup & virtualisasi.",
+  "durationSec": 1800,
+  "passingPercent": 80,
+  "questions": [
+    {
+      "id": "sys-admin-systemd-enable",
+      "prompt": "Di server RHEL 9, kamu perlu memastikan nginx selalu jalan otomatis setiap server reboot. Command yang benar adalah…",
+      "options": [
+        "systemctl enable nginx",
+        "systemctl start nginx",
+        "systemctl daemon-reload nginx",
+        "chkconfig --level 345 nginx on"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `enable` membuat symlink di multi-user.target, jadi unit ikut boot secara persisten.",
+        "Salah. `start` hanya menjalankan unit sekarang; setelah reboot dia tidak ikut start.",
+        "Salah. `daemon-reload` hanya memuat ulang konfigurasi unit, bukan mengaktifkan unit.",
+        "Salah. `chkconfig` itu era SysVinit; di RHEL 9 unit dikelola systemd via `systemctl`."
+      ]
+    },
+    {
+      "id": "sys-admin-systemd-failed",
+      "prompt": "Sebuah service gagal saat boot dan sekarang statusnya failed. Langkah pertama paling tepat untuk mendiagnosis adalah…",
+      "options": [
+        "systemctl status <unit>",
+        "top",
+        "systemctl list-units",
+        "cat /var/log/boot.log"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `status` langsung memunculkan error log terakhir (journal) dan sebab kegagalan unit.",
+        "Salah. `top` hanya menampilkan proses yang sedang jalan; service yang gagal justru tidak jalan.",
+        "Salah. `list-units` hanya daftar unit, tidak ada detail kegagalan.",
+        "Salah. `/var/log/boot.log` tidak ada di RHEL 9; log boot ada di journal (`journalctl -b`)."
+      ]
+    },
+    {
+      "id": "sys-admin-journal-follow",
+      "prompt": "Kamu sedang debugging nginx dan ingin melihat 200 baris log unit terakhir sambil terus mengikuti log baru. Command yang tepat…",
+      "options": [
+        "journalctl -u nginx -n 200 -f",
+        "tail -n 200 /var/log/nginx/error.log",
+        "journalctl -u nginx | head -200",
+        "systemctl journal nginx 200"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `-n 200` ambil 200 baris terakhir, `-f` follow seperti `tail -f`, di-scope unit tertentu.",
+        "Salah. Hanya membaca file error log nginx, bukan log unit (unit log bisa dari stdout/stderr/journald).",
+        "Salah. `head -200` mengambil 200 baris PERTAMA (terlama), dan tidak follow.",
+        "Salah. Subcommand `systemctl journal` tidak ada."
+      ]
+    },
+    {
+      "id": "sys-admin-systemd-mask",
+      "prompt": "Ada service legacy yang terus mencoba start dan mengganggu boot. Kamu ingin MEMASTIKAN ia tidak pernah bisa start (bahkan kalau di-depend lain). Langkah terkuat…",
+      "options": [
+        "systemctl mask <unit>",
+        "systemctl stop <unit>",
+        "systemctl disable <unit>",
+        "systemctl set-property <unit> Type=oneshot"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `mask` membuat symlink ke /dev/null — unit mustahil di-start dari mana pun sampai di-unmask.",
+        "Salah. `stop` hanya berhenti sementara; service bisa start lagi (boot, dependensi, manual).",
+        "Salah. `disable` hanya menghapus dari boot; unit tetap bisa di-start manual/di-trigger dependensi.",
+        "Salah. `set-property` itu untuk unit slice/scope, tidak mengubah policy start service."
+      ]
+    },
+    {
+      "id": "sys-admin-net-route",
+      "prompt": "Paket dari server tidak bisa ke subnet 172.31.252.0/24. Untuk memeriksa route aktif saat ini, command yang benar…",
+      "options": [
+        "ip route show",
+        "route show",
+        "netstat -i",
+        "ifconfig -a"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `ip route show` menampilkan routing table aktif (iproute2, standar modern Linux).",
+        "Salah. `route` itu dari net-tools lama; `route show` bukan sintaksnya (yang ada `route -n`), dan sudah superseded iproute2.",
+        "Salah. `netstat -i` menampilkan statistik antarmuka, bukan route.",
+        "Salah. `ifconfig` menampilkan konfigurasi antarmuka (IP, MTU), bukan tabel route."
+      ]
+    },
+    {
+      "id": "sys-admin-net-dns",
+      "prompt": "Kamu ingin memverifikasi resolver DNS apa yang sedang dipakai sistem (misal setelah edit /etc/resolv.conf). Command paling tepat…",
+      "options": [
+        "resolvectl status",
+        "dnsctl show",
+        "resolvectl flush",
+        "getent hosts status"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `resolvectl status` menampilkan konfigurasi resolver per-link dan global dari systemd-resolved.",
+        "Salah. `dnsctl` bukan utilitas standar Linux.",
+        "Salah. `resolvectl flush-cache` ada, tapi itu membuang cache — bukan menampilkan konfigurasi resolver.",
+        "Salah. `getent hosts <domain>` itu untuk resolve nama, bukan mengecek konfigurasi resolver."
+      ]
+    },
+    {
+      "id": "sys-admin-firewalld",
+      "prompt": "Aplikasi baru di port 8080/tcp harus bisa diakses klien SEKARANG, tapi kamu belum yakin port-nya — jadi jangan disimpan permanen dulu. Command yang tepat…",
+      "options": [
+        "firewall-cmd --add-port=8080/tcp",
+        "firewall-cmd --permanent --add-port=8080/tcp",
+        "firewall-cmd --add-service=8080",
+        "firewalld --open 8080"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Tanpa `--permanent`, aturan aktif di runtime saja — cocok untuk testing cepat.",
+        "Salah. `--permanent` menyimpan ke config, tapi TIDAK aktif sampai `--reload` — malah bisa bikin bingung.",
+        "Salah. `--add-service` mengambil nama service (seperti `http`, `ssh`), bukan angka port.",
+        "Salah. `firewalld` itu daemon-nya; CLI-nya `firewall-cmd`."
+      ]
+    },
+    {
+      "id": "sys-admin-lvm-pv",
+      "prompt": "Disk /dev/vdb baru dipasang dan harus dipakai untuk LVM. Langkah PERTAMA yang benar…",
+      "options": [
+        "pvcreate /dev/vdb",
+        "vgcreate vg0 /dev/vdb",
+        "lvcreate -L 10G -n data vg0",
+        "mkfs.xfs /dev/vdb"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Urutan LVM: PV → VG → LV → filesystem. `pvcreate` menandai disk sebagai Physical Volume.",
+        "Salah. `vgcreate` butuh PV yang sudah dibuat; tanpa `pvcreate` dulu akan error.",
+        "Salah. `lvcreate` butuh VG yang sudah ada.",
+        "Salah. Buat filesystem di disk mentah LVM akan menghapus metadata LV/VG di disk tersebut."
+      ]
+    },
+    {
+      "id": "sys-admin-lvm-extend",
+      "prompt": "LV /dev/vg0/app hampir penuh. Kamu ingin memperluas LV ini menggunakan SELURUH ruang kosong di VG. Command yang benar…",
+      "options": [
+        "lvextend -l +100%FREE /dev/vg0/app",
+        "lvextend -L 100%FREE /dev/vg0/app",
+        "lvresize --use-all /dev/vg0/app",
+        "vgextend /dev/vg0/app"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `-l +100%FREE` menambah sebesar seluruh ruang bebas VG. (Setelahnya filesystem harus digrow.)",
+        "Salah. `-L 100%FREE` menamai ukuran AKHIR (bukan penambahan), dan 100%FREE sebagai ukuran akhir tidak valid di sana.",
+        "Salah. Opsi `--use-all` bukan sintaks `lvresize` (yang ada `+l 100%FREE`).",
+        "Salah. `vgextend` menambahkan PV baru ke VG, bukan memperluas LV."
+      ]
+    },
+    {
+      "id": "sys-admin-xfs-grow",
+      "prompt": "LV sudah diperluas. Filesystem-nya XFS (ter-mount di /data). Command untuk memperbesar filesystem agar memakai ruang baru…",
+      "options": [
+        "xfs_growfs /data",
+        "resize2fs /dev/vg0/data",
+        "xfs_growfs -f /dev/vg0/data",
+        "growpart /dev/vg0/data"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. XFS hanya bisa diperbesar (online), dan `xfs_growfs` diberikan point-nya, bukan device-nya.",
+        "Salah. `resize2fs` itu untuk ext2/3/4 — tidak bisa menyentuh XFS.",
+        "Salah. Memberikan device (bukan mount point) bisa membingungkan util; konvensinya pakai mount point.",
+        "Salah. `growpart` memperluas PARTISI di disk, bukan filesystem di atasnya."
+      ]
+    },
+    {
+      "id": "sys-admin-fstab",
+      "prompt": "Volume /dev/vg0/data kamu mount manual di /data. Agar mount ini bertahan setelah reboot, langkah yang benar…",
+      "options": [
+        "Tambahkan entri ke /etc/fstab",
+        "systemctl enable /dev/vg0/data",
+        "Tambahkan baris mount di /etc/rc.local",
+        "Jalankan mount ulang setiap boot via crontab @reboot"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. /etc/fstab adalah cara standar persisten untuk mount di boot-time.",
+        "Salah. Device block bukan unit systemd; tidak bisa di-enable (kecuali dibuat unit .mount, yang sumbernya tetap fstab).",
+        "Salah. rc.local sudah deprecated di RHEL 9 (unit rc-local tidak tersedia default).",
+        "Salah. Bisa jalan, tapi bukan cara standar dan rawan timing/race saat boot."
+      ]
+    },
+    {
+      "id": "sys-admin-perf-cpu",
+      "prompt": "Server web lag dan kamu curiga ada proses yang memakan CPU. Untuk melihat proses dengan pemakaian CPU tertinggi SAAT INI…",
+      "options": [
+        "top -c",
+        "sar -n TCP 1",
+        "vmstat -s",
+        "free -m"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `top` menampilkan proses terurut CPU; `-c` memunculkan nama command penuh (bukan path terpotong).",
+        "Salah. `sar -n` itu statistik jaringan, bukan proses per CPU.",
+        "Salah. `vmstat` itu statistik sistem (CPU aggregate, swap, IO), bukan per-proses.",
+        "Salah. `free` hanya menampilkan penggunaan memori."
+      ]
+    },
+    {
+      "id": "sys-admin-perf-swappiness",
+      "prompt": "Server dengan RAM melimpah sering swap padahal RAM masih banyak. Untuk MENGURANGI kecenderungan sistem memakai swap (runtime, tanpa reboot)…",
+      "options": [
+        "sysctl vm.swappiness=10",
+        "swapon -a",
+        "swapoff -a && swapon -a",
+        "echo 10 > /proc/sys/vm/overcommit_memory"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `vm.swappiness` (0-100) mengatur seberapa agresif kernel meng-swap; nilai kecil = lebih enggan swap. Berlangsung effect runtime.",
+        "Salah. `swapon -a` mengaktifkan swap, bukan mengatur kecenderungannya.",
+        "Salah. Mematikan swap total berisiko OOM-killer lebih agresif saat puncak memori.",
+        "Salah. `overcommit_memory` mengatur policy alokasi memori virtual, bukan prioritas swap."
+      ]
+    },
+    {
+      "id": "sys-admin-perf-iostat",
+      "prompt": "Aplikasi terasa lambat; kamu curiga bottleneck di disk. Untuk melihat utilisasi disk dan waktu tunggu I/O (await) per-device…",
+      "options": [
+        "iostat -x 1",
+        "iostat -c 1",
+        "df -h",
+        "du -sh /var"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `iostat -x` menampilkan extended stats: %util, await, svctm per device — detektif bottleneck disk.",
+        "Salah. Opsi `-c` tidak ada di iostat.",
+        "Salah. `df` hanya menunjukkan kapasitas terpakai, bukan throughput/waktu tunggu I/O.",
+        "Salah. `du` menghitung ukuran direktori, tidak ada hubungannya dengan I/O latency."
+      ]
+    },
+    {
+      "id": "sys-admin-selinux-mode",
+      "prompt": "Sebelum deploy, audit bertanya: apa mode SELinux di server ini? Command untuk mengeceknya…",
+      "options": [
+        "getenforce",
+        "sestatus --mode",
+        "cat /etc/selinux/status",
+        "selinux --status"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `getenforce` mengembalikan Enforcing/Permissive/Disabled — jawaban cepat dan standar.",
+        "Salah. `sestatus` ada (tanpa opsi `--mode`); itu untuk detail lengkap. Tapi `getenforce` yang paling tepat untuk pertanyaan ini.",
+        "Salah. Tidak ada file `/etc/selinux/status`; config-nya di `/etc/selinux/config`.",
+        "Salah. Tidak ada command `selinux`."
+      ]
+    },
+    {
+      "id": "sys-admin-selinux-relabel",
+      "prompt": "Setelah pindah file web manual ke /var/www/html, Apache denied karena label SELinux salah. Perintah untuk memulihkan label konteks yang benar…",
+      "options": [
+        "restorecon -Rv /var/www/html",
+        "setenforce 0",
+        "chown -R apache:apache /var/www/html",
+        "semanage fcontext -a /var/www/html"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `restorecon` menerapkan kembali label default sesuai fcontext untuk seluruh path, secara rekursif.",
+        "Salah. `setenforce 0` mematikan enforcement SELinux — band-aid, bukan perbaikan label, dan menurunkan security.",
+        "Salah. `chown` memperbaiki ownership POSIX, bukan label security (xattr) SELinux.",
+        "Salah. `semanage fcontext -a` menambah RULE fcontext baru, tidak langsung melabel ulang file yang ada."
+      ]
+    },
+    {
+      "id": "sys-admin-chage",
+      "prompt": "Kebijakan keamanan: user `contractor` WAJIB mengganti password saat login berikutnya. Command yang benar…",
+      "options": [
+        "chage -d 0 contractor",
+        "chage -m 1 contractor",
+        "passwd -S contractor",
+        "usermod -e 1 contractor"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `-d 0` menandai password sudah 'expired', sehingga login berikutnya langsung memaksa reset.",
+        "Salah. `-m` mengatur hari MINIMAL sebelum boleh ganti — tidak memaksa ganti saat login.",
+        "Salah. `passwd -S` hanya menampilkan status password, tidak mengubah apa pun.",
+        "Salah. `-e` itu tanggal expiration AKUN (bukan password); hari=1 akan menonaktifkan akun keesokan hari."
+      ]
+    },
+    {
+      "id": "sys-admin-backup-restic",
+      "prompt": "Drill restore: kamu ingin memulihkan snapshot restic TERAKHIR ke direktori /restore-test untuk diverifikasi. Command yang tepat…",
+      "options": [
+        "restic restore latest --target /restore-test",
+        "restic extract latest /restore-test",
+        "restic snapshot --latest /restore-test",
+        "restic backup --restore /restore-test"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `restic restore <snapshot-id|latest> --target <dir>` adalah sintaks restore standar restic.",
+        "Salah. Subcommand `extract` tidak ada di restic.",
+        "Salah. `restic snapshots` (bukan `snapshot`) untuk daftar; `--latest` di situ flag-nya, bukan argumen restore.",
+        "Salah. `restic backup` membuat snapshot baru; flag `--restore` tidak ada."
+      ]
+    },
+    {
+      "id": "sys-admin-borg-list",
+      "prompt": "Repo Borg di /backup/cukita berisi banyak archive. Untuk melihat daftar SEMUA archive beserta tanggalnya…",
+      "options": [
+        "borg list /backup/cukita",
+        "borg ls /backup/cukita",
+        "borg info /backup/cukita",
+        "borg show /backup/cukita"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `borg list <repo>` menampilkan semua archive di repo (dengan opsi untuk isi per-archive).",
+        "Salah. Subcommand `ls` tidak ada di borg.",
+        "Salah. `borg info` butuh ID archive tertentu untuk detail satu archive, bukan daftar semua.",
+        "Salah. Subcommand `show` tidak ada di borg."
+      ]
+    },
+    {
+      "id": "sys-admin-rke2-drain",
+      "prompt": "Node RKE2 node-1 mau di-patch. Agar workload-nya pindah dulu dan tidak ada pod baru masuk ke node itu, command yang benar…",
+      "options": [
+        "kubectl drain node-1 --ignore-daemonsets --delete-emptydir-data",
+        "kubectl delete node node-1",
+        "kubectl cordon node-1",
+        "systemctl stop rke2 && reboot node-1"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `drain` evict pod (kecuali daemonset) dan sekaligus cordoning node — flow maintenance standar.",
+        "Salah. `delete node` menghapus objek node dari cluster; workloads jadi Unknown, bukan pindah dengan rapi.",
+        "Salah. `cordon` hanya menandai node not-schedulable — pod yang sudah jalan TIDAK dievict.",
+        "Salah. Stop daemon + reboot tanpa drain membuat pod di node itu mati mendadak (downtime)."
+      ]
+    }
+  ]
+}

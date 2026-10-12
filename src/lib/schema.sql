@@ -32,3 +32,17 @@ ALTER TABLE users DROP CONSTRAINT IF EXISTS users_role_check;
 ALTER TABLE users ADD CONSTRAINT users_role_check CHECK (role IN ('superadmin', 'admin', 'user'));
 
 CREATE INDEX IF NOT EXISTS idx_doc_pages_parent ON doc_pages (parent_id, position);
+
+CREATE TABLE IF NOT EXISTS quiz_attempts (
+  id           uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id      uuid NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  track        text NOT NULL,
+  score        integer NOT NULL CHECK (score >= 0),
+  total        integer NOT NULL CHECK (total > 0),
+  passed       boolean NOT NULL,
+  duration_sec integer NOT NULL DEFAULT 0 CHECK (duration_sec >= 0),
+  created_at   timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_quiz_attempts_track ON quiz_attempts (track, score DESC);
+CREATE INDEX IF NOT EXISTS idx_quiz_attempts_user ON quiz_attempts (user_id, track);

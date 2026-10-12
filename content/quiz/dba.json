@@ -1,0 +1,349 @@
+{
+  "slug": "dba",
+  "title": "DBA — PostgreSQL",
+  "description": "Fundamental DBA PostgreSQL: query & indexing, vacuum/MVCC, backup & restore, replikasi, locking, security, monitoring.",
+  "durationSec": 1800,
+  "passingPercent": 80,
+  "questions": [
+    {
+      "id": "dba-psql-connect",
+      "prompt": "Kamu perlu masuk ke database `app` sebagai user `admin` di host 127.0.0.1:5432. Command psql yang benar…",
+      "options": [
+        "psql -h 127.0.0.1 -U admin -d app",
+        "psql --connect app/admin@127.0.0.1",
+        "psql admin app 127.0.0.1",
+        "psql -u app -d admin -H 127.0.0.1"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `-h` host, `-U` user, `-d` database — sintaks standar psql.",
+        "Salah. Bukan sintaks psql (bentuk URI ada: psql postgresql://admin@127.0.0.1/app).",
+        "Salah. psql memakai flag, bukan positional argument.",
+        "Salah. `-u` bukan flag psql (itunya `-U` user); host-nya `-h` (huruf kecil), bukan `-H`."
+      ]
+    },
+    {
+      "id": "dba-createdb-encoding",
+      "prompt": "Buat database `sales` dengan encoding eksplisit UTF8 dari template kosong (tanpa data). Statement yang benar…",
+      "options": [
+        "CREATE DATABASE sales ENCODING 'UTF8' TEMPLATE template0;",
+        "CREATE DATABASE sales CHARSET 'UTF8';",
+        "CREATE DATABASE sales WITH ENCODING UTF8;",
+        "CREATE DATABASE sales LCOLLATE 'C' ENCODING 'UTF8';"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `ENCODING` + `TEMPLATE template0` (template tanpa data, encoding bebas).",
+        "Salah. `CHARSET` bukan syntax PostgreSQL (itulah gaya MySQL).",
+        "Salah. Encoding harus diberikan sebagai string, bukan tanpa tanda kutip di sana.",
+        "Salah. Namanya `LOCALE`/`LC_COLLATE` harus berupa nilai locale, dan `LCOLLATE` tanpa prefix bukan syntax."
+      ]
+    },
+    {
+      "id": "dba-grant-select",
+      "prompt": "Role `app` hanya boleh SELECT pada table `orders` (tidak insert/update). Statement yang tepat…",
+      "options": [
+        "GRANT SELECT ON orders TO app;",
+        "GRANT app ON orders TO SELECT;",
+        "GRANT SELECT orders FOR app;",
+        "ALLOW SELECT ON orders FOR ROLE app;"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Sintaks GRANT: GRANT <privileges> ON <object> TO <role>.",
+        "Salah. Urutan keyword-nya kacau; GRANT tidak memakai pola begini.",
+        "Salah. `FOR` bukan bagian syntax GRANT; receiver-nya `TO`.",
+        "Salah. `ALLOW` bukan statement PostgreSQL."
+      ]
+    },
+    {
+      "id": "dba-explain-analyze",
+      "prompt": "Sebuah query tiba-tiba lambat. Untuk melihat execution plan NYATA (dengan waktu per-node dan I/O buffer), statement yang benar…",
+      "options": [
+        "EXPLAIN (ANALYZE, BUFFERS) SELECT * FROM orders;",
+        "EXPLAIN SELECT * FROM orders ANALYZE;",
+        "SELECT PLAN FROM orders;",
+        "ANALYZE EXPLAIN SELECT * FROM orders;"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `ANALYZE` menjalankan query dan mengukur waktu nyata; `BUFFERS` menambah detail I/O.",
+        "Salah. Opsi EXPLAIN harus di dalam kurung setelah EXPLAIN, bukan di ekor query.",
+        "Salah. Tidak ada statement `SELECT PLAN`.",
+        "Salah. `ANALYZE` tanpa EXPLAIN itu untuk update statistics, bukan plan query."
+      ]
+    },
+    {
+      "id": "dba-index-column",
+      "prompt": "Query `WHERE customer_id = 5001` pada table orders (jutaan baris) sangat lambat. Langkah paling tepat…",
+      "options": [
+        "CREATE INDEX idx_orders_customer ON orders (customer_id);",
+        "CREATE INDEX ON orders USING btree (customer_id, created_at DESC);",
+        "CREATE UNIQUE INDEX ON orders (customer_id);",
+        "ALTER TABLE orders ADD PRIMARY KEY (customer_id);"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Index B-tree biasa pada kolom yang di-filter — persis kebutuhan query equality ini.",
+        "Salah. Index composite (customer_id, created_at) overkill; kolom kedua tidak dipakai filter ini (tetap bisa jalan, tapi bukan jawaban paling tepat).",
+        "Salah. UNIQUE memaksa constraint yang belum tentu benar secara bisnis — jangan asal paksa unique.",
+        "Salah. Membuat PK baru mengunci semantics data (unique + not null) yang tidak diminta."
+      ]
+    },
+    {
+      "id": "dba-vacuum-analyze",
+      "prompt": "Table `orders` bloat parah setelah update massal; kamu perlu membersihkan dead row SEKARANG (bukan nunggu autovacuum). Statement yang benar…",
+      "options": [
+        "VACUUM (ANALYZE) orders;",
+        "VACUUM FULL orders;",
+        "OPTIMIZE orders;",
+        "REINDEX orders;"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `VACUUM` (non-full) membebaskan dead row tanpa lock berat; `(ANALYZE)` sekalian refresh statistik.",
+        "Salah. `VACUUM FULL` rewrite seluruh table dengan lock ACCESS EXCLUSIVE — berat, untuk kasus ekstrem saja.",
+        "Salah. `OPTIMIZE` bukan statement PostgreSQL (itulah MySQL).",
+        "Salah. `REINDEX` membangun ulang index — tidak membersihkan bloat heap."
+      ]
+    },
+    {
+      "id": "dba-analyze-stats",
+      "prompt": "Setelah COPY 50 juta baris, planner PostgreSQL memilih plan jelek (sequencial scan di table kecil). Penyebab dan perbaikan yang benar…",
+      "options": [
+        "Statistik table kedaluwarsa — jalankan ANALYZE orders;",
+        "Bloat index — jalankan REINDEX",
+        "shared_buffers kecil — restart dengan konfigurasi baru",
+        "MVCC rusak — jalankan VACUUM FULL"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. COPY tidak memperbarui statistics; `ANALYZE` mengumpulkan statistik terbaru sehingga planner memilih index scan.",
+        "Salah. REINDEX memperbaiki index, bukan statistik; plan jelek pasca-COPY biasanya masalah statistik.",
+        "Salah. shared_buffers memengaruhi performa, bukan pilihan plan (sequencial vs index).",
+        "Salah. VACUUM FULL tidak terkait kualitas plan pasca-load."
+      ]
+    },
+    {
+      "id": "dba-wal-replica",
+      "prompt": "Kamu akan menyiapkan streaming replication. Parameter yang WAJIB diset di primary sebelum mulai…",
+      "options": [
+        "wal_level = replica",
+        "synchronous_commit = on",
+        "max_wal_senders > 0",
+        "archive_mode = on"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Streaming replication butuh WAL level minimal `replica` (default modern PostgreSQL memang sudah `replica` — tetap, ini parameter kunci).",
+        "Salah. `synchronous_commit` mengatur durasi commit, bukan prasyarat replikasi.",
+        "Salah. `max_wal_senders` memang perlu >0 agar wal-writer ada, tapi `wal_level` adalah parameter inti yang ditanyakan; defaultnya sudah 10.",
+        "Salah. `archive_mode` untuk WAL archiving (PITR/backup), bukan streaming replication langsung."
+      ]
+    },
+    {
+      "id": "dba-pgdump-custom",
+      "prompt": "Buat backup database `cukita` dalam format custom (kompres, bisa restore paralel, bisa pilih objek). Command yang benar…",
+      "options": [
+        "pg_dump -Fc -U app -d cukita > cukita.dump",
+        "pg_dump -F c app cukita",
+        "pg_dump cukita --custom > cukita.sql",
+        "pg_dumpall -Fc cukita"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `-Fc` = custom format (biner, kompres, paralel-safe), di-redirect ke file.",
+        "Salah. Bukan syntax pg_dump; `-F` adalah format, bukan `-F c` terpisah, dan urutan argumen salah.",
+        "Salah. `--custom` bukan flag; format dipilih lewat `-F c`, dan output custom bukan .sql.",
+        "Salah. `pg_dumpall` untuk seluruh cluster (global objects), bukan satu database."
+      ]
+    },
+    {
+      "id": "dba-pgrestore-parallel",
+      "prompt": "Restore file cukita.dump (custom format) ke database cukita_restore dengan 4 proses paralel. Command yang benar…",
+      "options": [
+        "pg_restore -d cukita_restore -j 4 cukita.dump",
+        "pg_restore --parallel 4 cukita.dump -d cukita_restore",
+        "psql -d cukita_restore < cukita.dump",
+        "pg_restore -d cukita_restore cukita.dump | xargs -P4"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `-j 4` menjalankan 4 job paralel (hanya untuk format custom/tar).",
+        "Salah. Flag paralelnya `-j`, bukan `--parallel`.",
+        "Salah. `psql` membaca format plain (.sql), bukan custom (biner) — akan error.",
+        "Salah. pg_restore sendiri yang menangani paralelisme; xargs di sini tidak menambah apa-apa."
+      ]
+    },
+    {
+      "id": "dba-pitr-target",
+      "prompt": "Untuk Point-In-Time Recovery (PITR) ke waktu tertentu, selain base backup + arsip WAL, parameter yang menentukan target recovery…",
+      "options": [
+        "recovery_target_time",
+        "recovery_target_lsn",
+        "restore_command",
+        "archive_cleanup_command"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `recovery_target_time` menentukan waktu spesifik tempat recovery berhenti.",
+        "Salah. `recovery_target_lsn` menentukan target berbasis LSN — valid untuk PITR, tapi pertanyaan spesifik ke WAKTU.",
+        "Salah. `restore_command` hanya cara mengambil WAL dari arsip, bukan target-nya.",
+        "Salah. `archive_cleanup_command` untuk membersihkan arsip setelah recovery selesai."
+      ]
+    },
+    {
+      "id": "dba-partition-range",
+      "prompt": "Table logs tumbuh ke puluhan miliar baris. Strategi scaling yang benar untuk query yang selalu filter per-bulan…",
+      "options": [
+        "PARTITION BY RANGE (ts) + partisi per bulan",
+        "Buat 12 table logs_jan..logs_dec dan UNION di aplikasi",
+        "Tambahkan index GIN pada kolom ts",
+        "Jalankan VACUUM FULL setiap bulan"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Declarative partitioning per bulan (range) membuat planner hanya menyapu partisi relevan (partition pruning).",
+        "Salah. Table terpisah + UNION adalah cara lama pra-partitioning; maintenance dan query-nya lebih rumit.",
+        "Salah. GIN untuk data terstruktur (jsonb, array, full-text); untuk kolom timestamp, B-tree yang tepat.",
+        "Salah. VACUUM FULL pada table raksasa itu lock berat dan tidak menyelesaikan masalah ukuran."
+      ]
+    },
+    {
+      "id": "dba-mvcc-bloat",
+      "prompt": "Dead row tidak bisa di-reclaim oleh autovacuum karena ada satu transaksi panjang yang masih open. Penjelasan yang benar…",
+      "options": [
+        "Transaksi open menahan xmin; VACUUM tidak boleh menghapus versi yang masih bisa dibaca transaksi itu",
+        "Autovacuum rusak dan perlu di-restart",
+        "Index-nya korup, perlu REINDEX",
+        "WAL penuh sehingga vacuum diblok"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. MVCC: setiap versi baris tetap valid selama ada transaksi dengan snapshot yang membutuhkan xmin-nya (hot/cold standby & long-running txn).",
+        "Salah. Autovacuum tidak rusak; dia sengaja menahan reclamation demi konsistensi transaksi.",
+        "Salah. REINDEX tidak memengaruhi reclamation dead row.",
+        "Salah. WAL penuh menghentikan commit, bukan mekanisme vacuum."
+      ]
+    },
+    {
+      "id": "dba-lock-forupdate",
+      "prompt": "Dua sesi boleh membaca baris akun yang sama, tapi hanya satu yang boleh mengupdate secara simultan. Clause yang tepat…",
+      "options": [
+        "SELECT * FROM accounts WHERE id = 1 FOR UPDATE;",
+        "SELECT * FROM accounts WHERE id = 1 FOR SHARE;",
+        "LOCK TABLE accounts IN EXCLUSIVE MODE;",
+        "SELECT * FROM accounts WITH (NOWAIT) WHERE id = 1;"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `FOR UPDATE` mengunci baris (row lock) untuk write — pembaca lain tetap bisa, writer kedua menunggu.",
+        "Salah. `FOR SHARE` (FOR NO KEY UPDATE/FOR SHARE) mengunci untuk baca — writer lain yang menunggu, kebalikan dari yang diminta.",
+        "Salah. `LOCK TABLE` mengunci SELURUH table — terlalu berat untuk satu baris.",
+        "Salah. `NOWAIT` itu modifier row-lock (gagal cepat alih-alih menunggu), bukan mekanisme lock itu sendiri."
+      ]
+    },
+    {
+      "id": "dba-isolation-repeatable",
+      "prompt": "Sesi A membaca stok 2x dan hasilnya beda di dalam transaksi yang sama karena sesi B commit di antaranya. Level isolasi yang mencegah fenomena non-repeatable read ini…",
+      "options": [
+        "REPEATABLE READ",
+        "READ COMMITTED",
+        "READ UNCOMMITTED",
+        "SERIALIZABLE hanya, REPEATABLE READ tidak"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. REPEATABLE READ memakai snapshot per-transaksi: sekali baca, hasil konsisten sepanjang transaksi.",
+        "Salah. READ COMMITTED (default) membuat setiap statement punya snapshot baru — justru memungkinkan non-repeatable read.",
+        "Salah. READ UNCOMMITTED tidak ada di PostgreSQL (setara READ COMMITTED).",
+        "Salah. REPEATABLE READ sudah cukup mencegah non-repeatable read; SERIALIZABLE tambahan mencegah anomalies tingkat transaksi."
+      ]
+    },
+    {
+      "id": "dba-hba-rule",
+      "prompt": "App server di 192.168.1.0/24 boleh terhubung ke DB dengan password terenkripsi. Baris pg_hba.conf yang benar…",
+      "options": [
+        "host all all 192.168.1.0/24 scram-sha-256",
+        "host all all 192.168.1.0/24 trust",
+        "local all all 192.168.1.0/24 md5",
+        "host all all 192.168.1.0/24 reject"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `host` (TCP) + range CIDR + `scram-sha-256` = password terenkripsi, persis kebijakan yang diminta.",
+        "Salah. `trust` = tanpa password — melanggar syarat 'dengan password'.",
+        "Salah. `local` itu untuk koneksi socket Unix dan tidak memakai kolom alamat IP.",
+        "Salah. `reject` menolak koneksi — kebalikan dari yang diinginkan."
+      ]
+    },
+    {
+      "id": "dba-stat-activity",
+      "prompt": "DB terasa lambat; kamu ingin melihat query apa saja yang SEDANG berjalan dan sudah berapa lama. Sumber informasinya…",
+      "options": [
+        "SELECT * FROM pg_stat_activity;",
+        "SELECT * FROM pg_locks;",
+        "SHOW running_queries;",
+        "psql --live"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `pg_stat_activity` menampilkan koneksi aktif, query saat ini, dan durasi (`state`, `query_start`).",
+        "Salah. `pg_locks` menampilkan lock yang dipegang/ditunggu — berguna untuk deadlock, tapi bukan daftar query-nya.",
+        "Salah. Tidak ada statement `SHOW running_queries`.",
+        "Salah. `--live` bukan flag psql."
+      ]
+    },
+    {
+      "id": "dba-connection-pooler",
+      "prompt": "Aplikasi microservice membuka 10.000 koneksi sementara max_connections=200; DB penuh dan error 'too many connections'. Solusi yang paling tepat…",
+      "options": [
+        "Pasang connection pooler (PgBouncer) di depan PostgreSQL",
+        "Naikkan max_connections ke 10000",
+        "Tutup WAL (wal_level=off)",
+        "Jalankan VACUUM FULL setiap malam"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Pooler multiplex ribuan klien ke puluhan koneksi DB — solusi standar untuk beban koneksi tinggi.",
+        "Salah. 10.000 koneksi membebani memori & scheduling; menaikkan limit menyembunyikan masalah, bukan menyelesaikan.",
+        "Salah. `wal_level` tidak punya nilai `off`, dan WAL tidak penyebab jumlah koneksi.",
+        "Salah. VACUUM FULL tidak memengaruhi jumlah koneksi yang diizinkan."
+      ]
+    },
+    {
+      "id": "dba-logical-publication",
+      "prompt": "Untuk logical replication, sisi PUBLISHER membuat objek yang memilih table mana yang direplikasi. Statement yang benar…",
+      "options": [
+        "CREATE PUBLICATION pub1 FOR TABLE orders;",
+        "CREATE REPLICATION pub1 TABLE orders;",
+        "PUBLISH DATABASE cukita TABLE orders;",
+        "ALTER DATABASE cukita REPLICA IDENTITY FULL;"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `CREATE PUBLICATION ... FOR TABLE` mendefinisikan set object yang dipublish (sekarang `FOR ALL TABLES` juga ada).",
+        "Salah. Syntax-nya `CREATE PUBLICATION`, bukan `CREATE REPLICATION`.",
+        "Salah. Tidak ada statement `PUBLISH`.",
+        "Salah. `REPLICA IDENTITY` mengatur kolom yang dipakai subscription untuk identifikasi baris — langkah terkait, tapi bukan pembuatan publication."
+      ]
+    },
+    {
+      "id": "dba-archiver-check",
+      "prompt": "Kamu perlu memverifikasi bahwa arsip WAL berjalan baik (bukan hanya 'di-set', tapi benar-benar terarsip). Cara termudah…",
+      "options": [
+        "SELECT * FROM pg_ls_walarchives();",
+        "SHOW archive_mode;",
+        "ls /var/lib/postgresql/wal",
+        "pg_ctl status"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `pg_ls_walarchives()` membandingkan WAL yang harus terarsip vs yang sudah ada di arsip — langsung terlihat status failed/missing.",
+        "Salah. `archive_mode=on` hanya membuktikan konfigurasinya, bukan bahwa arsip berjalan.",
+        "Salah. Melihat direktori WAL lokal tidak membuktikan file sudah sampai di arsip.",
+        "Salah. `pg_ctl status` hanya status proses server."
+      ]
+    }
+  ]
+}
