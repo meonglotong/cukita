@@ -112,6 +112,24 @@ export function QuizClient({ track }: { track: QuizTrack }) {
     [result, answers, track]
   );
 
+  // Per-topic score for this attempt, weakest topic first.
+  const topicBreakdown = useMemo(() => {
+    if (!clientGrade) return [];
+    const byId = new Map(track.questions.map((q) => [q.id, q.topic]));
+    const acc = new Map<string, { correct: number; total: number }>();
+    for (const g of clientGrade.questions) {
+      const topic = byId.get(g.questionId);
+      if (!topic) continue;
+      const t = acc.get(topic) ?? { correct: 0, total: 0 };
+      t.total += 1;
+      if (g.isCorrect) t.correct += 1;
+      acc.set(topic, t);
+    }
+    return [...acc.entries()]
+      .map(([topic, v]) => ({ topic, ...v, percent: Math.round((v.correct / v.total) * 100) }))
+      .sort((a, b) => a.percent - b.percent || a.topic.localeCompare(b.topic));
+  }, [clientGrade, track]);
+
   if (phase === "briefing") {
     return (
       <div className="quiz-brief">
@@ -225,6 +243,31 @@ export function QuizClient({ track }: { track: QuizTrack }) {
       </div>
 
       <Leaderboard title={`Papan Skor — ${track.title}`} entries={result.top} limit={10} />
+
+      {topicBreakdown.length > 0 && (
+        <section className="quiz-breakdown">
+          <h3 className="quiz-review-title">Breakdown per Topik</h3>
+          <div className="quiz-breakdown-list">
+            {topicBreakdown.map((b) => (
+              <div
+                key={b.topic}
+                className={`tb-row${b.percent >= track.passingPercent ? " good" : " weak"}`}
+              >
+                <span className="tb-topic">{b.topic}</span>
+                <div className="tb-bar">
+                  <div className="tb-fill" style={{ width: `${b.percent}%` }} />
+                </div>
+                <span className="tb-score">
+                  {b.correct}/{b.total} · {b.percent}%
+                </span>
+              </div>
+            ))}
+          </div>
+          <p className="tb-hint">
+            Terurut dari yang terlemah — fokus belajarnya dari atas ke bawah.
+          </p>
+        </section>
+      )}
 
       <h3 className="quiz-review-title">Review Jawaban</h3>
       <div className="quiz-review">

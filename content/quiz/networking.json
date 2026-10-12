@@ -21,7 +21,8 @@
         "Benar. `configure` (atau `conf`) mengaktifkan configuration mode; prompt berubah ke [edit].",
         "Salah. `edit` itu untuk turun ke hierarchy level tertentu — dan hanya tersedia SETELAH di config mode.",
         "Salah. `start` bukan command Junos untuk masuk config mode."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-commit",
@@ -38,7 +39,8 @@
         "Salah. `write memory` itu IOS; Junos memakai `commit`.",
         "Benar. `commit` memvalidasi lalu menerapkan candidate config ke running config.",
         "Salah. `save` bukan command config Junos (itu untuk file)."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-commit-check",
@@ -55,7 +57,8 @@
         "Salah. `validate` bukan command Junos.",
         "Benar. `commit check` menjalankan validasi penuh tanpa mengubah running config — aman untuk preview.",
         "Salah. `check config` bukan command Junos."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-commit-confirmed",
@@ -72,7 +75,8 @@
         "Salah. `commit safe` bukan command Junos.",
         "Salah. `commit backup` bukan command Junos.",
         "Salah. `commit timeout 5` bukan syntax Junos."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-rollback",
@@ -89,7 +93,8 @@
         "Salah. `revert` bukan command Junos.",
         "Salah. `undo commit` itu IOS.",
         "Benar. `rollback 1` memulihkan candidate config dari commit 1 generasi lalu (kemudian `commit`)."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-rollback-generations",
@@ -106,7 +111,8 @@
         "Benar. Junos menyimpan 50 rollback generation secara default — bisa `rollback` sampai 49.",
         "Salah. 10 bukan default Junos.",
         "Salah. 5 itu angka untuk `commit confirmed`, bukan jumlah generation."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-edit-hierarchy",
@@ -123,7 +129,8 @@
         "Salah. `move` bukan command Junos config.",
         "Benar. `edit <path>` langsung melompat ke hierarchy level yang dituju.",
         "Salah. `cd` itu command shell, bukan Junos config."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-top",
@@ -140,7 +147,8 @@
         "Benar. `top` langsung kembali ke [edit] (root hierarchy).",
         "Salah. `exit` naik SATU level, bukan ke root.",
         "Salah. `up` bukan command Junos (exit yang naik satu level)."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-set",
@@ -157,7 +165,8 @@
         "Salah. `write` bukan command config Junos.",
         "Salah. `add` bukan command config Junos.",
         "Salah. `insert` bukan command config Junos."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-delete",
@@ -174,7 +183,8 @@
         "Salah. `erase` bukan command config Junos.",
         "Salah. `unset` bukan command config Junos.",
         "Benar. `delete <path>` menghapus statement (dan subtree-nya jika path-nya tinggi)."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-compare",
@@ -191,7 +201,8 @@
         "Salah. `diff` bukan pipe Junos (yang benar `compare`).",
         "Salah. `compare last` bukan syntax Junos.",
         "Salah. `show changes` bukan command Junos."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-compare-rollback",
@@ -208,7 +219,8 @@
         "Salah. `show rollback 5` bukan command Junos.",
         "Benar. `show | compare rollback N` menampilkan diff candidate vs generasi N.",
         "Salah. `diff` bukan pipe Junos."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-display-set",
@@ -225,7 +237,8 @@
         "Benar. `show | display set` mengubah output hierarkis jadi baris-baris `set`.",
         "Salah. `format` bukan pipe Junos.",
         "Salah. `display` sendiri hanya menampilkan config hierarkis, bukan format set."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-request-reboot",
@@ -242,7 +255,8 @@
         "Salah. `reload` itu command lain (mis. reload route), bukan reboot sistem.",
         "Benar. `request system reboot` adalah command reboot Junos (bisa tambah `at`/`in` untuk schedule).",
         "Salah. `reboot` saja bukan command Junos."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-request-software",
@@ -259,7 +273,8 @@
         "Salah. `system update` bukan command Junos.",
         "Salah. `copy ... system` bukan command Junos.",
         "Benar. `request system software add` mengunggah + install package JUNOS; `no-validate` untuk skip validate (umum dipakai)."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-show-version",
@@ -276,7 +291,8 @@
         "Salah. `display version` bukan command Junos (display itu di config mode).",
         "Salah. `show software` bukan command Junos.",
         "Benar. `show version` (di operational mode) menampilkan versi JUNOS, model, serial, uptime."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-show-alarms",
@@ -293,7 +309,8 @@
         "Salah. `show chassis alarms` bukan command Junos (alarm di `show system alarms`).",
         "Salah. `show environment` bukan command Junos.",
         "Benar. `show system alarms` menampilkan alarm aktif (dan `show system alarms clear` untuk yang sudah clear)."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-show-hardware",
@@ -310,7 +327,8 @@
         "Salah. `show hardware` bukan command Junos.",
         "Salah. `show system hardware` bukan command Junos.",
         "Salah. `show chassis` saja tidak valid (butuh subcommand seperti hardware/fpc/routing-engine)."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-monitor-traffic",
@@ -327,7 +345,8 @@
         "Salah. `show traffic` bukan command Junos.",
         "Benar. `monitor traffic` adalah command capture Junos (lebih user-friendly); bisa tambah filter/size/count.",
         "Salah. tcpdump memang ada di Junos, tapi command idiomatik Junos adalah `monitor traffic`."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-monitor-boot",
@@ -344,7 +363,8 @@
         "Salah. `display boot` bukan command Junos.",
         "Benar. `monitor boot` menampilkan output boot sequence terakhir.",
         "Salah. `show boot` bukan command Junos."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-show-storage",
@@ -361,7 +381,8 @@
         "Benar. `show system storage` menampilkan filesystem dan persentase pemakaian disk.",
         "Salah. `show disk` bukan command Junos.",
         "Salah. `show system disk` bukan command Junos."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-show-processes",
@@ -378,7 +399,8 @@
         "Salah. `top` bisa via shell, tapi command Junos yang idiomatik adalah `show system processes`.",
         "Salah. `show system task` bukan command Junos.",
         "Benar. `show system processes extensive` menampilkan daftar process + CPU/mem detail — alat debug RE."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-show-core",
@@ -395,7 +417,8 @@
         "Salah. `show core` bukan command Junos.",
         "Salah. `show system crash` bukan command Junos.",
         "Salah. `show core-dump` (tunggal) bukan command Junos."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-show-uptime",
@@ -412,7 +435,8 @@
         "Salah. `show uptime` bukan command Junos.",
         "Salah. `show system up` bukan command Junos.",
         "Salah. `uptime` itu command shell."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-show-temperature",
@@ -429,7 +453,8 @@
         "Benar. `show chassis temperature` menampilkan temperature per slot/komponen.",
         "Salah. `show temperature` bukan command Junos.",
         "Salah. `show chassis temp` (singkatan) tidak valid — gunakan `temperature`."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-show-power",
@@ -446,7 +471,8 @@
         "Salah. `show chassis psu` bukan command Junos.",
         "Benar. `show chassis power` menampilkan status PSU (online/offline, wattage).",
         "Salah. `show power` bukan command Junos."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-file-copy",
@@ -463,7 +489,8 @@
         "Benar. `file copy <src> <dest>` adalah command Junos untuk menyalin file (mendukung tftp/ftp/scp/http).",
         "Salah. `copy` saja bukan command Junos (pakai `file copy`).",
         "Salah. `scp` bisa via shell, tapi command Junos idiomatik adalah `file copy`."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-file-list",
@@ -480,7 +507,8 @@
         "Salah. `show files` bukan command Junos.",
         "Benar. `file list <path>` menampilkan isi direktori di perangkat Junos.",
         "Salah. `ls` itu command shell (bisa, tapi bukan command Junos)."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-file-show",
@@ -497,7 +525,8 @@
         "Salah. `show file` bukan command Junos.",
         "Salah. `tail` itu shell command.",
         "Benar. `file show <path>` menampilkan isi file di perangkat Junos."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-show-log",
@@ -514,7 +543,8 @@
         "Salah. `display log` bukan command Junos.",
         "Benar. `show log` (bisa `show log <file>`) menampilkan isi log via command Junos.",
         "Salah. `show system log` bukan command Junos."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-show-statistics",
@@ -531,7 +561,8 @@
         "Salah. `show cpu` bukan command Junos.",
         "Benar. `show system statistics` menampilkan statistik CPU/mem/traffic agregat (bisa `clear system statistics` untuk reset).",
         "Salah. `show statistics` bukan command Junos."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-show-fpc",
@@ -548,7 +579,8 @@
         "Salah. `show chassis pic` bukan command Junos (FPC-nya yang benar).",
         "Salah. `show chassis card` bukan command Junos.",
         "Benar. `show chassis fpc` menampilkan status FPC/PIC per slot (online/offline, model)."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-show-re",
@@ -565,7 +597,8 @@
         "Salah. `show routing engine` bukan command Junos.",
         "Salah. `show chassis re` bukan command Junos.",
         "Benar. `show chassis routing-engine` menampilkan status RE (untuk platform dual-RE: RE0/RE1)."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-show-lldp",
@@ -582,7 +615,8 @@
         "Salah. `show cdp neighbors` itu Cisco (CDP proprietary).",
         "Salah. `show neighbors` bukan command Junos.",
         "Salah. `show lldp` saja kurang spesifik (yang umum `show lldp neighbors`)."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-clear-statistics",
@@ -599,7 +633,8 @@
         "Benar. `clear system statistics` meng-reset counter statistik system.",
         "Salah. `reset` bukan command Junos (pakai `clear`).",
         "Salah. `clear statistics` tidak valid (harus `clear system statistics`)."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-show-interfaces-terse",
@@ -616,7 +651,8 @@
         "Benar. `show interfaces terse` (atau `show interfaces terse <intf>`) = output ringkas per-interface, cepat untuk overview.",
         "Salah. `show interfaces` (tanpa flag) outputnya panjang per-interface.",
         "Salah. `brief` bukan modifier `show interfaces` (yang benar `terse`)."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-show-if-extensive",
@@ -633,7 +669,8 @@
         "Salah. `errors` bukan modifier Junos.",
         "Salah. `show interfaces <intf> statistics` ada tapi fokus statistik; `extensive` yang lebih lengkap.",
         "Benar. `show interfaces <intf> extensive` menampilkan detail lengkap termasuk error/discard."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-clear-if-statistics",
@@ -650,7 +687,8 @@
         "Salah. `clear interfaces` saja tidak valid (butuh `statistics`).",
         "Salah. `reset` bukan command Junos.",
         "Salah. `clear if stats` bukan syntax Junos."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-show-configuration",
@@ -667,7 +705,8 @@
         "Salah. `show config` (tanpa 'uration') tidak valid.",
         "Salah. File mentah bisa dilihat, tapi command idiomatik Junos adalah `show configuration`.",
         "Benar. `show configuration` menampilkan running config aktif (bisa ditambah pipe: `| display set`, `| match`, dll)."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-cli-show-tech",
@@ -684,7 +723,8 @@
         "Salah. `show tech` (singkatan) tidak valid.",
         "Salah. `show system support` bukan command Junos.",
         "Salah. `show diagnostics` bukan command Junos."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-l2-vlan-create",
@@ -701,7 +741,8 @@
         "Salah. `create vlan` bukan syntax Junos.",
         "Salah. `vlan 10` itu syntax Cisco.",
         "Salah. VLAN di Junos diberi NAMA, bukan angka saja (angka vid diturunkan dari nama `vlanNN`)."
-      ]
+      ],
+      "topic": "switching-l2"
     },
     {
       "id": "net-l2-access-mode",
@@ -718,7 +759,8 @@
         "Salah. `switchport access vlan` itu syntax Cisco IOS.",
         "Salah. `vlan access` bukan syntax Junos.",
         "Salah. `access-vlan` bukan statement Junos."
-      ]
+      ],
+      "topic": "switching-l2"
     },
     {
       "id": "net-l2-trunk-mode",
@@ -735,7 +777,8 @@
         "Salah. `switchport trunk allowed vlan` itu Cisco.",
         "Salah. `trunk-vlan` bukan statement Junos.",
         "Salah. `encapsulation trunk` bukan syntax Junos."
-      ]
+      ],
+      "topic": "switching-l2"
     },
     {
       "id": "net-l2-show-vlans",
@@ -752,7 +795,8 @@
         "Salah. `show switch vlan` bukan command Junos.",
         "Salah. `display` itu config mode.",
         "Benar. `show ethernet-switching vlans` menampilkan daftar VLAN + interface member."
-      ]
+      ],
+      "topic": "switching-l2"
     },
     {
       "id": "net-l2-show-switching-if",
@@ -769,7 +813,8 @@
         "Salah. `show switchport` itu Cisco.",
         "Salah. `show vlan membership` bukan command Junos.",
         "Benar. `show ethernet-switching interfaces` menampilkan VLAN membership per-interface."
-      ]
+      ],
+      "topic": "switching-l2"
     },
     {
       "id": "net-l2-lacp-member",
@@ -786,7 +831,8 @@
         "Salah. `channel-group ... mode active` itu syntax Cisco.",
         "Salah. `port-channel` bukan syntax Junos.",
         "Salah. Urutan Junos: `ether 802.3ad` di member-nya, bukan `members` di ae0."
-      ]
+      ],
+      "topic": "switching-l2"
     },
     {
       "id": "net-l2-lacp-active",
@@ -803,7 +849,8 @@
         "Salah. `lacp-mode` bukan statement Junos.",
         "Salah. LACP di-set di ae (aggregated), bukan di member interface.",
         "Salah. `set lacp` (global) bukan statement Junos."
-      ]
+      ],
+      "topic": "switching-l2"
     },
     {
       "id": "net-l2-show-lacp",
@@ -820,7 +867,8 @@
         "Salah. `show interfaces lacp` bukan command Junos.",
         "Benar. `show lacp interface` menampilkan agregasi, anggota, dan state LACP.",
         "Salah. `show lacp` tanpa subcommand tidak valid."
-      ]
+      ],
+      "topic": "switching-l2"
     },
     {
       "id": "net-l2-aggregate-min-links",
@@ -837,7 +885,8 @@
         "Benar. `aggregate ether minimum-links N` — ae tetap up walau ada link mati, tapi jika di bawah N, ae dimatikan.",
         "Salah. `min-links` bukan statement Junos.",
         "Salah. `threshold` bukan statement Junos."
-      ]
+      ],
+      "topic": "switching-l2"
     },
     {
       "id": "net-l2-deactivate",
@@ -854,7 +903,8 @@
         "Salah. `shutdown` itu Cisco; Junos memakai `deactivate` (atau `set ... disable`).",
         "Salah. `disable` sebagai command bukan command Junos (yang benar `deactivate`).",
         "Salah. `no interface` itu Cisco untuk hapus."
-      ]
+      ],
+      "topic": "switching-l2"
     },
     {
       "id": "net-l2-irb",
@@ -871,7 +921,8 @@
         "Salah. `l3-interface` bukan penamaan Junos.",
         "Benar. `irb` = Integrated Routing and Bridging; `irb.10` adalah L3 interface untuk VLAN 10.",
         "Salah. `vlan-interface` bukan penamaan Junos."
-      ]
+      ],
+      "topic": "switching-l2"
     },
     {
       "id": "net-l2-show-arp",
@@ -888,7 +939,8 @@
         "Salah. `show neighbors` bukan command Junos.",
         "Salah. `show l2-table` itu MAC address table, bukan ARP.",
         "Benar. `show arp` menampilkan tabel ARP (di Junos, `show arp` untuk IPv4)."
-      ]
+      ],
+      "topic": "switching-l2"
     },
     {
       "id": "net-l2-show-mac",
@@ -905,7 +957,8 @@
         "Benar. `show l2-table` menampilkan MAC address table (bisa filter per-VLAN/per-interface).",
         "Salah. `show mac address-table` itu Cisco.",
         "Salah. `show l2 cache` bukan command Junos."
-      ]
+      ],
+      "topic": "switching-l2"
     },
     {
       "id": "net-stp-root",
@@ -922,7 +975,8 @@
         "Benar. Root bridge = bridge ID terendah; bridge ID = priority (default 32768) + MAC address.",
         "Salah. Jumlah link tidak menentukan root.",
         "Salah. Urutan boot tidak menentukan root."
-      ]
+      ],
+      "topic": "stp"
     },
     {
       "id": "net-stp-enable",
@@ -939,7 +993,8 @@
         "Salah. `set stp` (tanpa protocols) bukan statement Junos.",
         "Benar. `set protocols stp` mengaktifkan protokol STP di Junos.",
         "Salah. `spanning-tree enable` itu Cisco."
-      ]
+      ],
+      "topic": "stp"
     },
     {
       "id": "net-stp-show-bridge",
@@ -956,7 +1011,8 @@
         "Salah. `show bridge` bukan command Junos.",
         "Benar. `show stp bridge` menampilkan informasi bridge STP (root bridge, priority, state).",
         "Salah. `show spanning-tree` itu Cisco."
-      ]
+      ],
+      "topic": "stp"
     },
     {
       "id": "net-stp-show-interface",
@@ -973,7 +1029,8 @@
         "Salah. `show stp port` bukan command Junos.",
         "Salah. `show interface stp` bukan command Junos.",
         "Benar. `show stp interface` menampilkan peran + state STP per-port."
-      ]
+      ],
+      "topic": "stp"
     },
     {
       "id": "net-stp-edge-port",
@@ -990,7 +1047,8 @@
         "Benar. `stp-edge` membuat port langsung forward (bypass listening/learning) — cocok untuk port host.",
         "Salah. `spanning-tree portfast` itu Cisco.",
         "Salah. `set stp edge-port` bukan statement Junos."
-      ]
+      ],
+      "topic": "stp"
     },
     {
       "id": "net-stp-priority",
@@ -1007,7 +1065,8 @@
         "Benar. `set protocols stp priority <nilai>` menurunkan bridge ID → lebih berpotensi jadi root.",
         "Salah. `spanning-tree priority` itu Cisco.",
         "Salah. `set stp root priority` bukan statement Junos."
-      ]
+      ],
+      "topic": "stp"
     },
     {
       "id": "net-stp-rstp",
@@ -1024,7 +1083,8 @@
         "Salah. RSTP tidak butuh IP di port.",
         "Benar. RSTP mempercepat konvergensi dengan state tambahan (discarding/learning/forwarding) + mekanisme proposal/agreement.",
         "Salah. RSTP tetap mencegah loop."
-      ]
+      ],
+      "topic": "stp"
     },
     {
       "id": "net-stp-mstp",
@@ -1041,7 +1101,8 @@
         "Salah. MSTP tetap layer 2.",
         "Salah. MSTP tetap memiliki root (per instance).",
         "Benar. MSTP membuat beberapa instance STP, masing-masing untuk kelompok VLAN — memungkinkan load balancing + satu topology per instance."
-      ]
+      ],
+      "topic": "stp"
     },
     {
       "id": "net-rte-static",
@@ -1058,7 +1119,8 @@
         "Salah. `route add` itu syntax Windows/Linux.",
         "Salah. `set route` bukan statement Junos.",
         "Benar. `set routing-options static route <prefix> next-hop <ip>` — syntax static route Junos."
-      ]
+      ],
+      "topic": "routing-static"
     },
     {
       "id": "net-rte-default",
@@ -1075,7 +1137,8 @@
         "Benar. Prefix `0.0.0.0/0` adalah default route di Junos.",
         "Salah. `ip route default` itu Cisco/Linux.",
         "Salah. `default-gateway` bukan statement Junos."
-      ]
+      ],
+      "topic": "routing-static"
     },
     {
       "id": "net-rte-show-route",
@@ -1092,7 +1155,8 @@
         "Salah. `show routes` (jamak) bukan command Junos.",
         "Salah. `display` itu config mode.",
         "Benar. `show route` menampilkan routing table lengkap (bisa filter `protocol`, `active`, `table`, dll)."
-      ]
+      ],
+      "topic": "routing-static"
     },
     {
       "id": "net-rte-show-route-proto",
@@ -1109,7 +1173,8 @@
         "Benar. `show route protocol ospf` memfilter RIB per-protocol.",
         "Salah. `show route ospf` bukan syntax Junos.",
         "Salah. `show ospf route` bukan command Junos (OSPF punya `show ospf neighbor/interface/database`)."
-      ]
+      ],
+      "topic": "routing-static"
     },
     {
       "id": "net-ospf-area",
@@ -1126,7 +1191,8 @@
         "Salah. `ospf enable` bukan syntax Junos.",
         "Salah. `set ospf` (tanpa protocols) bukan statement Junos.",
         "Benar. `set protocols ospf area 0.0.0.0 interface <intf>` mengaktifkan OSPF di area backbone untuk interface itu."
-      ]
+      ],
+      "topic": "ospf"
     },
     {
       "id": "net-ospf-backbone",
@@ -1143,7 +1209,8 @@
         "Salah. Urutan konfigurasi tidak menentukan.",
         "Benar. Area 0 (0.0.0.0) adalah backbone; semua area lain harus terhubung ke area 0.",
         "Salah. Area 1 itu area biasa."
-      ]
+      ],
+      "topic": "ospf"
     },
     {
       "id": "net-ospf-neighbor",
@@ -1160,7 +1227,8 @@
         "Salah. `show neighbors ospf` bukan command Junos.",
         "Benar. `show ospf neighbor` menampilkan neighbor + state (Full = adjacency terbentuk).",
         "Salah. `show ip ospf neighbor` itu Cisco."
-      ]
+      ],
+      "topic": "ospf"
     },
     {
       "id": "net-ospf-interface",
@@ -1177,7 +1245,8 @@
         "Salah. `show ip ospf interface` itu Cisco.",
         "Salah. `show ospf if` (singkatan) tidak valid.",
         "Salah. `show interface ospf` bukan command Junos."
-      ]
+      ],
+      "topic": "ospf"
     },
     {
       "id": "net-ospf-database",
@@ -1194,7 +1263,8 @@
         "Benar. `show ospf database` menampilkan LSA yang tersimpan di LSDB.",
         "Salah. `show ip ospf database` itu Cisco.",
         "Salah. `show ospf lsa` bukan command Junos."
-      ]
+      ],
+      "topic": "ospf"
     },
     {
       "id": "net-bgp-as",
@@ -1211,7 +1281,8 @@
         "Salah. `set bgp as` bukan statement Junos.",
         "Salah. `set as-number` itu syntax lain (quagga/frr).",
         "Benar. `set routing-options autonomous-system <AS>` menetapkan AS number — wajib sebelum konfigurasi BGP."
-      ]
+      ],
+      "topic": "bgp"
     },
     {
       "id": "net-bgp-neighbor",
@@ -1228,7 +1299,8 @@
         "Salah. `add bgp` bukan statement Junos.",
         "Benar. Model Junos: `group` → `type` → `neighbor`. Grup memberi parameter bersama, neighbor merujuk ke grup.",
         "Salah. `neighbor ... remote-as` itu syntax Cisco."
-      ]
+      ],
+      "topic": "bgp"
     },
     {
       "id": "net-bgp-summary",
@@ -1245,7 +1317,8 @@
         "Salah. `show bgp` tanpa subcommand tidak valid.",
         "Salah. `show bgp neighbors` bukan command Junos (yang benar `show bgp summary` / `show route protocol bgp`).",
         "Benar. `show bgp summary` menampilkan tabel status semua BGP session (state, received/sent prefixes)."
-      ]
+      ],
+      "topic": "bgp"
     },
     {
       "id": "net-bgp-route",
@@ -1262,7 +1335,8 @@
         "Salah. `show route bgp` bukan syntax Junos.",
         "Benar. `show route protocol bgp` menampilkan route BGP di routing table.",
         "Salah. `show ip bgp` itu Cisco (menampilkan tabel BGP, bukan RIB)."
-      ]
+      ],
+      "topic": "bgp"
     },
     {
       "id": "net-bgp-local-address",
@@ -1279,7 +1353,8 @@
         "Salah. `source` bukan statement Junos.",
         "Benar. `local-address` di group menentukan IP source untuk BGP session itu.",
         "Salah. `set bgp local-ip` bukan statement Junos."
-      ]
+      ],
+      "topic": "bgp"
     },
     {
       "id": "net-bgp-ibgp-ebgp",
@@ -1296,7 +1371,8 @@
         "Salah. Kecepatan bukan pembeda utama.",
         "Salah. Keduanya mendukung IPv4 & IPv6.",
         "Salah. eBGP justru PASTI melibatkan AS number yang berbeda."
-      ]
+      ],
+      "topic": "bgp"
     },
     {
       "id": "net-fw-filter-create",
@@ -1313,7 +1389,8 @@
         "Salah. `access-list` itu syntax Cisco.",
         "Salah. `ip access-list` itu Cisco.",
         "Salah. `create filter` bukan syntax Junos."
-      ]
+      ],
+      "topic": "firewall-nat"
     },
     {
       "id": "net-fw-term",
@@ -1330,7 +1407,8 @@
         "Salah. `permit ip` itu syntax Cisco ACL.",
         "Salah. `access-list ... permit` itu Cisco.",
         "Salah. `set filter ... rule` bukan syntax Junos."
-      ]
+      ],
+      "topic": "firewall-nat"
     },
     {
       "id": "net-fw-apply",
@@ -1347,7 +1425,8 @@
         "Benar. Filter diterapkan per-interface: `family inet filter input|output <nama-filter>`.",
         "Salah. `ip access-group` itu Cisco.",
         "Salah. `apply filter` bukan syntax Junos."
-      ]
+      ],
+      "topic": "firewall-nat"
     },
     {
       "id": "net-fw-actions",
@@ -1364,7 +1443,8 @@
         "Salah. `permit/deny` itu istilah Cisco.",
         "Salah. `allow/block` bukan aksi Junos.",
         "Salah. `pass/fail` bukan aksi Junos."
-      ]
+      ],
+      "topic": "firewall-nat"
     },
     {
       "id": "net-fw-next-term",
@@ -1381,7 +1461,8 @@
         "Salah. `continue` bukan aksi Junos.",
         "Salah. `next` bukan aksi Junos.",
         "Salah. `pass-through` bukan aksi Junos."
-      ]
+      ],
+      "topic": "firewall-nat"
     },
     {
       "id": "net-fw-show-filter",
@@ -1398,7 +1479,8 @@
         "Benar. `show firewall` menampilkan konfigurasi firewall filter (di operational mode).",
         "Salah. `show access-lists` itu Cisco.",
         "Salah. `show filters` bukan command Junos."
-      ]
+      ],
+      "topic": "firewall-nat"
     },
     {
       "id": "net-fw-counters",
@@ -1415,7 +1497,8 @@
         "Benar. `show firewall filter` menampilkan term + counter-nya (packet match per-term).",
         "Salah. `show firewall statistics` bukan command Junos (counter ada di `show firewall filter`).",
         "Salah. `show access-list counters` itu Cisco."
-      ]
+      ],
+      "topic": "firewall-nat"
     },
     {
       "id": "net-nat-pool",
@@ -1432,7 +1515,8 @@
         "Salah. `ip nat inside source` itu syntax Cisco.",
         "Salah. `nat pool` bukan syntax Junos.",
         "Salah. `set nat` (tanpa security) bukan statement Junos."
-      ]
+      ],
+      "topic": "firewall-nat"
     },
     {
       "id": "net-nat-rule-set",
@@ -1449,7 +1533,8 @@
         "Salah. `nat rule-set` bukan syntax Junos.",
         "Salah. `set nat` (tanpa security) bukan statement Junos.",
         "Benar. NAT source = `rule-set` dengan `from zone`/`to zone`, `rule` (match + then source-nat pool/translations)."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-nat-pat",
@@ -1466,7 +1551,8 @@
         "Benar. PAT = overloading: banyak address internal → satu (sedikit) address publik, dibedakan oleh port.",
         "Salah. Satu-ke-satu itu static NAT, bukan PAT.",
         "Salah. NAT mendukung IPv4 (dan IPv6)."
-      ]
+      ],
+      "topic": "firewall-nat"
     },
     {
       "id": "net-nat-static",
@@ -1483,7 +1569,8 @@
         "Salah. `set nat static pair` bukan syntax Junos.",
         "Benar. NAT static: `security nat static rule-set ... from source-address ... then translated address ...` (1:1).",
         "Salah. `ip nat inside source static` itu Cisco."
-      ]
+      ],
+      "topic": "firewall-nat"
     },
     {
       "id": "net-nat-show",
@@ -1500,7 +1587,8 @@
         "Salah. `display` itu config mode.",
         "Benar. `show security nat statistics` menampilkan counter NAT (per-rule/pool).",
         "Salah. `show ip nat translations` itu Cisco."
-      ]
+      ],
+      "topic": "firewall-nat"
     },
     {
       "id": "net-vpn-iike",
@@ -1517,7 +1605,8 @@
         "Salah. IPsec adalah framework enkripsi datanya, bukan negosiasi SA.",
         "Salah. ESP (Encapsulating Security Payload) = enkripsi payload, bukan negosiasi.",
         "Salah. AH (Authentication Header) = autentikasi, bukan negosiasi."
-      ]
+      ],
+      "topic": "vpn"
     },
     {
       "id": "net-vpn-esp",
@@ -1534,7 +1623,8 @@
         "Benar. ESP meng-enkripsi payload (confidentiality) + integritas; AH hanya integritas/autentikasi (tanpa enkripsi payload).",
         "Salah. AH tidak meng-enkripsi payload.",
         "Salah. IKE untuk negosiasi, bukan enkripsi data."
-      ]
+      ],
+      "topic": "vpn"
     },
     {
       "id": "net-vpn-gateway",
@@ -1551,7 +1641,8 @@
         "Salah. `set vpn` bukan statement Junos.",
         "Benar. Junos: `security ike` (gateway/proposal/policy) + `security ipsec` (ipsec policy/proposal) — model klasik Junos VPN.",
         "Salah. `crypto map` itu Cisco."
-      ]
+      ],
+      "topic": "vpn"
     },
     {
       "id": "net-mon-show-chassis-env",
@@ -1568,7 +1659,8 @@
         "Salah. `show environment` bukan command Junos.",
         "Salah. `show chassis status` bukan command Junos.",
         "Salah. `show hardware environment` bukan command Junos."
-      ]
+      ],
+      "topic": "monitoring"
     },
     {
       "id": "net-mon-show-fabric",
@@ -1585,7 +1677,8 @@
         "Salah. `show chassis bandwidth` bukan command Junos.",
         "Salah. `show fabric stats` bukan command Junos.",
         "Benar. `show chassis fabric statistics` menampilkan utilisasi/backplane fabric."
-      ]
+      ],
+      "topic": "monitoring"
     },
     {
       "id": "net-mon-clear-alarms",
@@ -1602,7 +1695,8 @@
         "Salah. `cleared` bukan kata kuncinya (yang benar `clear`).",
         "Salah. `show clear alarms` bukan command Junos.",
         "Benar. `show system alarms clear` menampilkan alarm yang sudah di-clear (riwayat)."
-      ]
+      ],
+      "topic": "monitoring"
     },
     {
       "id": "net-junos-candidate",
@@ -1619,7 +1713,8 @@
         "Salah. Candidate memang bisa (dan harus) di-commit untuk aktif.",
         "Benar. Model Junos: edit di candidate config → `commit` → aktif di running config. Ini yang membuatnya aman.",
         "Salah. Junos TIDAK auto-aktif; harus commit."
-      ]
+      ],
+      "topic": "junos-concepts"
     },
     {
       "id": "net-junos-hierarchy",
@@ -1636,7 +1731,8 @@
         "Benar. Config Junos = hierarchy tree; `edit` menavigasi, `set` mengisi path, `top` kembali ke root.",
         "Salah. Bukan flat.",
         "Salah. Bukan SQL."
-      ]
+      ],
+      "topic": "junos-concepts"
     },
     {
       "id": "net-junos-commit-check-first",
@@ -1653,7 +1749,8 @@
         "Benar. `commit check` memvalidasi tanpa mengubah running config — menangkap error sebelum commit.",
         "Salah. Commit langsung berisiko (kalau error, sudah terlanjur aktif/rollback).",
         "Salah. Reboot bukan validasi."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-junos-rollback-number",
@@ -1670,7 +1767,8 @@
         "Salah. `show rollback` bukan command Junos.",
         "Salah. `show commit history` bukan command Junos.",
         "Salah. `show configuration rollback` bukan command Junos."
-      ]
+      ],
+      "topic": "junos-cli"
     },
     {
       "id": "net-junos-interface-naming",
@@ -1687,7 +1785,8 @@
         "Benar. `ge-<pic>/<slot>/<port>` — ge = gigabit ethernet, diikuti identifier PIC/posisi/port.",
         "Salah. Penafsiran slot-nya salah.",
         "Salah. `ge` = gigabit (1G), bukan 10G (itu `xe`)."
-      ]
+      ],
+      "topic": "junos-concepts"
     },
     {
       "id": "net-junos-xe-ge",
@@ -1704,7 +1803,8 @@
         "Salah. `et` bukan prefix Junos.",
         "Salah. `ten` bukan prefix Junos.",
         "Benar. `xe` = 10 Gigabit Ethernet (10GE); `ge` = 1G, `xe-` untuk 10G."
-      ]
+      ],
+      "topic": "junos-concepts"
     }
   ]
 }

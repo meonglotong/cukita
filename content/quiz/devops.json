@@ -20,7 +20,8 @@
         "Salah. Menggabungkan ke layer terakhir justru membuat install dependensi selalu berjalan ulang.",
         "Salah. `--squash` memang memperkecil image, tapi tidak memperbaiki invalidasi cache antar build.",
         "Benar. Layer yang isinya jarang berubah (dependensi) di-cache; perubahan source code hanya memicu layer terakhir."
-      ]
+      ],
+      "topic": "docker"
     },
     {
       "id": "devops-dockerignore",
@@ -37,7 +38,8 @@
         "Salah. Dockerfile tidak punya instruksi `EXCLUDE`; eksklusi via .dockerignore.",
         "Benar. `.dockerignore` bekerja persis seperti .gitignore tapi untuk build context Docker.",
         "Salah. `.gitignore` hanya untuk Git; Docker tidak membacanya."
-      ]
+      ],
+      "topic": "docker"
     },
     {
       "id": "devops-compose-network",
@@ -54,7 +56,8 @@
         "Salah. Volume + polling itu IPC yang ribet dan lambat; network-nya memang tersedia.",
         "Salah. Bisa jalan tapi membuka port db ke host (surface attack) — tidak perlu.",
         "Benar. Compose membuat network internal; service saling resolve via nama service (db://db:5432)."
-      ]
+      ],
+      "topic": "docker"
     },
     {
       "id": "devops-docker-volume",
@@ -71,7 +74,8 @@
         "Salah. Bind mount juga persist, tapi mengunci data ke path host spesifik dan kurang portable — named volume yang lebih tepat untuk kasus umum ini.",
         "Benar. Named volume persist di luar container dan mengikuti lifecycle volume, bukan container.",
         "Salah. /tmp di container hilang saat container dihapus."
-      ]
+      ],
+      "topic": "docker"
     },
     {
       "id": "devops-k8s-deployment",
@@ -88,7 +92,8 @@
         "Benar. Deployment menangani rolling update; pod baru hanya menerima traffic setelah readiness pass; rollback via revision.",
         "Salah. StatefulSet untuk stateful (identitas & storage stabil) — tidak dimaksudkan untuk rolling update stateless biasa.",
         "Salah. Job untuk batch sekali jalan, bukan service yang terus jalan."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-k8s-daemonset",
@@ -105,7 +110,8 @@
         "Salah. `replicas = jumlah node` rapuh; tidak ada jaminan distribusi 1-per-node.",
         "Salah. CronJob menjalankan pod berkala, bukan service persisten per node.",
         "Benar. DaemonSet menjamin tepat satu pod di tiap node (ikut node baru otomatis)."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-k8s-service-lb",
@@ -122,7 +128,8 @@
         "Salah. ClusterIP hanya reachable dari dalam cluster.",
         "Salah. Headless untuk akses langsung ke pod (service discovery), bukan entrypoint internet.",
         "Salah. ExternalName cuma alias CNAME ke nama eksternal lain."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-k8s-readiness",
@@ -139,7 +146,8 @@
         "Benar. readinessProbe mengatur kelayakan traffic — pod tetap hidup, hanya dikeluarkan dari endpoint Service.",
         "Salah. livenessProbe yang gagal = pod DI-RESTART; untuk warm-up dia justru berbahaya.",
         "Salah. startupProbe memang untuk app lambat-start, tapi pertanyaan spesifik ke 'tidak menerima traffic' → readiness; startup hanya melindungi fase awal."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-k8s-resources",
@@ -156,7 +164,8 @@
         "Salah. Tidak ada field `memory` langsung di container spec.",
         "Salah. Annotation hanya metadata; scheduler/kubelet tidak membacanya sebagai batas.",
         "Salah. `nodeSelector` memilih node, bukan mengatur batas resource pod."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-k8s-drain",
@@ -173,7 +182,8 @@
         "Salah. Taint tanpa drain tidak memindahkan pod yang sudah ada (kecuali toleration + eviction terpisah).",
         "Benar. `drain` evict pod (kecuali daemonset) dan menandai node not-ready/not-schedulable selama maintenance.",
         "Salah. `delete pod --all` membunuh pod di SEMUA namespace; tanpa drain, pod di node lain ikut kena."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-git-rebase",
@@ -190,7 +200,8 @@
         "Salah. `revert` membuat commit baru pembatal — riwayat tetap berantakan, malah lebih panjang.",
         "Salah. `reset --hard` ke origin/main MELEMPAR kerjaanmu — bukan merapikan.",
         "Salah. `merge --squash` menggabungkan branch LAIN ke branchmu, bukan merapisi commit lokal."
-      ]
+      ],
+      "topic": "git"
     },
     {
       "id": "devops-git-revert",
@@ -207,7 +218,8 @@
         "Salah. Menghapus branch lokal tidak memengaruhi commit di branch utama.",
         "Benar. `revert` membuat commit baru yang membalik perubahan — aman untuk branch yang sudah dibagikan.",
         "Salah. `push --force` menulis ulang history publik; kolaborator lain kebingungan (their local diverges)."
-      ]
+      ],
+      "topic": "git"
     },
     {
       "id": "devops-cd-stage-order",
@@ -224,7 +236,8 @@
         "Salah. Deploy sebelum validasi = buang waktu build/test kalau ternyata lint gagal.",
         "Salah. Deploy prod sebelum test selesai = risiko rilis tanpa jaminan.",
         "Salah. Build setelah deploy tidak masuk akal; artifact harus ada sebelum deploy."
-      ]
+      ],
+      "topic": "ci-cd"
     },
     {
       "id": "devops-cd-secrets",
@@ -241,7 +254,8 @@
         "Benar. Secret manager (Vault, SSM, CI encrypted vars) menjaga secret di luar VCS dan bisa di-rotate.",
         "Salah. `export-ignore` hanya mengabaikan saat `git archive`; file tetap ada di history dan bisa dibacadi repo.",
         "Salah. `git-filter-repo` membersihkan history, tapi hardcode tetap di code = akan di-commit lagi kapan-kapan."
-      ]
+      ],
+      "topic": "ci-cd"
     },
     {
       "id": "devops-ansible-idempotent",
@@ -258,7 +272,8 @@
         "Salah. `--check` hanya mode dry-run; tidak membuktikan idempotensi nyata.",
         "Salah. Bisa jadi deteksi, tapi `changed=0` dari run kedua adalah cara standar dan lebih langsung.",
         "Benar. Definisi praktis idempotensi Ansible: run kedua tidak mengubah apa pun (`changed=0`)."
-      ]
+      ],
+      "topic": "ansible"
     },
     {
       "id": "devops-ansible-limit",
@@ -275,7 +290,8 @@
         "Salah. `ansible` (ad-hoc) dengan module `playbook` bukan cara menjalankan playbook; yang benar `ansible-playbook`.",
         "Benar. `--limit` memfilter inventory ke subset (group/pattern) untuk run ini.",
         "Salah. `--tags` memfilter task yang bertag, bukan host group — konsep berbeda."
-      ]
+      ],
+      "topic": "ansible"
     },
     {
       "id": "devops-terraform-state",
@@ -292,7 +308,8 @@
         "Benar. Remote backend + locking mencegah concurrent-write conflict; per-env menjaga isolasi blast radius.",
         "Salah. State lokal per laptop = tidak ada single source of truth; drift tak terlihat.",
         "Salah. File server tanpa locking = race condition saat dua orang apply bersamaan."
-      ]
+      ],
+      "topic": "terraform"
     },
     {
       "id": "devops-nginx-proxy",
@@ -309,7 +326,8 @@
         "Benar. `proxy_pass` meneruskan request ke upstream (reverse proxy).",
         "Salah. `root` untuk path direktori file statis, bukan address upstream.",
         "Salah. `listen 3000` membuat Nginx dengar di 3000, bukan meneruskan ke sana."
-      ]
+      ],
+      "topic": "nginx-tls"
     },
     {
       "id": "devops-tls-renewal",
@@ -326,7 +344,8 @@
         "Salah. `openssl req -x509` membuat self-signed, bukan perpanjangan dari CA.",
         "Benar. ACME (Let's Encrypt dkk) + certbot renew otomatis memperpanjang sebelum expiry dan meng-reload web server.",
         "Salah. Download manual tiap minggu tidak menjamin sebelum expiry dan rawan lupa."
-      ]
+      ],
+      "topic": "nginx-tls"
     },
     {
       "id": "devops-slo-alert",
@@ -343,7 +362,8 @@
         "Salah. Alert di semua metrik = noise; tidak ada prioritas dan on-call kelelahan.",
         "Salah. Mematikan alert non-critical menyembunyikan masalah sebelum jadi critical.",
         "Salah. Menunggu 99% (3.6 jam/bulan downtime) terlambat — SLO yang sehat jauh lebih ketat."
-      ]
+      ],
+      "topic": "monitoring"
     },
     {
       "id": "devops-docker-ps-a",
@@ -360,7 +380,8 @@
         "Salah. `--all-stopped` bukan flag docker ps.",
         "Benar. `-a` = all: running + exited + created. Ini cara standar melihat semua container.",
         "Salah. Tanpa `-a`, hanya container yang SEDANG jalan yang tampil."
-      ]
+      ],
+      "topic": "docker"
     },
     {
       "id": "devops-docker-prune",
@@ -377,7 +398,8 @@
         "Salah. `rm $(docker ps -q)` hanya menghapus container yang JALAN (ps tanpa -a), dan tidak menyentuh image/network.",
         "Benar. `docker system prune` = stopped containers + dangling images + unused networks + build cache; volume TERSIMPAN (aman).",
         "Salah. `-a` juga menghapus SEMUA image yang tidak dipakai container running — lebih agresif dari yang diminta."
-      ]
+      ],
+      "topic": "docker"
     },
     {
       "id": "devops-docker-exec",
@@ -394,7 +416,8 @@
         "Salah. `docker run web-1` membuat container BARU (menyalin image), bukan masuk ke yang sedang jalan.",
         "Salah. `attach` menempel ke MAIN process container (bukan shell terpisah) — kalau main process mati, session-nya ikut.",
         "Salah. `docker login` itu untuk registry."
-      ]
+      ],
+      "topic": "docker"
     },
     {
       "id": "devops-docker-stop-kill",
@@ -411,7 +434,8 @@
         "Salah. Urutan terbalik: kill dulu membuang kesempatan graceful shutdown (flush buffer, tutup koneksi).",
         "Salah. `pause/unpause` (SIGSTOP/SIGCONT) hanya membekukan process — bukan shutdown.",
         "Salah. `rm --force` menghapus container — data overlay hilang, dan itu bukan urutan stop→kill."
-      ]
+      ],
+      "topic": "docker"
     },
     {
       "id": "devops-compose-scale",
@@ -428,7 +452,8 @@
         "Salah. `multiply` bukan subcommand compose.",
         "Benar. `up -d --scale <svc>=N` adalah cara resmi compose untuk mengubah replica.",
         "Salah. Subcommand `scale` tidak ada di docker compose."
-      ]
+      ],
+      "topic": "docker"
     },
     {
       "id": "devops-docker-save-load",
@@ -445,7 +470,8 @@
         "Salah. `docker cp` itu untuk file di dalam/out container, bukan image.",
         "Benar. `save` = serialisasi IMAGE (layer + metadata); `load` memulihkannya — transfer offline yang benar.",
         "Salah. `push/pull` butuh registry dan koneksi — padahal skenarionya offline."
-      ]
+      ],
+      "topic": "docker"
     },
     {
       "id": "devops-docker-tag-push",
@@ -462,7 +488,8 @@
         "Salah. Tag-nya `172.31.252.100/app` (tanpa :prod) tidak match push `:prod` — tag-nya yang harus sama persis.",
         "Salah. `docker send` bukan subcommand.",
         "Benar. `tag` memberi nama baru dengan prefix registry (tanpa menghapus tag lama), lalu `push` nama registry-nya."
-      ]
+      ],
+      "topic": "docker"
     },
     {
       "id": "devops-docker-multistage",
@@ -479,7 +506,8 @@
         "Salah. `image prune` menghapus image yang tidak terpakai, bukan mengecilkan image yang baru di-build.",
         "Benar. Multi-stage build: compile di stage berat, salin ARTIFAK akhir ke stage ringan — image final bersih dari toolchain.",
         "Salah. Kompresi transfer tidak mengurangi size layer yang tereksekusi."
-      ]
+      ],
+      "topic": "docker"
     },
     {
       "id": "devops-docker-healthcheck",
@@ -496,7 +524,8 @@
         "Salah. `ENTRYPOINT` itu process utama container — curl-nya akan MENGGANTI aplikasi dan mati setelah cek.",
         "Salah. `CMD` menggantikan command default — sama masalahnya dengan ENTRYPOINT.",
         "Salah. `EXPOSE` hanya dokumentasi port, tidak ada cek kesehatan."
-      ]
+      ],
+      "topic": "docker"
     },
     {
       "id": "devops-docker-arg-env",
@@ -513,7 +542,8 @@
         "Salah. `ARG` hanya ada WAKTU BUILD — nilainya hilang setelah build (dan bisa bocor via `docker history` jika default-nya secret).",
         "Salah. COPY .env ke layer = secret permanen di image (bisa dilihat siapa pun yang pull).",
         "Salah. `LABEL` itu metadata, tidak tersedia di runtime app."
-      ]
+      ],
+      "topic": "docker"
     },
     {
       "id": "devops-entrypoint-cmd",
@@ -530,7 +560,8 @@
         "Salah. `CMD` saja bisa ditimpa seluruhnya oleh `docker run img bash` — binary-nya tidak 'terkunci'.",
         "Salah. `ENTRYPOINT` saja mengunci args — `--up` tidak bisa diganti.",
         "Salah. `HEALTHCHECK` itu cek kesehatan, bukan command utama."
-      ]
+      ],
+      "topic": "docker"
     },
     {
       "id": "devops-docker-user",
@@ -547,7 +578,8 @@
         "Salah. Root di container = proses yang di-compromise dapat kontrol container (dan mount) — hindari untuk app biasa.",
         "Salah. `nobody` bisa dipakai, tapi user eksplisit lebih bersih (home, permission, audit).",
         "Salah. `systemd` bukan user yang relevan di image app."
-      ]
+      ],
+      "topic": "docker"
     },
     {
       "id": "devops-kubectl-label",
@@ -564,7 +596,8 @@
         "Benar. `-A` semua namespace + `-l app=web` label selector — persis permintaan.",
         "Salah. Tanpa `-A`, hanya namespace TERKUNCI (default) — pod di namespace lain terlewat.",
         "Salah. `grep` terhadap nama pod — false positive/negative, dan bukan selector resmi."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-kubectl-apply",
@@ -581,7 +614,8 @@
         "Salah. `replace` GAGAL jika objek BELUM ada — juga tidak idempotent.",
         "Salah. `kubectl run` itu untuk membuat deployment sederhana dari image, bukan apply manifest.",
         "Benar. `apply` = declarative & idempotent (create jika belum ada, update jika ada) — standar modern."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-kubectl-port-forward",
@@ -598,7 +632,8 @@
         "Salah. `kubectl cp` itu menyalin FILE, bukan forward port.",
         "Salah. `kubectl proxy` itu proxy API server (port default 8001), bukan forward ke service spesifik.",
         "Benar. `port-forward` membuka terowongan lokal (15432) → service (5432) via API server — akses debugging aman."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-kubectl-exec",
@@ -615,7 +650,8 @@
         "Salah. Urutan salah: command harus SETELAH `--`.",
         "Salah. `kubectl run` itu alternatif (pod baru), bukan menjalankan di pod yang ada — lebih berat.",
         "Salah. `port-forward` membuka akses port, bukan menjalankan command di dalam pod."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-kubectl-rollout-status",
@@ -632,7 +668,8 @@
         "Salah. `logs` menampilkan output aplikasi, bukan status rollout.",
         "Benar. `rollout status` menunggu dan melaporkan progres sampai complete (atau timeout) — tool resmi untuk memantau rollout.",
         "Salah. `get` satu snapshot (replicas ready) — tidak 'menunggu' sampai selesai."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-kubectl-rollout-undo",
@@ -649,7 +686,8 @@
         "Salah. `delete` menghapus deployment — pod ikut mati, bukan rollback.",
         "Salah. `rollout status` hanya memantau, tidak mengubah apa pun.",
         "Salah. Set image manual bisa jalan TAPI kamu perlu tahu image-nya; `undo` melakukannya otomatis dari riwayat."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-k8s-configmap",
@@ -666,7 +704,8 @@
         "Benar. ConfigMap = data non-secret terkelola; bisa di-update TANPA rebuild image (pod perlu restart untuk env).",
         "Salah. Secret itu untuk data sensitive (credential, key) — bukan untuk config umum.",
         "Salah. Hardcode = setiap perubahan butuh redeploy + edit manifest — tidak terkelola."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-k8s-pvc",
@@ -683,7 +722,8 @@
         "Salah. `emptyDir` kosong saat pod dibuat dan HILANG saat pod dihapus.",
         "Salah. `hostPath` mengikat pod ke node spesifik (tidak portabel, tidak dinamis).",
         "Salah. `/tmp` overlay container — hilang saat pod dihapus."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-k8s-liveness",
@@ -700,7 +740,8 @@
         "Salah. Startup = toleransi waktu START awal (untuk app lambat); bukan untuk hang di runtime.",
         "Salah. Limit CPU = throttle, bukan restart.",
         "Benar. Liveness = 'apakah app hidup?'; gagal berulang → container di-restart. Tepat untuk kasus hang."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-k8s-taints",
@@ -717,7 +758,8 @@
         "Salah. PodAntiAffinity mengatur jarak antar-pod, bukan seleksi node.",
         "Salah. Request GPU membuat pod TIDAK BISA di-schedule tanpa GPU (resource scheduling), tapi tidak EXKLUSIF dari pod non-GPU.",
         "Benar. Taint = 'push' (node menolak); toleration = pod menyatakan 'saya boleh di sini'. Kombinasi keduanya = seleksi satu arah."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-kubectl-top",
@@ -734,7 +776,8 @@
         "Salah. `logs` itu output aplikasi.",
         "Benar. `kubectl top` (dari metrics-server) = metrik real-time per-pod/node.",
         "Salah. `-o wide` menampilkan IP & node, bukan penggunaan resource."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-k8s-hpa",
@@ -751,7 +794,8 @@
         "Benar. HPA = autoscaling otomatis berdasarkan metrik (CPU/mem/custom) — persis permintaan.",
         "Salah. Cron scale manual tidak responsif terhadap beban aktual (dan tetap 'manual').",
         "Salah. Affinity menentukan DI MANA, bukan BERTAPA BANYAK."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-k8s-cronjob",
@@ -768,7 +812,8 @@
         "Salah. `Job` sekali jalan (manual/kubectl create job) — tidak ada schedule.",
         "Salah. DaemonSet = satu pod per node yang selalu jalan.",
         "Benar. `CronJob` = Job yang di-schedule cron — untuk pekerjaan periodik."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-k8s-ingress",
@@ -785,7 +830,8 @@
         "Salah. 2 LoadBalancer = 2 IP/endpoint — boros dan tidak scale.",
         "Salah. NodePort + DNS per-port bisa, tapi rawan dan tidak elegan (DNS mengarah ke port, bukan host).",
         "Salah. Port-forward itu akses debugging, bukan endpoint produksi."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-git-bisect",
@@ -802,7 +848,8 @@
         "Salah. Baca diff manual 200 commit = lambat dan rawat salah.",
         "Salah. Revert satu-satu = O(n) dan mengotori history.",
         "Salah. `blame` menunjukkan BAIK commit terakhir yang menyentuh BARIS — berguna, tapi tidak otomatis mengidentifikasi commit penyebab (dan untuk build failure, baris penyebab belum tentu yang diblame)."
-      ]
+      ],
+      "topic": "git"
     },
     {
       "id": "devops-git-cherry-pick",
@@ -819,7 +866,8 @@
         "Benar. `cherry-pick` mengambil SATU commit (dibuat ulang dengan hash baru) ke branch aktif — tepat untuk backport fix.",
         "Salah. `merge` mengambil SELURUH branch — tidak selektif.",
         "Salah. `rebase` memindahkan seluruh series commit, bukan satu."
-      ]
+      ],
+      "topic": "git"
     },
     {
       "id": "devops-cd-bluegreen",
@@ -836,7 +884,8 @@
         "Benar. Blue-Green: dua set lengkap, switch atomic (load balancer) — rollback = balikkan switch.",
         "Salah. Canary: traffic sebagian ke versi baru secara bertahap — bukan switch sekaligus dua environment.",
         "Salah. Rolling: pod diganti satu per satu — bukan dua environment penuh."
-      ]
+      ],
+      "topic": "ci-cd"
     },
     {
       "id": "devops-cd-canary",
@@ -853,7 +902,8 @@
         "Salah. Rolling update mengganti pod bertahap — tidak berbasis persentase TRAFFIC.",
         "Salah. Feature flag on/off global tidak membagi traffic bertahap secara otomatis.",
         "Benar. Canary = exposure bertahap ke sebagian traffic dengan gate metrik — persis skenario."
-      ]
+      ],
+      "topic": "ci-cd"
     },
     {
       "id": "devops-ansible-handler",
@@ -870,7 +920,8 @@
         "Benar. Handler hanya dijalankan saat task-nya `changed` — idempotent dan efisien.",
         "Salah. Task reload polos dijalankan TIAP play (walau config tidak berubah).",
         "Salah. `set_fact` hanya variabel, tidak memicu apa-apa."
-      ]
+      ],
+      "topic": "ansible"
     },
     {
       "id": "devops-ansible-template",
@@ -887,7 +938,8 @@
         "Benar. Modul `template` merender Jinja2 ({{ var }}) dari variable Ansible ke destination — alat resmi untuk config dinamis.",
         "Salah. `copy` menyalin HARGA apa adanya — placeholder tidak di-render.",
         "Salah. `file` hanya managing metadata (permission, ownership, existence)."
-      ]
+      ],
+      "topic": "ansible"
     },
     {
       "id": "devops-terraform-plan",
@@ -904,7 +956,8 @@
         "Salah. `destroy` menghapus semuanya — kebalikan dari preview.",
         "Salah. `refresh` sinkronkan state dengan realita (preview-nya `plan -refresh-only`).",
         "Benar. `plan` = diff terplan: apa yang akan dicreate/diupdate/dihapus — langkah wajib sebelum apply."
-      ]
+      ],
+      "topic": "terraform"
     },
     {
       "id": "devops-terraform-state-mv",
@@ -921,7 +974,8 @@
         "Salah. Destroy+apply = instance HILANG (IP/data berubah) — overkill dan berisiko.",
         "Salah. Edit .tfstate manual = rawan korup (bukan cara yang didukung).",
         "Salah. `taint` memaksa destroy+create resource itu — kebalikan dari yang diinginkan."
-      ]
+      ],
+      "topic": "terraform"
     },
     {
       "id": "devops-nginx-upstream",
@@ -938,7 +992,8 @@
         "Salah. `proxy_pass` hanya menerima SATU URL (bukan daftar koma).",
         "Salah. `load_balance` bukan directive nginx.",
         "Salah. `upstream` bukan bagian dari blok `server` seperti itu."
-      ]
+      ],
+      "topic": "nginx-tls"
     },
     {
       "id": "devops-nginx-proxy-header",
@@ -955,7 +1010,8 @@
         "Salah. `client_ip_header` bukan directive nginx.",
         "Salah. `real_ip_from` bukan directive (yang ada `set_real_ip_from` untuk module realip).",
         "Benar. `X-Forwarded-For` membawa IP klien asli; backend membacanya (misal via lib atau module)."
-      ]
+      ],
+      "topic": "nginx-tls"
     },
     {
       "id": "devops-openssl-enddate",
@@ -972,7 +1028,8 @@
         "Salah. Header HTTP tidak memuat expiry sertifikat (itu di TLS handshake, bukan HTTP).",
         "Benar. Pipeline: ambil sertifikat dari server (`s_client`) → ekstrak enddate (`x509 -noout -enddate`).",
         "Salah. `-in db.fds.co.id` butuh FILE lokal — di sini sertifikatnya di server."
-      ]
+      ],
+      "topic": "nginx-tls"
     },
     {
       "id": "devops-dns-a-cname",
@@ -989,7 +1046,8 @@
         "Benar. A record = apex menunjuk langsung ke IP — standar dan aman (CNAME di apex dilarang RFC secara historis, meski ada CNAME flattening di beberapa registrar).",
         "Salah. CNAME di apex = konflik dengan record SOA/NS (apex butuh tipe-tipe khusus); A lebih tepat.",
         "Salah. TXT itu metadata (verifikasi, DMARC), bukan pointer IP."
-      ]
+      ],
+      "topic": "dns-scripting"
     },
     {
       "id": "devops-jq",
@@ -1006,7 +1064,8 @@
         "Salah. `sed 3p` mengambil baris ke-3 dari output pretty-print — bukan struktur JSON.",
         "Salah. `jq` tidak menerima URL (butuh `curl`/`http_get`); dan `.[2]`-nya hilang.",
         "Benar. `jq` = JSON processor: path `.[2].email` mengambil field email dari elemen index 2 — presisi."
-      ]
+      ],
+      "topic": "dns-scripting"
     },
     {
       "id": "devops-curl-flags",
@@ -1023,7 +1082,8 @@
         "Salah. `-o /dev/null` membuang BODY, tapi exit code tetap 0 untuk 404/500.",
         "Salah. `--fail` (=-f) ada, tapi tidak ada `--retry` dan tidak silent.",
         "Benar. `-f` (fail, exit != 0 untuk >= 400) + `-s` (silent) + `-S` (tetap tampil error) + `--retry 3` — lengkap sesuai permintaan."
-      ]
+      ],
+      "topic": "dns-scripting"
     },
     {
       "id": "devops-docker-history",
@@ -1040,7 +1100,8 @@
         "Salah. `diff` itu untuk perubahan filesystem CONTAINER (vs image), bukan struktur layer image.",
         "Salah. `images -v` itu untuk image V2 (format lama), bukan per-layer.",
         "Benar. `history` menampilkan daftar layer (command, size, creator) — alat diagnosis ukuran image."
-      ]
+      ],
+      "topic": "docker"
     },
     {
       "id": "devops-docker-inspect-format",
@@ -1057,7 +1118,8 @@
         "Salah. `ps -q` itu ID container, bukan IP.",
         "Benar. `inspect -f` dengan Go template = ekstraksi field presisi, output bersih untuk dipipe ke script.",
         "Salah. `grep IP` terhadap JSON mentah = rapuh (format berubah, false positive di key lain)."
-      ]
+      ],
+      "topic": "docker"
     },
     {
       "id": "devops-docker-diff",
@@ -1074,7 +1136,8 @@
         "Benar. `docker diff <container>` = filesystem diff (C=changed, A=added, ?=deleted) vs base image.",
         "Salah. `history` itu layer image, bukan perubahan runtime container.",
         "Salah. `inspect` metadata (config, state), bukan diff file."
-      ]
+      ],
+      "topic": "docker"
     },
     {
       "id": "devops-docker-commit",
@@ -1091,7 +1154,8 @@
         "Salah. `save` itu untuk IMAGE (container tidak bisa di-save langsung).",
         "Salah. `build` butuh Dockerfile, bukan container.",
         "Benar. `commit` membekukan state container (layer + config) menjadi image baru."
-      ]
+      ],
+      "topic": "docker"
     },
     {
       "id": "devops-docker-network-create",
@@ -1108,7 +1172,8 @@
         "Benar. `network create -d bridge <nama>` — bridge driver default, network terisolasi.",
         "Salah. `add` bukan subcommand network.",
         "Salah. `docker net` bukan perintah."
-      ]
+      ],
+      "topic": "docker"
     },
     {
       "id": "devops-docker-volume-create",
@@ -1125,7 +1190,8 @@
         "Salah. `volume mkdir` bukan subcommand.",
         "Benar. `volume create <nama>` membuat named volume di driver default (local).",
         "Salah. mkdir manual = host path, bukan named volume yang dikelola (dan path-nya juga salah)."
-      ]
+      ],
+      "topic": "docker"
     },
     {
       "id": "devops-compose-down",
@@ -1142,7 +1208,8 @@
         "Salah. `pause` bukan subcommand compose yang umum (pause = suspend, bukan teardown).",
         "Benar. `down` = stop + remove container + network (volume tidak ikut, aman).",
         "Salah. `stop` hanya menghentikan; container & network tetap ada (tidak 'clean')."
-      ]
+      ],
+      "topic": "docker"
     },
     {
       "id": "devops-compose-build-nocache",
@@ -1159,7 +1226,8 @@
         "Salah. Prune -a menghapus SEMUA image yang tidak terpakai (bisa merusak image lain) — overkill; build saja sudah bisa --no-cache.",
         "Salah. `rebuild` bukan subcommand compose (yang ada `build`).",
         "Benar. `--no-cache` memaksa build dari nol (semua layer di-rebuild)."
-      ]
+      ],
+      "topic": "docker"
     },
     {
       "id": "devops-docker-workdir",
@@ -1176,7 +1244,8 @@
         "Salah. `ENV CWD` hanya variabel — process tidak otomatis membaca-nya.",
         "Salah. ENTRYPOINT itu untuk binary utama, bukan untuk cd.",
         "Benar. `WORKDIR` menetapkan working directory default untuk CMD/ENTRYPOINT/exec — bersih dan idiomatic."
-      ]
+      ],
+      "topic": "docker"
     },
     {
       "id": "devops-kubectl-create-ns",
@@ -1193,7 +1262,8 @@
         "Salah. `apply` butuh file (`-f`), bukan nama object.",
         "Salah. `kubectl ns` bukan subcommand (ada `get namespaces`).",
         "Benar. `create namespace <nama>` = cara langsung (atau via manifest YAML)."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-kubectl-events",
@@ -1210,7 +1280,8 @@
         "Salah. `kubectl logs` = output aplikasi, bukan event scheduler/probe.",
         "Benar. `get events --sort-by=.lastTimestamp` = event terurut waktu (di namespace aktif; tambah `-A` untuk semua).",
         "Salah. `get pods -o wide` status pod, bukan event."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-kubectl-pods-awide",
@@ -1227,7 +1298,8 @@
         "Salah. `get nodes` itu daftar NODE, bukan pod.",
         "Benar. `-A` semua namespace + `-o wide` menambah kolom POD IP & NODE — persis snapshot yang diminta.",
         "Salah. Tanpa `-o wide`, kolom IP/node tidak tampil."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-k8s-crashloop",
@@ -1244,7 +1316,8 @@
         "Salah. Naikkan limit tanpa diagnosis = guessing (dan OOMKilled ≠ CrashLoopBackOff generik).",
         "Benar. Log dari container yang MATI (`--previous`) menunjukkan error penyebab crash — informasi paling langsung.",
         "Salah. `describe node` untuk masalah node (disk pressure, dll) — bukan root cause app crash."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-k8s-imagepull",
@@ -1261,7 +1334,8 @@
         "Benar. ImagePullBackOff = kubelet tidak bisa ambil image: typo tag, atau registry private butuh secret yang tidak terpasang.",
         "Salah. CPU kurang = Pending (unschedulable), bukan ImagePull.",
         "Salah. ConfigMap hilang = CreateContainerConfigError, bukan pull failure."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-k8s-oomkilled",
@@ -1278,7 +1352,8 @@
         "Salah. Image korup = ImagePull/ContainerCreating error.",
         "Benar. OOMKilled = penggunaan memori melewati `limits.memory` (cgroup kill). Solusi: limit lebih besar, atau perbaiki efisiensi/leak.",
         "Salah. CPU tidak memicu OOMKilled (CPU di-throttle, bukan di-kill)."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-kubectl-scale",
@@ -1295,7 +1370,8 @@
         "Salah. `set replicas` bukan subcommand (yang ada `set image/resources/env`).",
         "Salah. `edit` berfungsi tapi manual & rawat typo — bukan perintah skala cepat.",
         "Salah. `--replicas` bukan flag `kubectl apply`."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-kubectl-set-image",
@@ -1312,7 +1388,8 @@
         "Salah. `apply -f manifest` juga valid sebagai cara, tapi `set image` adalah perintah yang dimaksud (tanpa edit file).",
         "Salah. `kubectl update` bukan subcommand.",
         "Benar. `set image <deployment> <container>=<image>` — cara cepat immutable-trigger rolling update."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-kubectl-label-add",
@@ -1329,7 +1406,8 @@
         "Benar. `kubectl label <obj> key=value` menambah/mengganti label.",
         "Salah. `annotate` itu untuk ANNOTATION (metadata non-seleksi), bukan label.",
         "Salah. `set label` bukan subcommand (yang ada `set image/env/resources`)."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-kubectl-jsonpath",
@@ -1346,7 +1424,8 @@
         "Salah. `--image` bukan flag `kubectl get`.",
         "Benar. `-o jsonpath='{...}'` = ekstraksi field presisi, output bersih (cocok untuk script).",
         "Salah. `grep image` rapuh (bisa match imagePullPolicy juga)."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-kubectl-dryrun",
@@ -1363,7 +1442,8 @@
         "Salah. `diff` menunjukkan perbedaan, tapi bukan validasi server-side penuh.",
         "Salah. `--validate` itu flag lama (client-side); `create` juga tidak dry-run.",
         "Benar. `--dry-run=server` = API server memvalidasi penuh (termasuk RBAC) tanpa commit — validasi terkuat."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-kubectl-context",
@@ -1380,7 +1460,8 @@
         "Salah. `cluster use` bukan subcommand.",
         "Benar. `config use-context <nama>` mengganti context aktif (dan bisa `--namespace` sekalian).",
         "Salah. `switch` bukan subcommand."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-kubectl-wait",
@@ -1397,7 +1478,8 @@
         "Benar. `wait --for=condition=Available` blocking dengan timeout — idiom pipeline yang benar.",
         "Salah. `sleep` = guessing (bukan observasi kondisi nyata).",
         "Salah. `rollout status` juga valid, tapi `wait --for=condition` adalah perintah yang paling tepat untuk 'menunggu kondisi' generik."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-helm-install",
@@ -1414,7 +1496,8 @@
         "Salah. `helm deploy` bukan subcommand (yang ada `install`/`upgrade`).",
         "Benar. `helm install <release> <chart> -n <ns> --create-namespace -f <values>` — sintaks helm yang benar.",
         "Salah. `helm create` untuk membuat chart TEMPLATE baru, bukan deploy."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-kustomize-apply",
@@ -1431,7 +1514,8 @@
         "Benar. `kubectl apply -k <dir>` = build kustomization + apply dalam satu perintah (cara standar).",
         "Salah. `-f base` hanya apply base tanpa patch/kustomization (override hilang).",
         "Salah. `kubectl kustomize | apply -f -` juga bekerja, tapi `-k` adalah idiom yang lebih langsung dan resmi."
-      ]
+      ],
+      "topic": "k8s"
     },
     {
       "id": "devops-git-merge-abort",
@@ -1448,7 +1532,8 @@
         "Salah. `checkout -- .` hanya mengembalikan file TRACKED ke index/HEAD — konflik merge tetap ada.",
         "Salah. `rebase --abort` untuk rebase, bukan merge.",
         "Benar. `merge --abort` membatalkan merge yang sedang berjalan (kembali ke commit sebelum merge, file bersih)."
-      ]
+      ],
+      "topic": "git"
     },
     {
       "id": "devops-git-checkout-b",
@@ -1465,7 +1550,8 @@
         "Salah. `git branch <nama>` membuat branch tapi TIDAK pindah — kamu tetap di main.",
         "Salah. `checkout feature/login` GAGAL karena branch-nya belum ada.",
         "Salah. `new-branch` bukan subcommand."
-      ]
+      ],
+      "topic": "git"
     },
     {
       "id": "devops-git-tag",
@@ -1482,7 +1568,8 @@
         "Salah. `git push` polos TIDAK mengirim tag (harus `--tags` atau sebut nama tag).",
         "Salah. `release` bukan subcommand git.",
         "Salah. `-t` di commit bukan untuk tag."
-      ]
+      ],
+      "topic": "git"
     },
     {
       "id": "devops-git-fetch-pull",
@@ -1499,7 +1586,8 @@
         "Benar. `fetch` mengunduh commit baru ke remote-tracking branch (origin/main) — tanpa menyentuh working tree.",
         "Salah. `pull` = fetch + merge langsung — branch lokalmu berubah.",
         "Salah. `merge origin/main` menggabungkan (mengubah branch lokal)."
-      ]
+      ],
+      "topic": "git"
     },
     {
       "id": "devops-git-reflog",
@@ -1516,7 +1604,8 @@
         "Salah. `status` = working tree vs index, bukan riwayat.",
         "Salah. `stash list` hanya untuk commit yang di-stash (bukan yang di-reset).",
         "Benar. `reflog` mencatat SEMUA pergerakan HEAD (termasuk commit yang 'hilang' dari log) — bisa di-recover via `git reset --hard <hash>`. "
-      ]
+      ],
+      "topic": "git"
     },
     {
       "id": "devops-ci-needs",
@@ -1533,7 +1622,8 @@
         "Benar. `needs` (GitLab CI) = dependensi eksplisit antar-job; deploy hanya jalan jika semua needs sukses.",
         "Salah. `after` bukan keyword CI (urutan pipeline di GitLab ditentukan `needs`/stages).",
         "Salah. `depends_on` itu istilah Docker Compose, bukan CI."
-      ]
+      ],
+      "topic": "ci-cd"
     },
     {
       "id": "devops-ci-matrix",
@@ -1550,7 +1640,8 @@
         "Benar. `matrix` memperluas satu definisi job menjadi beberapa instance (DRY, mudah ditambah versi).",
         "Salah. 3 job manual = duplikasi konfigurasi (rawan drift saat ditambah versi).",
         "Salah. `node_versions` bukan keyword CI."
-      ]
+      ],
+      "topic": "ci-cd"
     },
     {
       "id": "devops-ansible-register-when",
@@ -1567,7 +1658,8 @@
         "Salah. Dua play = overhead; register+when sudah cukup di satu play.",
         "Benar. `register` menyimpan hasil task, `when` mengevaluasi kondisional — pola resmi Ansible untuk tugas kondisional.",
         "Salah. 'Idempotent kan' — package module memang idempotent, tapi pertanyaannya eksplisit: hanya jika file belum ada (cek dulu)."
-      ]
+      ],
+      "topic": "ansible"
     },
     {
       "id": "devops-ansible-vault",
@@ -1584,7 +1676,8 @@
         "Benar. `ansible-vault` = enkripsi native (Fernet); saat run, vault password diberikan (CLI/env/var file).",
         "Salah. base64 itu ENKODING, bukan enkripsi — siapa pun bisa decode.",
         "Salah. chmod 000 = tidak ada yang bisa baca (termasuk Ansible saat run)."
-      ]
+      ],
+      "topic": "ansible"
     },
     {
       "id": "devops-terraform-init",
@@ -1601,7 +1694,8 @@
         "Salah. `plan` butuh provider yang sudah di-init (akan error tanpa init).",
         "Salah. `apply` juga butuh init.",
         "Salah. `fmt` = format code, bukan setup."
-      ]
+      ],
+      "topic": "terraform"
     },
     {
       "id": "devops-nginx-reload",
@@ -1618,7 +1712,8 @@
         "Salah. `restart` mematikan semua worker — ada jeda (downtime) walau singkat.",
         "Salah. stop lalu start = downtime jelas (lebih lama dari restart).",
         "Salah. `kill -HUP 1` (PID 1) = restart container; tidak valid di host biasa."
-      ]
+      ],
+      "topic": "nginx-tls"
     },
     {
       "id": "devops-nginx-ssl",
@@ -1635,7 +1730,8 @@
         "Salah. `ssl on` bukan directive (di nginx modern, TLS dinyalakan via `listen 443 ssl`); dan certificate-nya tidak di-set.",
         "Salah. `https true` bukan syntax nginx.",
         "Salah. `ssl_listen` bukan directive."
-      ]
+      ],
+      "topic": "nginx-tls"
     },
     {
       "id": "devops-nginx-limit-req",
@@ -1652,7 +1748,8 @@
         "Salah. `throttle` bukan directive nginx.",
         "Salah. `rate_limit` bukan directive.",
         "Benar. `limit_req_zone` (di http block) mendefinisikan zona + rate; `limit_req` (di server/location) menerapkannya — module resmi rate limiting."
-      ]
+      ],
+      "topic": "nginx-tls"
     },
     {
       "id": "devops-openssl-san",
@@ -1669,7 +1766,8 @@
         "Benar. `-text` men-decode seluruh sertifikat (termasuk extension SAN); grep section-nya.",
         "Salah. `san` bukan subcommand openssl.",
         "Salah. `cert-info` bukan util standar."
-      ]
+      ],
+      "topic": "nginx-tls"
     },
     {
       "id": "devops-bash-strict",
@@ -1686,7 +1784,8 @@
         "Benar. `-e` (exit on error) + `-u` (undefined var = error) + `-o pipefail` (pipeline gagal jika salah satu stage gagal) — trio strict mode.",
         "Salah. `-e` saja: variabel undefined tetap lolos, pipeline tetap bisa 'sukses' walau stage tengah gagal.",
         "Salah. `-x` = trace (debug), bukan strictness."
-      ]
+      ],
+      "topic": "dns-scripting"
     },
     {
       "id": "devops-prom-up",
@@ -1703,7 +1802,8 @@
         "Salah. `up == 0` itu kondisi 'bukan up' (semua target yang TIDAK ada) — dan `for: 5m` lebih lambat dari permintaan.",
         "Salah. Curl manual tidak terintegrasi ke alerting system (dan tidak ada state/alert).",
         "Salah. Cron ping = monitoring terpisah, bukan alert Prometheus."
-      ]
+      ],
+      "topic": "monitoring"
     }
   ],
   "examSize": 60

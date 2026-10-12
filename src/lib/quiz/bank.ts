@@ -23,6 +23,8 @@ function asInt(v: unknown, file: string, field: string, min: number, max: number
 function validateQuestion(q: unknown, file: string): QuizQuestion {
   const r = q as Record<string, unknown>;
   const id = asString(r.id, file, "id");
+  const topic = asString(r.topic, file, `${id}: topic`);
+  if (topic.length > 40) fail(file, `${id}: topic too long (max 40 chars)`);
   const prompt = asString(r.prompt, file, `${id}: prompt`);
   if (!Array.isArray(r.options) || r.options.length !== 4) fail(file, `${id}: options must have exactly 4 entries`);
   r.options.forEach((o, i) => asString(o, file, `${id}: options[${i}]`));
@@ -31,6 +33,7 @@ function validateQuestion(q: unknown, file: string): QuizQuestion {
   r.explanations.forEach((e, i) => asString(e, file, `${id}: explanations[${i}]`));
   return {
     id,
+    topic,
     prompt,
     options: r.options as [string, string, string, string],
     correctIndex,

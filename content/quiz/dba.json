@@ -20,7 +20,8 @@
         "Salah. `-u` bukan flag psql (itunya `-U` user); host-nya `-h` (huruf kecil), bukan `-H`.",
         "Benar. `-h` host, `-U` user, `-d` database — sintaks standar psql.",
         "Salah. Bukan sintaks psql (bentuk URI ada: psql postgresql://admin@127.0.0.1/app)."
-      ]
+      ],
+      "topic": "sql-basics"
     },
     {
       "id": "dba-createdb-encoding",
@@ -37,7 +38,8 @@
         "Salah. `CHARSET` bukan syntax PostgreSQL (itulah gaya MySQL).",
         "Salah. Encoding harus diberikan sebagai string, bukan tanpa tanda kutip di sana.",
         "Salah. Namanya `LOCALE`/`LC_COLLATE` harus berupa nilai locale, dan `LCOLLATE` tanpa prefix bukan syntax."
-      ]
+      ],
+      "topic": "sql-basics"
     },
     {
       "id": "dba-grant-select",
@@ -54,7 +56,8 @@
         "Salah. Urutan keyword-nya kacau; GRANT tidak memakai pola begini.",
         "Salah. `FOR` bukan bagian syntax GRANT; receiver-nya `TO`.",
         "Salah. `ALLOW` bukan statement PostgreSQL."
-      ]
+      ],
+      "topic": "sql-basics"
     },
     {
       "id": "dba-explain-analyze",
@@ -71,7 +74,8 @@
         "Salah. `ANALYZE` tanpa EXPLAIN itu untuk update statistics, bukan plan query.",
         "Benar. `ANALYZE` menjalankan query dan mengukur waktu nyata; `BUFFERS` menambah detail I/O.",
         "Salah. Opsi EXPLAIN harus di dalam kurung setelah EXPLAIN, bukan di ekor query."
-      ]
+      ],
+      "topic": "query-tuning"
     },
     {
       "id": "dba-index-column",
@@ -88,7 +92,8 @@
         "Salah. Membuat PK baru mengunci semantics data (unique + not null) yang tidak diminta.",
         "Benar. Index B-tree biasa pada kolom yang di-filter — persis kebutuhan query equality ini.",
         "Salah. Index composite (customer_id, created_at) overkill; kolom kedua tidak dipakai filter ini (tetap bisa jalan, tapi bukan jawaban paling tepat)."
-      ]
+      ],
+      "topic": "indexes"
     },
     {
       "id": "dba-vacuum-analyze",
@@ -105,7 +110,8 @@
         "Salah. `OPTIMIZE` bukan statement PostgreSQL (itulah MySQL).",
         "Salah. `REINDEX` membangun ulang index — tidak membersihkan bloat heap.",
         "Benar. `VACUUM` (non-full) membebaskan dead row tanpa lock berat; `(ANALYZE)` sekalian refresh statistik."
-      ]
+      ],
+      "topic": "vacuum-mvcc"
     },
     {
       "id": "dba-analyze-stats",
@@ -122,7 +128,8 @@
         "Salah. REINDEX memperbaiki index, bukan statistik; plan jelek pasca-COPY biasanya masalah statistik.",
         "Salah. shared_buffers memengaruhi performa, bukan pilihan plan (sequencial vs index).",
         "Salah. VACUUM FULL tidak terkait kualitas plan pasca-load."
-      ]
+      ],
+      "topic": "vacuum-mvcc"
     },
     {
       "id": "dba-wal-replica",
@@ -139,7 +146,8 @@
         "Salah. `archive_mode` untuk WAL archiving (PITR/backup), bukan streaming replication langsung.",
         "Benar. Streaming replication butuh WAL level minimal `replica` (default modern PostgreSQL memang sudah `replica` — tetap, ini parameter kunci).",
         "Salah. `synchronous_commit` mengatur durasi commit, bukan prasyarat replikasi."
-      ]
+      ],
+      "topic": "replication"
     },
     {
       "id": "dba-pgdump-custom",
@@ -156,7 +164,8 @@
         "Salah. Bukan syntax pg_dump; `-F` adalah format, bukan `-F c` terpisah, dan urutan argumen salah.",
         "Salah. `--custom` bukan flag; format dipilih lewat `-F c`, dan output custom bukan .sql.",
         "Salah. `pg_dumpall` untuk seluruh cluster (global objects), bukan satu database."
-      ]
+      ],
+      "topic": "backup-restore"
     },
     {
       "id": "dba-pgrestore-parallel",
@@ -173,7 +182,8 @@
         "Benar. `-j 4` menjalankan 4 job paralel (hanya untuk format custom/tar).",
         "Salah. Flag paralelnya `-j`, bukan `--parallel`.",
         "Salah. `psql` membaca format plain (.sql), bukan custom (biner) — akan error."
-      ]
+      ],
+      "topic": "backup-restore"
     },
     {
       "id": "dba-pitr-target",
@@ -190,7 +200,8 @@
         "Salah. `recovery_target_lsn` menentukan target berbasis LSN — valid untuk PITR, tapi pertanyaan spesifik ke WAKTU.",
         "Salah. `restore_command` hanya cara mengambil WAL dari arsip, bukan target-nya.",
         "Salah. `archive_cleanup_command` untuk membersihkan arsip setelah recovery selesai."
-      ]
+      ],
+      "topic": "backup-restore"
     },
     {
       "id": "dba-partition-range",
@@ -207,7 +218,8 @@
         "Salah. GIN untuk data terstruktur (jsonb, array, full-text); untuk kolom timestamp, B-tree yang tepat.",
         "Salah. VACUUM FULL pada table raksasa itu lock berat dan tidak menyelesaikan masalah ukuran.",
         "Benar. Declarative partitioning per bulan (range) membuat planner hanya menyapu partisi relevan (partition pruning)."
-      ]
+      ],
+      "topic": "partitioning"
     },
     {
       "id": "dba-mvcc-bloat",
@@ -224,7 +236,8 @@
         "Benar. MVCC: setiap versi baris tetap valid selama ada transaksi dengan snapshot yang membutuhkan xmin-nya (hot/cold standby & long-running txn).",
         "Salah. Autovacuum tidak rusak; dia sengaja menahan reclamation demi konsistensi transaksi.",
         "Salah. REINDEX tidak memengaruhi reclamation dead row."
-      ]
+      ],
+      "topic": "vacuum-mvcc"
     },
     {
       "id": "dba-lock-forupdate",
@@ -241,7 +254,8 @@
         "Salah. `FOR SHARE` (FOR NO KEY UPDATE/FOR SHARE) mengunci untuk baca — writer lain yang menunggu, kebalikan dari yang diminta.",
         "Salah. `LOCK TABLE` mengunci SELURUH table — terlalu berat untuk satu baris.",
         "Salah. `NOWAIT` itu modifier row-lock (gagal cepat alih-alih menunggu), bukan mekanisme lock itu sendiri."
-      ]
+      ],
+      "topic": "transactions"
     },
     {
       "id": "dba-isolation-repeatable",
@@ -258,7 +272,8 @@
         "Salah. REPEATABLE READ sudah cukup mencegah non-repeatable read; SERIALIZABLE tambahan mencegah anomalies tingkat transaksi.",
         "Benar. REPEATABLE READ memakai snapshot per-transaksi: sekali baca, hasil konsisten sepanjang transaksi.",
         "Salah. READ COMMITTED (default) membuat setiap statement punya snapshot baru — justru memungkinkan non-repeatable read."
-      ]
+      ],
+      "topic": "transactions"
     },
     {
       "id": "dba-hba-rule",
@@ -275,7 +290,8 @@
         "Salah. `local` itu untuk koneksi socket Unix dan tidak memakai kolom alamat IP.",
         "Salah. `reject` menolak koneksi — kebalikan dari yang diinginkan.",
         "Benar. `host` (TCP) + range CIDR + `scram-sha-256` = password terenkripsi, persis kebijakan yang diminta."
-      ]
+      ],
+      "topic": "sql-basics"
     },
     {
       "id": "dba-stat-activity",
@@ -292,7 +308,8 @@
         "Benar. `pg_stat_activity` menampilkan koneksi aktif, query saat ini, dan durasi (`state`, `query_start`).",
         "Salah. `pg_locks` menampilkan lock yang dipegang/ditunggu — berguna untuk deadlock, tapi bukan daftar query-nya.",
         "Salah. Tidak ada statement `SHOW running_queries`."
-      ]
+      ],
+      "topic": "operations"
     },
     {
       "id": "dba-connection-pooler",
@@ -309,7 +326,8 @@
         "Salah. VACUUM FULL tidak memengaruhi jumlah koneksi yang diizinkan.",
         "Benar. Pooler multiplex ribuan klien ke puluhan koneksi DB — solusi standar untuk beban koneksi tinggi.",
         "Salah. 10.000 koneksi membebani memori & scheduling; menaikkan limit menyembunyikan masalah, bukan menyelesaikan."
-      ]
+      ],
+      "topic": "operations"
     },
     {
       "id": "dba-logical-publication",
@@ -326,7 +344,8 @@
         "Salah. Tidak ada statement `PUBLISH`.",
         "Salah. `REPLICA IDENTITY` mengatur kolom yang dipakai subscription untuk identifikasi baris — langkah terkait, tapi bukan pembuatan publication.",
         "Benar. `CREATE PUBLICATION ... FOR TABLE` mendefinisikan set object yang dipublish (sekarang `FOR ALL TABLES` juga ada)."
-      ]
+      ],
+      "topic": "replication"
     },
     {
       "id": "dba-archiver-check",
@@ -343,7 +362,8 @@
         "Benar. `pg_ls_walarchives()` membandingkan WAL yang harus terarsip vs yang sudah ada di arsip — langsung terlihat status failed/missing.",
         "Salah. `archive_mode=on` hanya membuktikan konfigurasinya, bukan bahwa arsip berjalan.",
         "Salah. Melihat direktori WAL lokal tidak membuktikan file sudah sampai di arsip."
-      ]
+      ],
+      "topic": "backup-restore"
     },
     {
       "id": "dba-psql-describe",
@@ -360,7 +380,8 @@
         "Salah. `\\du` = list role/user.",
         "Benar. `\\d <table>` = describe: kolom, tipe, default, index, dan constraint table tersebut.",
         "Salah. `\\l` = list database di cluster."
-      ]
+      ],
+      "topic": "sql-basics"
     },
     {
       "id": "dba-create-role-login",
@@ -377,7 +398,8 @@
         "Salah. `WITH` bukan bagian syntax CREATE ROLE untuk nama.",
         "Benar. `LOGIN` memberi hak membuat koneksi; password wajib ada untuk autentikasi password.",
         "Salah. Tanpa `LOGIN`, role tidak bisa login sama sekali (meski ada password)."
-      ]
+      ],
+      "topic": "sql-basics"
     },
     {
       "id": "dba-grant-schema-tables",
@@ -394,7 +416,8 @@
         "Salah. `ALLOW` bukan statement PostgreSQL.",
         "Benar. `ON ALL TABLES IN SCHEMA` menyasar semua table eksisting di schema itu dalam satu statement.",
         "Salah. Privilege pada SCHEMA (CREATE/USAGE) berbeda dari privilege pada TABLE-nya."
-      ]
+      ],
+      "topic": "sql-basics"
     },
     {
       "id": "dba-default-privileges",
@@ -411,7 +434,8 @@
         "Salah. Mengubah owner ke app mengubah semantics kepemilikan seluruh table — overkill dan salah arah.",
         "Salah. SUPERUSER membuat app bisa melakukan apa pun — melanggar least privilege.",
         "Benar. Default privileges berlaku untuk objek yang DIBUAT KE DEPANNYA oleh role tertentu — persis kebutuhannya."
-      ]
+      ],
+      "topic": "sql-basics"
     },
     {
       "id": "dba-add-unique-constraint",
@@ -428,7 +452,8 @@
         "Benar. `ADD CONSTRAINT <name> UNIQUE (kolom)` adalah sintaks standar; nama eksplisit memudahkan DROP/diagnosis.",
         "Salah. `MODIFY ... UNIQUE` itu syntax Oracle, bukan PostgreSQL.",
         "Salah. `CREATE UNIQUE` adalah index, bukan constraint table; syntax-nya juga `CREATE UNIQUE INDEX ... ON`."
-      ]
+      ],
+      "topic": "sql-basics"
     },
     {
       "id": "dba-create-view",
@@ -445,7 +470,8 @@
         "Salah. `CREATE TABLE AS` membuat snapshot data sekali — tidak ikut update.",
         "Salah. `SHOW VIEW` bukan statement PostgreSQL (itulah MySQL).",
         "Salah. `IF EXISTS` di sini tidak berlaku; `IF NOT EXISTS` yang ada untuk CREATE VIEW."
-      ]
+      ],
+      "topic": "sql-basics"
     },
     {
       "id": "dba-matview",
@@ -462,7 +488,8 @@
         "Salah. Cache aplikasi memindahkan masalah ke sisi app; di level DBA, matview adalah solusi DB-native.",
         "Benar. Materialized view menyimpan hasil query; `REFRESH` (bisa CONCURRENTLY) memperbaruinya tanpa membebani tabel sumber di setiap baca.",
         "Salah. VIEW biasa tetap mengeksekusi query berat setiap kali dibaca — tidak ada cache."
-      ]
+      ],
+      "topic": "sql-basics"
     },
     {
       "id": "dba-alter-system",
@@ -479,7 +506,8 @@
         "Benar. `ALTER SYSTEM` menuliskan ke postgresql.auto.conf; `pg_reload_conf()` menerapkannya tanpa restart.",
         "Salah. `SET` hanya berlaku untuk sesi psql yang sedang berjalan.",
         "Salah. `ALTER DATABASE ... SET` hanya untuk database cukita, bukan seluruh server."
-      ]
+      ],
+      "topic": "operations"
     },
     {
       "id": "dba-dump-table-only",
@@ -496,7 +524,8 @@
         "Salah. `pg_dumpall` level cluster, tidak mendukung filter table per-database seperti ini.",
         "Salah. Bukan syntax pg_dump (positional argument tidak ada).",
         "Benar. `-t` = include table tertentu; `-T` justru exclude — jangan tertukar."
-      ]
+      ],
+      "topic": "backup-restore"
     },
     {
       "id": "dba-dump-schema-only",
@@ -513,7 +542,8 @@
         "Salah. `--data-only` kebalikannya: hanya data.",
         "Salah. `--clean` menambahkan perintah DROP sebelum create — tidak mengubah scope schema/data.",
         "Salah. `--if-exists` hanya mengubah perilaku DROP saat restore."
-      ]
+      ],
+      "topic": "backup-restore"
     },
     {
       "id": "dba-restore-list",
@@ -530,7 +560,8 @@
         "Salah. Dump custom itu biner; `cat` menghasilkan binary garbage.",
         "Salah. `pg_dump` tidak punya flag `--list` (dia pembuat dump).",
         "Salah. `zcat` untuk gzip; format custom bukan gzip polos dan bukan teks."
-      ]
+      ],
+      "topic": "backup-restore"
     },
     {
       "id": "dba-basebackup",
@@ -547,7 +578,8 @@
         "Salah. `pg_dump` backup LOGIS per-database — bukan base backup fisik.",
         "Salah. `rsync` data dir yang sedang ditulis = tidak konsisten (bisa korup WAL/commit).",
         "Salah. `tar` langsung juga snapshot tidak konsisten tanpa checkpoint/kontrol WAL."
-      ]
+      ],
+      "topic": "backup-restore"
     },
     {
       "id": "dba-basebackup-R",
@@ -564,7 +596,8 @@
         "Salah. `recovery.conf` itu file era PostgreSQL < 12; modernnya standby.signal, dan `-R` yang membuatnya otomatis.",
         "Benar. `-R` menulis standby.signal + primary_conninfo ke direktori tujuan — standby siap start.",
         "Salah. `-F plain` itu format output (plain/compressed/tar), tidak ada kaitannya dengan standby config."
-      ]
+      ],
+      "topic": "backup-restore"
     },
     {
       "id": "dba-stat-replication",
@@ -581,7 +614,8 @@
         "Salah. `synchronous_commit` hanya mode commit, bukan status standby.",
         "Salah. `pg_ls_walarchives` status arsip WAL, bukan koneksi replikasi.",
         "Benar. `pg_stat_replication` (di primary) menampilkan per-wal_sender: state, sent/replay LSN, dan lag."
-      ]
+      ],
+      "topic": "replication"
     },
     {
       "id": "dba-hot-standby",
@@ -598,7 +632,8 @@
         "Salah. `standby_mode` itu parameter era < 12 (digantikan standby.signal).",
         "Salah. `wal_level` nilainya minimal/replica/logical — tidak ada `hot`.",
         "Benar. `hot_standby = on` (default di PostgreSQL modern) mengizinkan read query di standby."
-      ]
+      ],
+      "topic": "replication"
     },
     {
       "id": "dba-sync-standby",
@@ -615,7 +650,8 @@
         "Benar. `synchronous_standby_names` mendefinisikan standby sinkron; commit baru selesai setelah WAL-nya sampai.",
         "Salah. `synchronous_commit = off` justru MENUNDA kepastian commit — kebalikan dari yang diminta.",
         "Salah. `hot_standby` tentang read di standby, bukan durabilitas commit."
-      ]
+      ],
+      "topic": "replication"
     },
     {
       "id": "dba-terminate-backend",
@@ -632,7 +668,8 @@
         "Salah. `pg_reload_conf` memuat ulang config, tidak menyentuh backend.",
         "Salah. `KILL` di OS (SIGKILL) membuat PostgreSQL menganggap crash — pemulihan lambat (crash recovery).",
         "Benar. `pg_terminate_backend` memutus koneksi backend (satuannya sesi) dengan cleanup yang aman."
-      ]
+      ],
+      "topic": "operations"
     },
     {
       "id": "dba-cancel-backend",
@@ -649,7 +686,8 @@
         "Salah. `statement_timeout = 0` ( unlimited) di sesi lain tidak membatalkan query yang sedang jalan di backend lain.",
         "Salah. TRUNCATE table terkait = merusak data demi menghentikan query.",
         "Benar. `pg_cancel_backend` menghentikan query berjalan; sesi tetap tersambung, siap query berikutnya."
-      ]
+      ],
+      "topic": "operations"
     },
     {
       "id": "dba-pg-locks-wait",
@@ -666,7 +704,8 @@
         "Salah. `pg_stat_activity` menunjukkan query aktif, tapi bukan status lock secara langsung.",
         "Salah. `lock_timeout` itu nilai konfigurasi, bukan daftar waiter.",
         "Salah. `count(*)` hanya jumlah baris, tanpa detail siapa menunggu apa."
-      ]
+      ],
+      "topic": "operations"
     },
     {
       "id": "dba-stat-user-tables",
@@ -683,7 +722,8 @@
         "Salah. `count(*)` melakukan full scan per table — justru beban yang sedang kamu selidiki.",
         "Salah. `EXPLAIN` plan satu query, bukan statistik historis per table.",
         "Salah. `\\dt` hanya daftar nama table."
-      ]
+      ],
+      "topic": "query-tuning"
     },
     {
       "id": "dba-relation-size",
@@ -700,7 +740,8 @@
         "Salah. Tidak ada kolom `size` di table.",
         "Benar. `pg_total_relation_size` = heap + index + TOAST; `pg_size_pretty` membuat output human-readable.",
         "Salah. `pg_relation_size` hanya heap-nya — biasanya jauh lebih kecil dari total."
-      ]
+      ],
+      "topic": "query-tuning"
     },
     {
       "id": "dba-index-concurrently",
@@ -717,7 +758,8 @@
         "Salah. Tidak ada opsi `SET ONLINE` untuk index.",
         "Salah. `LOCK TABLE` justru mengunci seluruh table — kebalikan dari yang diinginkan.",
         "Benar. `CONCURRENTLY` membangun index tanpa lock write (hanya ShareUpdateExclusiveLock); biarkan selesai sampai tuntas."
-      ]
+      ],
+      "topic": "indexes"
     },
     {
       "id": "dba-pg-stat-statements",
@@ -734,7 +776,8 @@
         "Salah. EXPLAIN per-query tidak menunjukkan mana yang paling boros secara agregat; perlu data kumulatif dulu.",
         "Salah. `log_statement=all` mencatat SEMUA statement ke log (berat), tanpa ranking/analisis.",
         "Benar. `pg_stat_statements` mengakumulasi statistik query (normalized) — sumber utama top-query analysis."
-      ]
+      ],
+      "topic": "query-tuning"
     },
     {
       "id": "dba-log-min-duration",
@@ -751,7 +794,8 @@
         "Benar. `log_min_duration_statement` (ms) mencatat statement yang melebihi ambang — presisi untuk slow query log.",
         "Salah. `log_statement=all` mencatat semua statement — log banjir.",
         "Salah. `log_duration = on` mencatat durasi di baris log statement (kombinasi dengan log_statement), bukan filter ambang mandiri."
-      ]
+      ],
+      "topic": "query-tuning"
     },
     {
       "id": "dba-copy-csv-client",
@@ -768,7 +812,8 @@
         "Benar. `\\copy` (meta-command psql) menulis di sisi KLIEN — persis untuk file di mesin kamu.",
         "Salah. `COPY ... TO 'file'` menulis di sisi SERVER — klien tidak melihatnya (kecuali STDOUT + redirect di shell).",
         "Salah. `>` redirect output psql yang terformat (bukan CSV murni) dan bukan mekanisme export resmi."
-      ]
+      ],
+      "topic": "sql-basics"
     },
     {
       "id": "dba-partition-list",
@@ -785,7 +830,8 @@
         "Salah. `RANGE` untuk rentang terurut (angka/tanggal) — teks bebas tidak punya 'rentang'.",
         "Salah. `HASH` valid untuk sebaran merata, tapi partisi tidak terpetakan ke wilayah — tidak sesuai kebutuhan 'per wilayah'.",
         "Salah. `PARTITION ON` bukan syntax PostgreSQL."
-      ]
+      ],
+      "topic": "partitioning"
     },
     {
       "id": "dba-detach-partition",
@@ -802,7 +848,8 @@
         "Salah. `DROP PARTITION` menghapus partisi + datanya — permanen.",
         "Salah. Tidak ada `DISABLE PARTITION` di PostgreSQL.",
         "Salah. `TRUNCATE` mengosongkan isi partisi, partisi tetap terpasang."
-      ]
+      ],
+      "topic": "partitioning"
     },
     {
       "id": "dba-autovacuum-scale",
@@ -819,7 +866,8 @@
         "Benar. Storage parameter per-table menimpa setting global hanya untuk table tersebut — presisi dan reversible.",
         "Salah. `ALTER SYSTEM` mengubah GLOBAL untuk semua table — dampaknya luas, bukan targeted.",
         "Salah. `VACUUM (VERBOSE)` eksekusi manual sekali, tidak mengubah perilaku autovacuum."
-      ]
+      ],
+      "topic": "vacuum-mvcc"
     },
     {
       "id": "dba-truncate",
@@ -836,7 +884,8 @@
         "Salah. `DROP TABLE` menghilangkan strukturnya juga — bukan pengosongan.",
         "Salah. `VACUUM FULL` mereorganisasi isi yang ada, tidak mengosongkan table.",
         "Benar. `TRUNCATE` melepas halaman langsung (O(1)), dan `RESTART IDENTITY` (default) mereset sequence — tercepat untuk pengosongan total."
-      ]
+      ],
+      "topic": "sql-basics"
     },
     {
       "id": "dba-idle-in-txn",
@@ -853,7 +902,8 @@
         "Salah. `autovacuum_naptime` mengatur seberapa sering autovacuum mengecek — tidak menyentuh sesi yang bermasalah.",
         "Benar. Parameter ini memutus sesi yang idle DI DALAM transaksi setelah ambang waktu — langsung menghilangkan penyebab blokir VACUUM.",
         "Salah. `statement_timeout` hanya untuk statement yang SEDANG dieksekusi, bukan sesi yang menganggur di dalam transaksi."
-      ]
+      ],
+      "topic": "operations"
     },
     {
       "id": "dba-lock-timeout",
@@ -870,7 +920,8 @@
         "Salah. `deadlock_timeout` adalah waktu yang dianggap PostgreSQL sebelum memeriksa deadlock — mengubahnya kecil membuat deteksi prematur, bukan membatasi antrean.",
         "Salah. Itu untuk sesi idle-in-transaction, bukan query yang sedang antre lock.",
         "Benar. `lock_timeout` = maksimum waktu menunggu lock; setelah itu statement gagal (40P01) — fast-fail sesuai permintaan."
-      ]
+      ],
+      "topic": "operations"
     },
     {
       "id": "dba-alter-db-set",
@@ -887,7 +938,8 @@
         "Salah. `ALTER SYSTEM` global untuk seluruh cluster.",
         "Salah. `SET` hanya sesi psql saat itu.",
         "Salah. `ALTER ROLE ... SET` per-USER (berlaku di semua DB-nya) — bukan per-DB seperti yang diminta."
-      ]
+      ],
+      "topic": "operations"
     },
     {
       "id": "dba-recovery-signal",
@@ -904,7 +956,8 @@
         "Salah. `standby.signal` untuk hot standby permanen; untuk PITR sekali jalan, yang benar `recovery.signal`.",
         "Salah. Tidak ada parameter `recovery` di PostgreSQL.",
         "Benar. Sejak PostgreSQL 12, recovery mode dipicu file `recovery.signal` kosong di data dir."
-      ]
+      ],
+      "topic": "backup-restore"
     },
     {
       "id": "dba-archive-command",
@@ -921,7 +974,8 @@
         "Salah. `restore_command` arahnya terbalik (ambil DARI arsip saat recovery).",
         "Salah. `archive_mode = on` menyala-kan arsip, tapi tanpa command yang di-set tidak terjadi apa-apa.",
         "Salah. Tidak ada parameter `wal_archive`."
-      ]
+      ],
+      "topic": "backup-restore"
     },
     {
       "id": "dba-wal-logical",
@@ -938,7 +992,8 @@
         "Salah. `minimal` itu level terendah — memangkas info WAL.",
         "Salah. Tidak ada level `archive` (archiving dikontrol `archive_mode`).",
         "Benar. Logical decoding butuh `wal_level = logical` (superset dari replica)."
-      ]
+      ],
+      "topic": "replication"
     },
     {
       "id": "dba-subscription",
@@ -955,7 +1010,8 @@
         "Salah. `CREATE REPLICA` bukan statement PostgreSQL.",
         "Benar. `CREATE SUBSCRIPTION <name> CONNECTION '<dsn>' PUBLICATION <pub>` adalah statement sisi subscriber.",
         "Salah. `CREATE PUBLICATION` itu di sisi PUBLISHER — kebalikan peran."
-      ]
+      ],
+      "topic": "replication"
     },
     {
       "id": "dba-repl-slot",
@@ -972,7 +1028,8 @@
         "Salah. `pg_wal` bukan table; VACUUM FULL di situ tidak relevan.",
         "Benar. Slot yang aktif menahan WAL sejak confirmed_flush_lsn-nya; slot yatim (subscriber mati) = WAL tak bisa dibuang. `DROP REPLICATION SLOT` menyelesaikannya.",
         "Salah. `pg_switch_wal` memaksa segment baru — justru menambah WAL, tidak membersihkan."
-      ]
+      ],
+      "topic": "replication"
     },
     {
       "id": "dba-verifybackup",
@@ -989,7 +1046,8 @@
         "Salah. `md5sum` checksum file tunggal; backup itu direktori, dan checksum tidak menangkap kerusakan struktural.",
         "Benar. `pg_verifybackup` memverifikasi struktur backup + WAL-nya (dibuat bersama `--checkpoint=fast` modern) — validasi resmi.",
         "Salah. `pg_checksums` memverifikasi checksum data DIRECTORY yang berjalan, bukan struktur base backup."
-      ]
+      ],
+      "topic": "backup-restore"
     },
     {
       "id": "dba-drop-owned",
@@ -1006,7 +1064,8 @@
         "Benar. `DROP OWNED` membuang semua objek milik role itu, lalu `DROP ROLE` menjadi bersih dan aman.",
         "Salah. `DROP ROLE ... CASCADE` juga berfungsi, tapi CASCADE menghapus TERGANTUNG (views, dependents milik user lain) — efeknya lebih luas dan berisiko dibanding `DROP OWNED` yang terbatas pada miliknya.",
         "Salah. TRUNCATE mengosongkan isi, tidak menghapus objek — role tetap 'memiliki' table kosong."
-      ]
+      ],
+      "topic": "operations"
     },
     {
       "id": "dba-fsync",
@@ -1023,7 +1082,8 @@
         "Benar. `fsync = off` membiarkan WAL tinggal di OS cache — crash daya = kehilangan commit yang 'sudah sukses'. Klasik kasus kehilangan data.",
         "Salah. `synchronous_commit = off` juga berisiko, tapi loss-nya terbatas pada commit terakhir di crash — dan ini trade-off performa yang disengera.",
         "Salah. `wal_compression = off` hanya ukuran WAL lebih besar — murni performa/storage."
-      ]
+      ],
+      "topic": "operations"
     },
     {
       "id": "dba-psql-timing",
@@ -1040,7 +1100,8 @@
         "Salah. `\\profile` bukan meta-command psql (profiling di level `auto_explain`/pg_stat_statements).",
         "Salah. `\\explain` bukan meta-command psql.",
         "Benar. `\\timing` (tanpa argumen = toggle on) menambah baris durasi setelah setiap statement."
-      ]
+      ],
+      "topic": "sql-basics"
     },
     {
       "id": "dba-create-schema",
@@ -1057,7 +1118,8 @@
         "Salah. Membuat database baru itu overkill untuk objek pelaporan di cluster yang sama.",
         "Salah. `CREATE NAMESPACE` itu syntax MySQL, bukan PostgreSQL.",
         "Salah. `ALTER SCHEMA` tanpa klausa (RENAME/SET AUTHORIZATION) tidak valid."
-      ]
+      ],
+      "topic": "sql-basics"
     },
     {
       "id": "dba-search-path",
@@ -1074,7 +1136,8 @@
         "Salah. `SET SCHEMA` bukan statement PostgreSQL (itu SQL Server/Oracle).",
         "Salah. `USE <db>` itu MySQL — di PostgreSQL tidak ada.",
         "Salah. `ALTER SESSION SET` itu Oracle."
-      ]
+      ],
+      "topic": "sql-basics"
     },
     {
       "id": "dba-create-sequence",
@@ -1091,7 +1154,8 @@
         "Salah. Fungsi-nya `nextval('nama')` dengan argumen string, bukan `seq_next`.",
         "Salah. Kolom tidak bisa bertipe COUNTER; sequence adalah objek terpisah (atau identity column).",
         "Benar. `CREATE SEQUENCE ... START 1 INCREMENT 1 NO MAXVALUE` + `nextval()` — cara klasik dan eksplisit."
-      ]
+      ],
+      "topic": "types-functions"
     },
     {
       "id": "dba-default-nextval",
@@ -1108,7 +1172,8 @@
         "Benar. `SET DEFAULT nextval(...)` mengaitkan sequence sebagai default kolom — INSERT polos otomatis dapat nilai.",
         "Salah. Trigger adalah mekanisme berbeda (dan syntax-nya juga salah); untuk ID, default sequence/identity lebih tepat.",
         "Salah. `AUTO_INCREMENT` itu MySQL."
-      ]
+      ],
+      "topic": "types-functions"
     },
     {
       "id": "dba-enum-type",
@@ -1125,7 +1190,8 @@
         "Salah. CHECK constraint juga valid secara alternatif, tapi `MODIFY` bukan syntax ALTER PostgreSQL (dan enum lebih tegas sebagai 'tipe').",
         "Salah. `RANGE` itu untuk tipe range numerik/tanggal, bukan daftar nilai.",
         "Benar. `CREATE TYPE ... AS ENUM` memberi validasi nilai di level tipe + performa perbandingan yang baik."
-      ]
+      ],
+      "topic": "types-functions"
     },
     {
       "id": "dba-enum-add-value",
@@ -1142,7 +1208,8 @@
         "Salah. Mengedit katalog sistem langsung = rawan dan bukan cara yang didukung.",
         "Salah. `CREATE TYPE` ulang dengan nama sama akan gagal (tipe sudah ada).",
         "Benar. `ALTER TYPE ... ADD VALUE` menambah member enum (di PG 12+ bisa dilakukan bahkan saat koneksi aktif)."
-      ]
+      ],
+      "topic": "types-functions"
     },
     {
       "id": "dba-jsonb-ops",
@@ -1159,7 +1226,8 @@
         "Salah. `->` mengembalikan jsonb (bukan text), dan `=` membandingkan KESETARAAN seluruh dokumen (bukan containment).",
         "Salah. `data.price` itu syntax PostgreSQL JSON (juga bisa), tapi `CONTAINS` bukan operator-nya.",
         "Salah. `JSON_EXTRACT`/`JSON_CONTAINS` itu MySQL."
-      ]
+      ],
+      "topic": "types-functions"
     },
     {
       "id": "dba-create-function",
@@ -1176,7 +1244,8 @@
         "Salah. Tanpa `RETURNS` dan `LANGUAGE`, definisi tidak valid; dan query-nya juga tidak memakai cid.",
         "Salah. Itu pseudo-code JavaScript, bukan PostgreSQL.",
         "Salah. `CREATE PROC` (stored procedure) ada di PG 11+, tapi body-nya harus blok plpgsql, bukan statement SQL tunggal di situ."
-      ]
+      ],
+      "topic": "types-functions"
     },
     {
       "id": "dba-security-definer",
@@ -1193,7 +1262,8 @@
         "Salah. `OWNER TO app` memindahkan kepemilikan, bukan memberi akses terbatas.",
         "Benar. `SECURITY DEFINER` menjalankan fungsi dengan privilege PEMILIK fungsi — akses internal tanpa membuka table-nya ke app.",
         "Salah. `GRANT ALL` membuka SELURUH privilege table ke app — kehilangan isolation."
-      ]
+      ],
+      "topic": "types-functions"
     },
     {
       "id": "dba-do-block",
@@ -1210,7 +1280,8 @@
         "Salah. `EXECUTE` di plpgsql untuk menjalankan SQL dinamis dari string; `EXECUTE BEGIN...END` bukan syntax level statement.",
         "Salah. Blok BEGIN...COMMIT adalah TRANSKSI, bukan do-block (tidak punya body prosedural).",
         "Salah. `CALL` memanggil stored procedure, bukan blok anonim."
-      ]
+      ],
+      "topic": "types-functions"
     },
     {
       "id": "dba-returning",
@@ -1227,7 +1298,8 @@
         "Salah. `lastval()` bergantung session dan bisa terpengaruh sequence lain; dua statement = dua round-trip.",
         "Salah. `max(id)` salah saat INSERT paralel (id lain bisa lebih besar) dan full scan tanpa index.",
         "Salah. `RETURN_ID` bukan clause PostgreSQL."
-      ]
+      ],
+      "topic": "transactions"
     },
     {
       "id": "dba-upsert",
@@ -1244,7 +1316,8 @@
         "Salah. `REPLACE INTO` itu MySQL.",
         "Salah. `MERGE` dengan `dual` itu Oracle; PostgreSQL 15+ punya MERGE tapi bukan syntax itu.",
         "Benar. `ON CONFLICT ... DO UPDATE` = upsert resmi PostgreSQL (9.5+); `EXCLUDED` berisi baris yang diusulkan."
-      ]
+      ],
+      "topic": "transactions"
     },
     {
       "id": "dba-conflict-nothing",
@@ -1261,7 +1334,8 @@
         "Salah. `OR IGNORE` itu MySQL.",
         "Salah. Check-then-insert = race condition klasik (dua sesi cek bareng, keduanya insert).",
         "Benar. `ON CONFLICT ... DO NOTHING` = idempotent insert — duplikat diam-diam dilewati."
-      ]
+      ],
+      "topic": "transactions"
     },
     {
       "id": "dba-left-join",
@@ -1278,7 +1352,8 @@
         "Salah. `INNER JOIN` membuang customer yang tidak punya order — persis yang harus ditampilkan.",
         "Salah. Join implisit (koma + WHERE) = INNER JOIN — sama dengan B, customer tanpa order hilang.",
         "Salah. `IN (subquery)` hanya menyaring customer YANG PERNAH order — kebalikannya."
-      ]
+      ],
+      "topic": "query-tuning"
     },
     {
       "id": "dba-having",
@@ -1295,7 +1370,8 @@
         "Benar. Filter pada hasil agregasi = `HAVING` (WHERE tidak boleh menyebut aggregate).",
         "Salah. `WHERE` dievaluasi SEBELUM group — tidak bisa memakai SUM().",
         "Salah. `ORDER BY` hanya mengurutkan, tidak memfilter."
-      ]
+      ],
+      "topic": "query-tuning"
     },
     {
       "id": "dba-window-function",
@@ -1312,7 +1388,8 @@
         "Benar. Window function `ROW_NUMBER() OVER (PARTITION BY ... ORDER BY ...)` memberi nomor urut per grup tanpa collapse baris.",
         "Salah. `RANK(col)` bukan function window (yang benar `RANK() OVER (...)`), dan argumen-nya salah konteks.",
         "Salah. `OVER customer_id` bukan syntax (perlu `OVER (PARTITION BY ...)`), dan COUNT bukan ranking."
-      ]
+      ],
+      "topic": "query-tuning"
     },
     {
       "id": "dba-cte",
@@ -1329,7 +1406,8 @@
         "Benar. CTE (`WITH ... AS`) memberi nama intermediate result — terbaca, bisa di-reuse, dan bisa direkursif.",
         "Salah. `SUBQUERY ... AS` bukan syntax PostgreSQL.",
         "Salah. Temp view berfungsi tapi membuat objek sementara + dua statement; CTE adalah idiom SQL-native untuk ini."
-      ]
+      ],
+      "topic": "query-tuning"
     },
     {
       "id": "dba-seq-scan-missing-index",
@@ -1346,7 +1424,8 @@
         "Salah. shared buffers tidak memaksa seq scan.",
         "Benar. Seq Scan + filter pada kolom yang seharusnya di-index = planner memilih full scan karena tidak ada jalur index.",
         "Salah. work_mem memengaruhi sort/hash, bukan pilihan scan."
-      ]
+      ],
+      "topic": "query-tuning"
     },
     {
       "id": "dba-external-merge-disk",
@@ -1363,7 +1442,8 @@
         "Benar. 'external merge Disk' = sort melebihi work_mem dan spill ke temp file — sinyal langsung untuk menaikkan work_mem (per-sesi/per-role).",
         "Salah. REINDEX tidak mengubah cara planner melakukan sort.",
         "Salah. WAL/checkpoint tidak berhubungan dengan sort method."
-      ]
+      ],
+      "topic": "query-tuning"
     },
     {
       "id": "dba-txn-rollback",
@@ -1380,7 +1460,8 @@
         "Benar. Transaksi eksplisit + ROLLBACK = atomic undo semua perubahan di dalamnya — mekanisme bawaan PostgreSQL.",
         "Salah. `SET SESSION CHARACTERISTICS AS TRANSACTION READ ONLY` itu pola lain; 'AUTOCOMMIT off' bukan statement seperti itu, dan restart tidak rollback.",
         "Salah. VACUUM membersihkan dead row, tidak membatalkan perubahan."
-      ]
+      ],
+      "topic": "transactions"
     },
     {
       "id": "dba-savepoint",
@@ -1397,7 +1478,8 @@
         "Salah. Me-null kolom adalah perubahan data manual, bukan mekanisme transaksional.",
         "Benar. SAVEPOINT memberi titik balik parsial: `ROLLBACK TO sp4` membatalkan hanya perubahan setelah savepoint; transaksi utama tetap hidup.",
         "Salah. ROLLBACK (tanpa TO) membatalkan SELURUH transaksi — batch 1-3 ikut hilang."
-      ]
+      ],
+      "topic": "transactions"
     },
     {
       "id": "dba-partial-index",
@@ -1414,7 +1496,8 @@
         "Salah. Index di status saja: selectivitas rendah (90% shipped), planner kemungkinan besar mengabaikannya.",
         "Salah. created_at hampir pasti duplikat di table order — tidak cocok sebagai PK.",
         "Benar. Partial index hanya menyimpan baris yang memenuhi WHERE — kecil, cepat, dan persis dipakai query target."
-      ]
+      ],
+      "topic": "indexes"
     },
     {
       "id": "dba-gin-jsonb",
@@ -1431,7 +1514,8 @@
         "Benar. GIN dengan operator class `jsonb_path_ops` mendukung `@>` (containment) — index-nya lebih kecil dari GIN default.",
         "Salah. B-tree polos tidak bisa membandingkan jsonb (tidak ada operator = untuk jsonb di btree).",
         "Salah. B-tree untuk jsonb bukan hal yang didukung."
-      ]
+      ],
+      "topic": "indexes"
     },
     {
       "id": "dba-pgstat-tuple",
@@ -1448,7 +1532,8 @@
         "Salah. `pg_locks` itu lock, bukan tuple.",
         "Benar. Extension `pgstattuple` memberi statistik tuple per-table: dead_tuple_percent, free_percent — alat diagnosis bloat resmi.",
         "Salah. `n_dead_tup` di pg_stat_user_tables itu jumlah kumulatif, bukan persentase bloat saat ini."
-      ]
+      ],
+      "topic": "vacuum-mvcc"
     },
     {
       "id": "dba-psql-dx",
@@ -1465,7 +1550,8 @@
         "Benar. `\\dx` = describe extensions — meta-command resmi untuk melihat extension terinstall (versi + schema).",
         "Salah. `\\drds` itu list role display settings (role name → display name), bukan extension.",
         "Salah. Meta-command psql case-sensitive; yang benar huruf kecil `\\dx`."
-      ]
+      ],
+      "topic": "sql-basics"
     },
     {
       "id": "dba-pg-trgm",
@@ -1482,7 +1568,8 @@
         "Benar. Index trigram (pg_trgm) membuat pola LIKE '%...%' bisa pakai index — solusi klasik untuk substring search.",
         "Salah. B-tree reguler tidak bisa dipakai untuk prefix-LESS pattern (hanya LIKE 'abc%' yang bisa).",
         "Salah. work_mem tidak mengubah jenis scan untuk ILIKE substring."
-      ]
+      ],
+      "topic": "query-tuning"
     },
     {
       "id": "dba-fulltext-search",
@@ -1499,7 +1586,8 @@
         "Salah. `MATCH ... AGAINST` itu MySQL full-text.",
         "Benar. Full-text search PostgreSQL: `to_tsvector` + `@@` (match) + `ts_rank` (skor relevansi) — dengan index GIN di tsvector-nya.",
         "Salah. `LIKE` = contains literal, tanpa ranking, tanpa stemming, lambat di skala besar."
-      ]
+      ],
+      "topic": "query-tuning"
     },
     {
       "id": "dba-copy-stdin",
@@ -1516,7 +1604,8 @@
         "Benar. `\\copy ... FROM` membaca file di sisi KLIEN (psql) dan menyalin via COPY protocol — cara load file local yang benar.",
         "Salah. `LOAD DATA INFILE` itu MySQL.",
         "Salah. `IMPORT` bukan statement PostgreSQL (dia `COPY`/`\\copy`)."
-      ]
+      ],
+      "topic": "sql-basics"
     },
     {
       "id": "dba-partition-hash",
@@ -1533,7 +1622,8 @@
         "Salah. `LIST` untuk nilai diskret yang dikenal — id audit adalah integer berurutan, bukan set nilai.",
         "Salah. `ROUND_ROBIN` bukan mode partisi PostgreSQL.",
         "Benar. `HASH` mendistribusikan baris ke partisi secara merata berdasarkan hash kolom — untuk kasus tanpa pola alami."
-      ]
+      ],
+      "topic": "partitioning"
     },
     {
       "id": "dba-default-partition",
@@ -1550,7 +1640,8 @@
         "Salah. `SET DEFAULT PARTITION` bukan syntax ALTER TABLE.",
         "Salah. CHECK constraint tidak membuat partisi.",
         "Salah. Sintaks-nya `CREATE TABLE ... PARTITION OF ... DEFAULT`."
-      ]
+      ],
+      "topic": "partitioning"
     },
     {
       "id": "dba-partition-tree",
@@ -1567,7 +1658,8 @@
         "Salah. `\\dp` itu privilege (grant), bukan struktur partisi.",
         "Benar. `pg_partition_tree(regclass)` function resmi yang mengembalikan hierarki partisi (parent, child, leaf).",
         "Salah. `pg_partitions` bukan view standar PostgreSQL."
-      ]
+      ],
+      "topic": "partitioning"
     },
     {
       "id": "dba-primary-conninfo",
@@ -1584,7 +1676,8 @@
         "Salah. `replication_from` bukan parameter PostgreSQL.",
         "Benar. `primary_conninfo` = string koneksi ke primary (bisa diisi otomatis oleh `pg_basebackup -R`).",
         "Salah. Parameter `primary_host` tidak ada."
-      ]
+      ],
+      "topic": "replication"
     },
     {
       "id": "dba-replay-lsn",
@@ -1601,7 +1694,8 @@
         "Salah. `pg_stat_wal` (PG 15+) statistik agregat WAL, bukan posisi replay.",
         "Benar. `pg_last_wal_replay_lsn()` = posisi replay di standby; dikurangi dengan `pg_current_wal_lsn()` primary = lag byte.",
         "Salah. `pg_last_wal_receive_lsn()` itu posisi terima (bukan replay), dan mengurangi dengan current LSN local salah konteks."
-      ]
+      ],
+      "topic": "replication"
     },
     {
       "id": "dba-replication-role",
@@ -1618,7 +1712,8 @@
         "Salah. `NOLOGIN` justru melarang role itu connect (standby butuh connect).",
         "Salah. `CREATEDB` tidak relevan untuk streaming replication.",
         "Benar. Atribut `REPLICATION` wajib untuk koneksi streaming; `LOGIN` agar bisa connect; SUPERUSER tidak perlu (least privilege)."
-      ]
+      ],
+      "topic": "replication"
     },
     {
       "id": "dba-hba-order",
@@ -1635,7 +1730,8 @@
         "Benar. pg_hba.conf dievaluasi ATAS KE BAWAH, baris PERTAMA yang cocok yang menang — rule umum di atas akan menang.",
         "Salah. `trust` bekerja baik-baik saja untuk CIDR (hanya masalah urutan baris).",
         "Salah. `pg_reload_conf()` / `SELECT pg_reload_conf()` cukup — tidak perlu reboot."
-      ]
+      ],
+      "topic": "sql-basics"
     },
     {
       "id": "dba-sslmode-verify",
@@ -1652,7 +1748,8 @@
         "Benar. `verify-ca` memverifikasi chain sertifikat ke CA; `verify-full` (terkuat) juga memverifikasi hostname di SAN.",
         "Salah. `require` hanya mengenkripsi — sertifikat TIDAK diverifikasi (MITM tetap bisa dengan sertifikat apa pun).",
         "Salah. `allow` = coba TLS, kalau gagal fallback plaintext — lebih lemah dari require."
-      ]
+      ],
+      "topic": "sql-basics"
     },
     {
       "id": "dba-reload-hba",
@@ -1669,7 +1766,8 @@
         "Salah. `ALTER SYSTEM RELOAD` bukan statement PostgreSQL.",
         "Salah. `RESTART DATABASE` bukan statement PostgreSQL.",
         "Benar. `pg_reload_conf()` memicu SIGHUP — pg_hba.conf dibaca ulang tanpa memutus koneksi yang ada."
-      ]
+      ],
+      "topic": "sql-basics"
     },
     {
       "id": "dba-datfrozenxid",
@@ -1686,7 +1784,8 @@
         "Benar. `age(datfrozenxid)` = jarak XID dari wraparound (dalam unit transaksi) — angka besar = database butuh freeze (autovacuum).",
         "Salah. `pg_stat_activity` itu koneksi aktif, bukan umur XID.",
         "Salah. `SHOW autovacuum` status on/off, bukan umur XID."
-      ]
+      ],
+      "topic": "vacuum-mvcc"
     },
     {
       "id": "dba-freeze-max-age",
@@ -1703,7 +1802,8 @@
         "Salah. `xid_max_age` bukan parameter PostgreSQL.",
         "Benar. `autovacuum_freeze_max_age` (default 200 juta) = ambang freeze emergency; dekatinya = bahaya wraparound.",
         "Salah. `vacuum_freeze_min_age` (default 50 juta) = ambang NORMAL freeze oleh autovacuum (lebih awal), bukan emergency."
-      ]
+      ],
+      "topic": "vacuum-mvcc"
     },
     {
       "id": "dba-pg-stat-database",
@@ -1720,7 +1820,8 @@
         "Salah. `pg_stat_activity` per-KONEKSI, bukan agregat per-database.",
         "Salah. `SHOW` hanya parameter konfigurasi.",
         "Salah. `\\dv` itu list view."
-      ]
+      ],
+      "topic": "operations"
     }
   ],
   "examSize": 60

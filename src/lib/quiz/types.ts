@@ -3,6 +3,8 @@
 
 export interface QuizQuestion {
   id: string;
+  // Topic tag used for the per-topic performance breakdown.
+  topic: string;
   prompt: string;
   // Four choice labels, in display order.
   options: [string, string, string, string];

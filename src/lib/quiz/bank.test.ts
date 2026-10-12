@@ -40,6 +40,17 @@ it("every question is well-formed (4 options, valid correctIndex, 4 explanations
   }
 });
 
+it("every question has a topic tag (4+ topics per track for a meaningful breakdown)", () => {
+  for (const t of loadTracks()) {
+    const topics = new Set<string>();
+    for (const q of t.questions) {
+      expect(q.topic).toMatch(/^[a-z0-9-]+$/i);
+      topics.add(q.topic);
+    }
+    expect(topics.size).toBeGreaterThanOrEqual(4);
+  }
+});
+
 it("answer distribution is not degenerate (no option index > 40% of a track's pool)", () => {
   for (const t of loadTracks()) {
     const counts = [0, 0, 0, 0];
@@ -95,7 +106,7 @@ function badDir(name: string): string {
   mkdirSync(dir);
   writeFileSync(path.join(dir, "sysadmin.json"), JSON.stringify({
     slug: "sysadmin", title: "X", description: "Y", durationSec: 60, passingPercent: 80,
-    questions: [{ id: "a", prompt: "p", options: ["1", "2", "3"], correctIndex: 0, explanations: ["a", "b", "c", "d"] }],
+    questions: [{ id: "a", topic: "t", prompt: "p", options: ["1", "2", "3"], correctIndex: 0, explanations: ["a", "b", "c", "d"] }],
   }));
   return dir;
 }
