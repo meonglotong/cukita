@@ -26,68 +26,68 @@
       "id": "sys-admin-systemd-failed",
       "prompt": "Sebuah service gagal saat boot dan sekarang statusnya failed. Langkah pertama paling tepat untuk mendiagnosis adalah…",
       "options": [
-        "systemctl status <unit>",
         "top",
         "systemctl list-units",
-        "cat /var/log/boot.log"
+        "cat /var/log/boot.log",
+        "systemctl status <unit>"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanations": [
-        "Benar. `status` langsung memunculkan error log terakhir (journal) dan sebab kegagalan unit.",
         "Salah. `top` hanya menampilkan proses yang sedang jalan; service yang gagal justru tidak jalan.",
         "Salah. `list-units` hanya daftar unit, tidak ada detail kegagalan.",
-        "Salah. `/var/log/boot.log` tidak ada di RHEL 9; log boot ada di journal (`journalctl -b`)."
+        "Salah. `/var/log/boot.log` tidak ada di RHEL 9; log boot ada di journal (`journalctl -b`).",
+        "Benar. `status` langsung memunculkan error log terakhir (journal) dan sebab kegagalan unit."
       ]
     },
     {
       "id": "sys-admin-journal-follow",
       "prompt": "Kamu sedang debugging nginx dan ingin melihat 200 baris log unit terakhir sambil terus mengikuti log baru. Command yang tepat…",
       "options": [
-        "journalctl -u nginx -n 200 -f",
-        "tail -n 200 /var/log/nginx/error.log",
         "journalctl -u nginx | head -200",
-        "systemctl journal nginx 200"
+        "systemctl journal nginx 200",
+        "journalctl -u nginx -n 200 -f",
+        "tail -n 200 /var/log/nginx/error.log"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanations": [
-        "Benar. `-n 200` ambil 200 baris terakhir, `-f` follow seperti `tail -f`, di-scope unit tertentu.",
-        "Salah. Hanya membaca file error log nginx, bukan log unit (unit log bisa dari stdout/stderr/journald).",
         "Salah. `head -200` mengambil 200 baris PERTAMA (terlama), dan tidak follow.",
-        "Salah. Subcommand `systemctl journal` tidak ada."
+        "Salah. Subcommand `systemctl journal` tidak ada.",
+        "Benar. `-n 200` ambil 200 baris terakhir, `-f` follow seperti `tail -f`, di-scope unit tertentu.",
+        "Salah. Hanya membaca file error log nginx, bukan log unit (unit log bisa dari stdout/stderr/journald)."
       ]
     },
     {
       "id": "sys-admin-systemd-mask",
       "prompt": "Ada service legacy yang terus mencoba start dan mengganggu boot. Kamu ingin MEMASTIKAN ia tidak pernah bisa start (bahkan kalau di-depend lain). Langkah terkuat…",
       "options": [
-        "systemctl mask <unit>",
         "systemctl stop <unit>",
         "systemctl disable <unit>",
-        "systemctl set-property <unit> Type=oneshot"
+        "systemctl set-property <unit> Type=oneshot",
+        "systemctl mask <unit>"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanations": [
-        "Benar. `mask` membuat symlink ke /dev/null — unit mustahil di-start dari mana pun sampai di-unmask.",
         "Salah. `stop` hanya berhenti sementara; service bisa start lagi (boot, dependensi, manual).",
         "Salah. `disable` hanya menghapus dari boot; unit tetap bisa di-start manual/di-trigger dependensi.",
-        "Salah. `set-property` itu untuk unit slice/scope, tidak mengubah policy start service."
+        "Salah. `set-property` itu untuk unit slice/scope, tidak mengubah policy start service.",
+        "Benar. `mask` membuat symlink ke /dev/null — unit mustahil di-start dari mana pun sampai di-unmask."
       ]
     },
     {
       "id": "sys-admin-net-route",
       "prompt": "Paket dari server tidak bisa ke subnet 172.31.252.0/24. Untuk memeriksa route aktif saat ini, command yang benar…",
       "options": [
-        "ip route show",
-        "route show",
         "netstat -i",
-        "ifconfig -a"
+        "ifconfig -a",
+        "ip route show",
+        "route show"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanations": [
-        "Benar. `ip route show` menampilkan routing table aktif (iproute2, standar modern Linux).",
-        "Salah. `route` itu dari net-tools lama; `route show` bukan sintaksnya (yang ada `route -n`), dan sudah superseded iproute2.",
         "Salah. `netstat -i` menampilkan statistik antarmuka, bukan route.",
-        "Salah. `ifconfig` menampilkan konfigurasi antarmuka (IP, MTU), bukan tabel route."
+        "Salah. `ifconfig` menampilkan konfigurasi antarmuka (IP, MTU), bukan tabel route.",
+        "Benar. `ip route show` menampilkan routing table aktif (iproute2, standar modern Linux).",
+        "Salah. `route` itu dari net-tools lama; `route show` bukan sintaksnya (yang ada `route -n`), dan sudah superseded iproute2."
       ]
     },
     {
@@ -111,51 +111,51 @@
       "id": "sys-admin-firewalld",
       "prompt": "Aplikasi baru di port 8080/tcp harus bisa diakses klien SEKARANG, tapi kamu belum yakin port-nya — jadi jangan disimpan permanen dulu. Command yang tepat…",
       "options": [
+        "firewalld --open 8080",
         "firewall-cmd --add-port=8080/tcp",
         "firewall-cmd --permanent --add-port=8080/tcp",
-        "firewall-cmd --add-service=8080",
-        "firewalld --open 8080"
+        "firewall-cmd --add-service=8080"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanations": [
+        "Salah. `firewalld` itu daemon-nya; CLI-nya `firewall-cmd`.",
         "Benar. Tanpa `--permanent`, aturan aktif di runtime saja — cocok untuk testing cepat.",
         "Salah. `--permanent` menyimpan ke config, tapi TIDAK aktif sampai `--reload` — malah bisa bikin bingung.",
-        "Salah. `--add-service` mengambil nama service (seperti `http`, `ssh`), bukan angka port.",
-        "Salah. `firewalld` itu daemon-nya; CLI-nya `firewall-cmd`."
+        "Salah. `--add-service` mengambil nama service (seperti `http`, `ssh`), bukan angka port."
       ]
     },
     {
       "id": "sys-admin-lvm-pv",
       "prompt": "Disk /dev/vdb baru dipasang dan harus dipakai untuk LVM. Langkah PERTAMA yang benar…",
       "options": [
+        "mkfs.xfs /dev/vdb",
         "pvcreate /dev/vdb",
         "vgcreate vg0 /dev/vdb",
-        "lvcreate -L 10G -n data vg0",
-        "mkfs.xfs /dev/vdb"
+        "lvcreate -L 10G -n data vg0"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanations": [
+        "Salah. Buat filesystem di disk mentah LVM akan menghapus metadata LV/VG di disk tersebut.",
         "Benar. Urutan LVM: PV → VG → LV → filesystem. `pvcreate` menandai disk sebagai Physical Volume.",
         "Salah. `vgcreate` butuh PV yang sudah dibuat; tanpa `pvcreate` dulu akan error.",
-        "Salah. `lvcreate` butuh VG yang sudah ada.",
-        "Salah. Buat filesystem di disk mentah LVM akan menghapus metadata LV/VG di disk tersebut."
+        "Salah. `lvcreate` butuh VG yang sudah ada."
       ]
     },
     {
       "id": "sys-admin-lvm-extend",
       "prompt": "LV /dev/vg0/app hampir penuh. Kamu ingin memperluas LV ini menggunakan SELURUH ruang kosong di VG. Command yang benar…",
       "options": [
-        "lvextend -l +100%FREE /dev/vg0/app",
         "lvextend -L 100%FREE /dev/vg0/app",
         "lvresize --use-all /dev/vg0/app",
-        "vgextend /dev/vg0/app"
+        "vgextend /dev/vg0/app",
+        "lvextend -l +100%FREE /dev/vg0/app"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanations": [
-        "Benar. `-l +100%FREE` menambah sebesar seluruh ruang bebas VG. (Setelahnya filesystem harus digrow.)",
         "Salah. `-L 100%FREE` menamai ukuran AKHIR (bukan penambahan), dan 100%FREE sebagai ukuran akhir tidak valid di sana.",
         "Salah. Opsi `--use-all` bukan sintaks `lvresize` (yang ada `+l 100%FREE`).",
-        "Salah. `vgextend` menambahkan PV baru ke VG, bukan memperluas LV."
+        "Salah. `vgextend` menambahkan PV baru ke VG, bukan memperluas LV.",
+        "Benar. `-l +100%FREE` menambah sebesar seluruh ruang bebas VG. (Setelahnya filesystem harus digrow.)"
       ]
     },
     {
@@ -179,34 +179,34 @@
       "id": "sys-admin-fstab",
       "prompt": "Volume /dev/vg0/data kamu mount manual di /data. Agar mount ini bertahan setelah reboot, langkah yang benar…",
       "options": [
-        "Tambahkan entri ke /etc/fstab",
         "systemctl enable /dev/vg0/data",
         "Tambahkan baris mount di /etc/rc.local",
-        "Jalankan mount ulang setiap boot via crontab @reboot"
+        "Jalankan mount ulang setiap boot via crontab @reboot",
+        "Tambahkan entri ke /etc/fstab"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanations": [
-        "Benar. /etc/fstab adalah cara standar persisten untuk mount di boot-time.",
         "Salah. Device block bukan unit systemd; tidak bisa di-enable (kecuali dibuat unit .mount, yang sumbernya tetap fstab).",
         "Salah. rc.local sudah deprecated di RHEL 9 (unit rc-local tidak tersedia default).",
-        "Salah. Bisa jalan, tapi bukan cara standar dan rawan timing/race saat boot."
+        "Salah. Bisa jalan, tapi bukan cara standar dan rawan timing/race saat boot.",
+        "Benar. /etc/fstab adalah cara standar persisten untuk mount di boot-time."
       ]
     },
     {
       "id": "sys-admin-perf-cpu",
       "prompt": "Server web lag dan kamu curiga ada proses yang memakan CPU. Untuk melihat proses dengan pemakaian CPU tertinggi SAAT INI…",
       "options": [
-        "top -c",
-        "sar -n TCP 1",
         "vmstat -s",
-        "free -m"
+        "free -m",
+        "top -c",
+        "sar -n TCP 1"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanations": [
-        "Benar. `top` menampilkan proses terurut CPU; `-c` memunculkan nama command penuh (bukan path terpotong).",
-        "Salah. `sar -n` itu statistik jaringan, bukan proses per CPU.",
         "Salah. `vmstat` itu statistik sistem (CPU aggregate, swap, IO), bukan per-proses.",
-        "Salah. `free` hanya menampilkan penggunaan memori."
+        "Salah. `free` hanya menampilkan penggunaan memori.",
+        "Benar. `top` menampilkan proses terurut CPU; `-c` memunculkan nama command penuh (bukan path terpotong).",
+        "Salah. `sar -n` itu statistik jaringan, bukan proses per CPU."
       ]
     },
     {
@@ -247,51 +247,51 @@
       "id": "sys-admin-selinux-mode",
       "prompt": "Sebelum deploy, audit bertanya: apa mode SELinux di server ini? Command untuk mengeceknya…",
       "options": [
-        "getenforce",
-        "sestatus --mode",
         "cat /etc/selinux/status",
-        "selinux --status"
+        "selinux --status",
+        "getenforce",
+        "sestatus --mode"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanations": [
-        "Benar. `getenforce` mengembalikan Enforcing/Permissive/Disabled — jawaban cepat dan standar.",
-        "Salah. `sestatus` ada (tanpa opsi `--mode`); itu untuk detail lengkap. Tapi `getenforce` yang paling tepat untuk pertanyaan ini.",
         "Salah. Tidak ada file `/etc/selinux/status`; config-nya di `/etc/selinux/config`.",
-        "Salah. Tidak ada command `selinux`."
+        "Salah. Tidak ada command `selinux`.",
+        "Benar. `getenforce` mengembalikan Enforcing/Permissive/Disabled — jawaban cepat dan standar.",
+        "Salah. `sestatus` ada (tanpa opsi `--mode`); itu untuk detail lengkap. Tapi `getenforce` yang paling tepat untuk pertanyaan ini."
       ]
     },
     {
       "id": "sys-admin-selinux-relabel",
       "prompt": "Setelah pindah file web manual ke /var/www/html, Apache denied karena label SELinux salah. Perintah untuk memulihkan label konteks yang benar…",
       "options": [
+        "semanage fcontext -a /var/www/html",
         "restorecon -Rv /var/www/html",
         "setenforce 0",
-        "chown -R apache:apache /var/www/html",
-        "semanage fcontext -a /var/www/html"
+        "chown -R apache:apache /var/www/html"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanations": [
+        "Salah. `semanage fcontext -a` menambah RULE fcontext baru, tidak langsung melabel ulang file yang ada.",
         "Benar. `restorecon` menerapkan kembali label default sesuai fcontext untuk seluruh path, secara rekursif.",
         "Salah. `setenforce 0` mematikan enforcement SELinux — band-aid, bukan perbaikan label, dan menurunkan security.",
-        "Salah. `chown` memperbaiki ownership POSIX, bukan label security (xattr) SELinux.",
-        "Salah. `semanage fcontext -a` menambah RULE fcontext baru, tidak langsung melabel ulang file yang ada."
+        "Salah. `chown` memperbaiki ownership POSIX, bukan label security (xattr) SELinux."
       ]
     },
     {
       "id": "sys-admin-chage",
       "prompt": "Kebijakan keamanan: user `contractor` WAJIB mengganti password saat login berikutnya. Command yang benar…",
       "options": [
-        "chage -d 0 contractor",
-        "chage -m 1 contractor",
         "passwd -S contractor",
-        "usermod -e 1 contractor"
+        "usermod -e 1 contractor",
+        "chage -d 0 contractor",
+        "chage -m 1 contractor"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanations": [
-        "Benar. `-d 0` menandai password sudah 'expired', sehingga login berikutnya langsung memaksa reset.",
-        "Salah. `-m` mengatur hari MINIMAL sebelum boleh ganti — tidak memaksa ganti saat login.",
         "Salah. `passwd -S` hanya menampilkan status password, tidak mengubah apa pun.",
-        "Salah. `-e` itu tanggal expiration AKUN (bukan password); hari=1 akan menonaktifkan akun keesokan hari."
+        "Salah. `-e` itu tanggal expiration AKUN (bukan password); hari=1 akan menonaktifkan akun keesokan hari.",
+        "Benar. `-d 0` menandai password sudah 'expired', sehingga login berikutnya langsung memaksa reset.",
+        "Salah. `-m` mengatur hari MINIMAL sebelum boleh ganti — tidak memaksa ganti saat login."
       ]
     },
     {
@@ -315,17 +315,17 @@
       "id": "sys-admin-borg-list",
       "prompt": "Repo Borg di /backup/cukita berisi banyak archive. Untuk melihat daftar SEMUA archive beserta tanggalnya…",
       "options": [
+        "borg show /backup/cukita",
         "borg list /backup/cukita",
         "borg ls /backup/cukita",
-        "borg info /backup/cukita",
-        "borg show /backup/cukita"
+        "borg info /backup/cukita"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanations": [
+        "Salah. Subcommand `show` tidak ada di borg.",
         "Benar. `borg list <repo>` menampilkan semua archive di repo (dengan opsi untuk isi per-archive).",
         "Salah. Subcommand `ls` tidak ada di borg.",
-        "Salah. `borg info` butuh ID archive tertentu untuk detail satu archive, bukan daftar semua.",
-        "Salah. Subcommand `show` tidak ada di borg."
+        "Salah. `borg info` butuh ID archive tertentu untuk detail satu archive, bukan daftar semua."
       ]
     },
     {
@@ -383,85 +383,85 @@
       "id": "sys-admin-ip-neigh",
       "prompt": "Untuk melihat tabel neighbor (ARP) — misalnya MAC address yang terasosiasi dengan 172.31.252.5 — command yang benar…",
       "options": [
+        "ss -n",
         "ip neigh show",
         "ip route get 172.31.252.5",
-        "arp -a",
-        "ss -n"
+        "arp -a"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanations": [
+        "Salah. `ss -n` daftar socket, bukan tabel neighbor.",
         "Benar. `ip neigh` adalah util iproute2 untuk tabel neighbor/ARP.",
         "Salah. `ip route get` menunjukkan route ke tujuan, bukan entry ARP-nya.",
-        "Salah. `arp` dari net-tools — paket legacy yang tidak ter-install default di RHEL 9; `ip neigh`-lah yang standar.",
-        "Salah. `ss -n` daftar socket, bukan tabel neighbor."
+        "Salah. `arp` dari net-tools — paket legacy yang tidak ter-install default di RHEL 9; `ip neigh`-lah yang standar."
       ]
     },
     {
       "id": "sys-admin-ethtool",
       "prompt": "Cek kecepatan link (1G/10G) dan status carrier antarmuka enp3s0. Command yang benar…",
       "options": [
+        "dmesg | grep enp3s0",
         "ethtool enp3s0",
         "ip link show enp3s0",
-        "ethtool -s enp3s0",
-        "dmesg | grep enp3s0"
+        "ethtool -s enp3s0"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanations": [
+        "Salah. `dmesg` hanya log kernel historis, bukan status link real-time.",
         "Benar. `ethtool <dev>` menampilkan speed, duplex, auto-negotiation, dan link detector status.",
         "Salah. `ip link` hanya status up/down dan MAC — tidak ada kecepatan link.",
-        "Salah. `ethtool -s` itu untuk SETTING parameter, bukan menampilkan.",
-        "Salah. `dmesg` hanya log kernel historis, bukan status link real-time."
+        "Salah. `ethtool -s` itu untuk SETTING parameter, bukan menampilkan."
       ]
     },
     {
       "id": "sys-admin-mtu",
       "prompt": "Set MTU 9000 (jumbo frame) sementara ke antarmuka enp3s0 untuk testing. Command yang benar…",
       "options": [
+        "sysctl -w net.ipv4.route.mtu=9000",
         "ip link set enp3s0 mtu 9000",
         "ip route set mtu 9000 default",
-        "ethtool -s enp3s0 mtu 9000",
-        "sysctl -w net.ipv4.route.mtu=9000"
+        "ethtool -s enp3s0 mtu 9000"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanations": [
+        "Salah. `net.ipv4.route.mtu` bukan sysctl untuk MTU antarmuka.",
         "Benar. MTU adalah properti antarmuka: `ip link set <dev> mtu <nilai>` (runtime, hilang saat reboot).",
         "Salah. `ip route` itu tabel route; MTU di sini bukan properti route.",
-        "Salah. `ethtool -s` tidak punya parameter MTU.",
-        "Salah. `net.ipv4.route.mtu` bukan sysctl untuk MTU antarmuka."
+        "Salah. `ethtool -s` tidak punya parameter MTU."
       ]
     },
     {
       "id": "sys-admin-dig",
       "prompt": "Query name server 172.31.252.2 secara LANGSUNG (bypass resolver sistem) untuk record A app.fds.co.id. Command yang benar…",
       "options": [
+        "resolve --server 172.31.252.2 app.fds.co.id",
         "dig +short @172.31.252.2 app.fds.co.id A",
         "dig app.fds.co.id @172.31.252.2",
-        "nslookup 172.31.252.2 app.fds.co.id",
-        "resolve --server 172.31.252.2 app.fds.co.id"
+        "nslookup 172.31.252.2 app.fds.co.id"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanations": [
+        "Salah. Command `resolve` tidak ada.",
         "Benar. Sintaks dig: `dig [@server] <name> <type>` — server harus sebelum nama; `+short` untuk output ringkas.",
         "Salah. Urutan salah: setelah nama, argumen dianggap type/kategori query, bukan server.",
-        "Salah. Sintaks nslookup: `nslookup <name> [server]` — urutan argumen terbalik di sini.",
-        "Salah. Command `resolve` tidak ada."
+        "Salah. Sintaks nslookup: `nslookup <name> [server]` — urutan argumen terbalik di sini."
       ]
     },
     {
       "id": "sys-admin-mtr",
       "prompt": "Koneksi ke 172.31.252.50 sering putus. Untuk melacak di hop ke berapa packet loss terjadi, dengan statistik terus-menerus…",
       "options": [
-        "mtr -n 172.31.252.50",
         "ping -c 5 172.31.252.50",
         "traceroute 172.31.252.50",
-        "ip route get 172.31.252.50"
+        "ip route get 172.31.252.50",
+        "mtr -n 172.31.252.50"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanations": [
-        "Benar. `mtr` gabungan traceroute + ping dengan statistik loss% per-hop yang berjalan terus.",
         "Salah. `ping` hanya ke tujuan akhir — tidak ada info per-hop.",
         "Salah. `traceroute` menunjukkan urutan hop sekali jalan, tanpa statistik loss berkelanjutan.",
-        "Salah. `ip route get` hanya route lokal ke tujuan, tidak men-trace jaringan."
+        "Salah. `ip route get` hanya route lokal ke tujuan, tidak men-trace jaringan.",
+        "Benar. `mtr` gabungan traceroute + ping dengan statistik loss% per-hop yang berjalan terus."
       ]
     },
     {
@@ -485,221 +485,221 @@
       "id": "sys-admin-dropin",
       "prompt": "Tambahkan Environment=NODE_ENV=production ke unit nginx TANPA mengedit file vendor di /usr/lib/systemd/system (biar survive package update). Command yang benar…",
       "options": [
-        "systemctl edit nginx",
-        "systemctl set-environment NODE_ENV=production",
         "vi /usr/lib/systemd/system/nginx.service",
-        "systemctl daemon-reload"
+        "systemctl daemon-reload",
+        "systemctl edit nginx",
+        "systemctl set-environment NODE_ENV=production"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanations": [
-        "Benar. `systemctl edit` membuat drop-in di /etc/systemd/system/nginx.service.d/ — override yang rapi dan survive update.",
-        "Salah. `set-environment` setting env global daemon, bukan per-unit.",
         "Salah. Edit file vendor = hilang saat package nginx di-update.",
-        "Salah. `daemon-reload` hanya memuat ulang config; tidak membuat file drop-in apa pun."
+        "Salah. `daemon-reload` hanya memuat ulang config; tidak membuat file drop-in apa pun.",
+        "Benar. `systemctl edit` membuat drop-in di /etc/systemd/system/nginx.service.d/ — override yang rapi dan survive update.",
+        "Salah. `set-environment` setting env global daemon, bukan per-unit."
       ]
     },
     {
       "id": "sys-admin-systemctl-cat",
       "prompt": "Lihat konfigurasi unit nginx YANG AKTIF, termasuk semua drop-in override-nya. Command yang benar…",
       "options": [
-        "systemctl cat nginx",
         "cat /etc/systemd/system/nginx.service",
         "systemctl show nginx",
-        "journalctl -u nginx"
+        "journalctl -u nginx",
+        "systemctl cat nginx"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanations": [
-        "Benar. `systemctl cat` memuat dan menampilkan semua file unit + drop-in yang berlaku, dengan header file-nya.",
         "Salah. File di /etc hanya sebagian; drop-in ada di subdirektori .d/ dan unit vendor di /usr/lib.",
         "Salah. `systemctl show` memetakan properti (StatusText, MainPID, dll), bukan isi file unit.",
-        "Salah. `journalctl` itu log, bukan konfigurasi."
+        "Salah. `journalctl` itu log, bukan konfigurasi.",
+        "Benar. `systemctl cat` memuat dan menampilkan semua file unit + drop-in yang berlaku, dengan header file-nya."
       ]
     },
     {
       "id": "sys-admin-is-active",
       "prompt": "Di skrip monitoring, kamu butuh cek status nginx yang bersih untuk diproses (exit code + output sederhana). Command yang benar…",
       "options": [
-        "systemctl is-active nginx",
-        "systemctl status nginx",
         "ps aux | grep nginx",
-        "journalctl -u nginx --quiet"
+        "journalctl -u nginx --quiet",
+        "systemctl is-active nginx",
+        "systemctl status nginx"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanations": [
-        "Benar. `is-active` mencetak active/inactive/deactivated dan exit code 0/nonzero — dirancang untuk skrip.",
-        "Salah. `status` output-nya kaya (log tail, memory, dll) — untuk manusia, berisik untuk parsing.",
         "Salah. `grep` terhadap ps rawan false-positive (grep itu sendiri ikut kena grep), bukan cara systemd.",
-        "Salah. `journalctl --quiet` tetap mencetak log terakhir; bukan cek status."
+        "Salah. `journalctl --quiet` tetap mencetak log terakhir; bukan cek status.",
+        "Benar. `is-active` mencetak active/inactive/deactivated dan exit code 0/nonzero — dirancang untuk skrip.",
+        "Salah. `status` output-nya kaya (log tail, memory, dll) — untuk manusia, berisik untuk parsing."
       ]
     },
     {
       "id": "sys-admin-list-timers",
       "prompt": "Lihat semua timer systemd yang aktif (job periodik ala cron yang dikelola systemd) beserta jadwal trigger berikutnya…",
       "options": [
-        "systemctl list-timers",
         "crontab -l",
         "timedatectl",
-        "systemctl --failed"
+        "systemctl --failed",
+        "systemctl list-timers"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanations": [
-        "Benar. `list-timers` menampilkan unit timer, next/last trigger, dan status — termasuk timer bawaan sistem.",
         "Salah. `crontab -l` hanya cron per-user, tidak melihat unit timer systemd (termasuk timer sistem lain).",
         "Salah. `timedatectl` itu konfigurasi waktu/NTP, bukan daftar timer.",
-        "Salah. `--failed` hanya unit yang gagal, semua jenis unit, bukan timer aktif."
+        "Salah. `--failed` hanya unit yang gagal, semua jenis unit, bukan timer aktif.",
+        "Benar. `list-timers` menampilkan unit timer, next/last trigger, dan status — termasuk timer bawaan sistem."
       ]
     },
     {
       "id": "sys-admin-lvs",
       "prompt": "Lihat daftar semua Logical Volume beserta ukuran dan statusnya dalam satu tabel…",
       "options": [
+        "lsblk",
         "lvs",
         "vgs",
-        "pvs",
-        "lsblk"
+        "pvs"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanations": [
+        "Salah. `lsblk` menampilkan pohon block device, bukan metadata LVM (VG/LV).",
         "Benar. `lvs` = Logical Volume Summary: nama LV, VG, ukuran, attr, path device.",
         "Salah. `vgs` level-nya Volume Group (ringkasan VG, bukan isi LV).",
-        "Salah. `pvs` level-nya Physical Volume (disk dasar).",
-        "Salah. `lsblk` menampilkan pohon block device, bukan metadata LVM (VG/LV)."
+        "Salah. `pvs` level-nya Physical Volume (disk dasar)."
       ]
     },
     {
       "id": "sys-admin-wipefs",
       "prompt": "Disk /dev/vdb1 bekas partisi lain; sebelum dipakai LVM kamu ingin menghapus signature filesystem/partisi lama dengan bersih. Command yang benar…",
       "options": [
-        "wipefs -a /dev/vdb1",
         "mkfs.xfs /dev/vdb1",
         "dd if=/dev/zero of=/dev/vdb1",
-        "parted /dev/vdb1 del 1"
+        "parted /dev/vdb1 del 1",
+        "wipefs -a /dev/vdb1"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanations": [
-        "Benar. `wipefs -a` menghapus semua signature filesystem/partisi dari device — langkah yang benar sebelum pvcreate.",
         "Salah. `mkfs` menimpa superblock baru, tapi signature lama kadang tetap terdeteksi oleh tools lain.",
         "Salah. `dd` zero seluruh disk — lambat dan berlebihan; signature-nya tidak perlu di-zero.",
-        "Salah. `parted del` menghapus entri tabel partisi, bukan signature filesystem di dalam partisi."
+        "Salah. `parted del` menghapus entri tabel partisi, bukan signature filesystem di dalam partisi.",
+        "Benar. `wipefs -a` menghapus semua signature filesystem/partisi dari device — langkah yang benar sebelum pvcreate."
       ]
     },
     {
       "id": "sys-admin-mkfs",
       "prompt": "LV /dev/vg0/data sudah dibuat (belum ada filesystem). Command untuk membuat filesystem XFS di atasnya…",
       "options": [
-        "mkfs.xfs /dev/vg0/data",
-        "mkfs.ext4 /dev/vg0/data",
         "xfs_growfs /dev/vg0/data",
-        "mkfs.xfs -t ext4 /dev/vg0/data"
+        "mkfs.xfs -t ext4 /dev/vg0/data",
+        "mkfs.xfs /dev/vg0/data",
+        "mkfs.ext4 /dev/vg0/data"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanations": [
-        "Benar. `mkfs.xfs <device>` membuat filesystem XFS — satu langkah, langsung siap di-mount.",
-        "Salah. `mkfs.ext4` membuat ext4, bukan XFS.",
         "Salah. `xfs_growfs` memperbesar XFS yang sudah ada — di device tanpa filesystem akan error.",
-        "Salah. `-t` bukan opsi mkfs.xfs (pilih filesystem via nama binary-nya, bukan flag)."
+        "Salah. `-t` bukan opsi mkfs.xfs (pilih filesystem via nama binary-nya, bukan flag).",
+        "Benar. `mkfs.xfs <device>` membuat filesystem XFS — satu langkah, langsung siap di-mount.",
+        "Salah. `mkfs.ext4` membuat ext4, bukan XFS."
       ]
     },
     {
       "id": "sys-admin-lsblk",
       "prompt": "Cek pohon device block: disk, partisi, LV, dan apa yang ter-mount di mana, dalam satu tampilan…",
       "options": [
+        "lshw -class disk",
         "lsblk",
         "df -h",
-        "fdisk -l",
-        "lshw -class disk"
+        "fdisk -l"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanations": [
+        "Salah. `lshw` detail hardware, output berat dan tanpa mount point.",
         "Benar. `lsblk` menampilkan hierarki (disk → partisi → LV) + kolom MOUNTPOINT — paling komplit untuk pertanyaan ini.",
         "Salah. `df -h` hanya filesystem yang ter-mount, tanpa struktur disk/partisi.",
-        "Salah. `fdisk -l` hanya tabel partisi per disk, tanpa mount info dan LV.",
-        "Salah. `lshw` detail hardware, output berat dan tanpa mount point."
+        "Salah. `fdisk -l` hanya tabel partisi per disk, tanpa mount info dan LV."
       ]
     },
     {
       "id": "sys-admin-swapon",
       "prompt": "Lihat device/file swap apa saja yang sedang AKTIF beserta ukurannya…",
       "options": [
-        "swapon --show",
-        "free -m",
         "swapoff --show",
-        "cat /proc/meminfo | grep Swap"
+        "cat /proc/meminfo | grep Swap",
+        "swapon --show",
+        "free -m"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanations": [
-        "Benar. `swapon --show` daftar area swap aktif: name, tipe, ukuran, priority.",
-        "Salah. `free -m` hanya total swap used/free, bukan daftar device-nya.",
         "Salah. `swapoff` tidak punya opsi `--show`.",
-        "Salah. /proc/meminfo hanya angka agregat, bukan area swap per-device."
+        "Salah. /proc/meminfo hanya angka agregat, bukan area swap per-device.",
+        "Benar. `swapon --show` daftar area swap aktif: name, tipe, ukuran, priority.",
+        "Salah. `free -m` hanya total swap used/free, bukan daftar device-nya."
       ]
     },
     {
       "id": "sys-admin-tmpfs-remount",
       "prompt": "/dev/shm (tmpfs) penuh karena aplikasi. Perbesar ke 4G TANPA reboot…",
       "options": [
-        "mount -o remount,size=4G /dev/shm",
         "mkfs -t tmpfs /dev/shm",
         "resize2fs /dev/shm",
-        "modprobe tmpfs size=4G"
+        "modprobe tmpfs size=4G",
+        "mount -o remount,size=4G /dev/shm"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanations": [
-        "Benar. tmpfs diatur via mount option `size`; remount langsung mengubahnya tanpa kehilangan isi.",
         "Salah. tmpfs bukan di-mount dari device; `mkfs` tidak relevan dan `mkfs -t tmpfs` tidak ada.",
         "Salah. `resize2fs` untuk ext2/3/4.",
-        "Salah. tmpfs sudah built-in di kernel; modprobe + parameter tidak mengubah ukuran mount yang ada."
+        "Salah. tmpfs sudah built-in di kernel; modprobe + parameter tidak mengubah ukuran mount yang ada.",
+        "Benar. tmpfs diatur via mount option `size`; remount langsung mengubahnya tanpa kehilangan isi."
       ]
     },
     {
       "id": "sys-admin-pidstat-d",
       "prompt": "Cari proses yang paling banyak MENULIS ke disk saat ini (diagnosis I/O bottleneck per-proses)…",
       "options": [
-        "pidstat -d 1",
         "iostat -x 1",
         "top",
-        "lsof /dev/vda"
+        "lsof /dev/vda",
+        "pidstat -d 1"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanations": [
-        "Benar. `pidstat -d 1` menampilkan kB read/write per-proses tiap detik — persis kebutuhan per-proses.",
         "Salah. `iostat -x` statistik per-DEVICE, bukan per-proses.",
         "Salah. `top` default-nya terurut CPU, bukan I/O disk.",
-        "Salah. `lsof` hanya menunjuk file yang sedang terbuka, bukan laju tulisnya."
+        "Salah. `lsof` hanya menunjuk file yang sedang terbuka, bukan laju tulisnya.",
+        "Benar. `pidstat -d 1` menampilkan kB read/write per-proses tiap detik — persis kebutuhan per-proses."
       ]
     },
     {
       "id": "sys-admin-vmstat",
       "prompt": "Cek statistik sistem menyeluruh (CPU, memori, swap, I/O, proses) setiap detik sebagai overview cepat…",
       "options": [
-        "vmstat 1",
         "free -h",
         "uptime",
-        "dmesg -w"
+        "dmesg -w",
+        "vmstat 1"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanations": [
-        "Benar. `vmstat 1` = virtual memory statistics per detik: r/b, swpd/free, si/so, bi/bo, in/csz — overview paling padat.",
         "Salah. `free -h` hanya memori, sekali tampil, bukan continuous.",
         "Salah. `uptime` hanya load average dan jam hidup.",
-        "Salah. `dmesg -w` itu log kernel, bukan statistik sistem."
+        "Salah. `dmesg -w` itu log kernel, bukan statistik sistem.",
+        "Benar. `vmstat 1` = virtual memory statistics per detik: r/b, swpd/free, si/so, bi/bo, in/csz — overview paling padat."
       ]
     },
     {
       "id": "sys-admin-ps-mem",
       "prompt": "Proses apa yang paling banyak memakan memori saat ini?…",
       "options": [
+        "top -b -n 1",
         "ps aux --sort=-%mem | head",
         "ps aux --sort=-%cpu | head",
-        "free -m",
-        "top -b -n 1"
+        "free -m"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanations": [
+        "Salah. `top -b -n 1` sekali tampil default terurut CPU — tidak langsung menjawab soal memori.",
         "Benar. `--sort=-%mem` mengurutkan descending berdasarkan persentase memori — langsung ke pemboros RAM.",
         "Salah. `%cpu` mengurutkan berdasarkan CPU, bukan memori.",
-        "Salah. `free` menunjukkan total sistem, bukan per-proses.",
-        "Salah. `top -b -n 1` sekali tampil default terurut CPU — tidak langsung menjawab soal memori."
+        "Salah. `free` menunjukkan total sistem, bukan per-proses."
       ]
     },
     {
@@ -723,17 +723,17 @@
       "id": "sys-admin-chage-max",
       "prompt": "Kebijakan: password maksimal 90 hari. Terapkan ke user `app`…",
       "options": [
-        "chage -M 90 app",
         "chage -m 90 app",
         "chage -d 90 app",
-        "usermod -m 90 app"
+        "usermod -m 90 app",
+        "chage -M 90 app"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanations": [
-        "Benar. `-M` = PASS_MAX_DAYS (usia maksimum password).",
         "Salah. `-m` = PASS_MIN_DAYS (usia minimum sebelum boleh ganti) — kebalikan dari yang diminta.",
         "Salah. `-d` = tanggal perubahan password terakhir (0 = force change).",
-        "Salah. `usermod -m` itu memindahkan home directory, tidak ada hubungannya dengan aging password."
+        "Salah. `usermod -m` itu memindahkan home directory, tidak ada hubungannya dengan aging password.",
+        "Benar. `-M` = PASS_MAX_DAYS (usia maksimum password)."
       ]
     },
     {
@@ -757,17 +757,17 @@
       "id": "sys-admin-semanage-port",
       "prompt": "Aplikasi web di port 8080 di-block SELinux (httpd tidak diizinkan bind port itu). Cara memperbaikinya dengan benar…",
       "options": [
-        "semanage port -a -t http_port_t -p tcp 8080",
         "setenforce 0",
         "chcon -t http_port_t /var/www/html",
-        "restorecon -R /var/www/html"
+        "restorecon -R /var/www/html",
+        "semanage port -a -t http_port_t -p tcp 8080"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanations": [
-        "Benar. Port 8080 harus didaftarkan ke port type http_port_t — permanen dan presisi, enforcement tetap on.",
         "Salah. `setenforce 0` mematikan SELinux keseluruhan — solusi terakhir, bukan perbaikan.",
         "Salah. `chcon` mengubah label FILE; masalah di sini adalah port, bukan label file.",
-        "Salah. `restorecon` mengembalikan label default file — tidak menyentuh konteks port."
+        "Salah. `restorecon` mengembalikan label default file — tidak menyentuh konteks port.",
+        "Benar. Port 8080 harus didaftarkan ke port type http_port_t — permanen dan presisi, enforcement tetap on."
       ]
     },
     {
@@ -791,17 +791,17 @@
       "id": "sys-admin-getsebool",
       "prompt": "Cek apakah boolean SELinux `httpd_can_network_connect` aktif (on/off)…",
       "options": [
+        "getsebool --set httpd_can_network_connect",
         "getsebool httpd_can_network_connect",
         "semanage boolean -l | grep httpd",
-        "setenforce 0 && sestatus",
-        "getsebool --set httpd_can_network_connect"
+        "setenforce 0 && sestatus"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanations": [
+        "Salah. `--set` bukan opsi getsebool (itu untuk men-set, yang seharusnya `setsebool`).",
         "Benar. `getsebool <name>` (atau `-a` untuk semua) menampilkan status boolean.",
         "Salah. `semanage boolean -l` valid untuk daftar, tapi `getsebool` adalah alat yang lebih langsung dan presisi untuk satu boolean; `semanage` lebih untuk pengelolaan rule.",
-        "Salah. `setenforce 0` mengubah MODE enforcement, tidak ada kaitannya dengan status boolean.",
-        "Salah. `--set` bukan opsi getsebool (itu untuk men-set, yang seharusnya `setsebool`)."
+        "Salah. `setenforce 0` mengubah MODE enforcement, tidak ada kaitannya dengan status boolean."
       ]
     },
     {
@@ -825,51 +825,51 @@
       "id": "sys-admin-chattr",
       "prompt": "Buat file /etc/motd immutible: bahkan root tidak bisa mengubah/menghapus sampai diizinkan. Command yang benar…",
       "options": [
-        "chattr +i /etc/motd",
-        "chmod 000 /etc/motd",
         "chown root:root /etc/motd",
-        "setfacl -m u::--- /etc/motd"
+        "setfacl -m u::--- /etc/motd",
+        "chattr +i /etc/motd",
+        "chmod 000 /etc/motd"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanations": [
-        "Benar. Atribut `i` (immutable) di level VFS — root pun tidak bisa edit sampai `chattr -i`.",
-        "Salah. `chmod 000` hanya permission POSIX; root tetap bisa menulis (CAP_DAC_OVERRIDE).",
         "Salah. Ownership tidak mencegah owner (root) menulis.",
-        "Salah. ACL tanpa CAP_FOWNER tetap bisa dilewati root; dan menghapus ACL-nya juga gampang."
+        "Salah. ACL tanpa CAP_FOWNER tetap bisa dilewati root; dan menghapus ACL-nya juga gampang.",
+        "Benar. Atribut `i` (immutable) di level VFS — root pun tidak bisa edit sampai `chattr -i`.",
+        "Salah. `chmod 000` hanya permission POSIX; root tetap bisa menulis (CAP_DAC_OVERRIDE)."
       ]
     },
     {
       "id": "sys-admin-timedatectl",
       "prompt": "Aktifkan sinkronisasi waktu NTP otomatis (dikelola systemd-timesyncd/chronyd)…",
       "options": [
+        "hwclock --hctosys",
         "timedatectl set-ntp true",
         "ntpdate pool.ntp.org",
-        "chronyc makestep",
-        "hwclock --hctosys"
+        "chronyc makestep"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanations": [
+        "Salah. `--hctosys` menyalin hardware clock ke system clock sekali, bukan sync NTP.",
         "Benar. `set-ntp true` mengaktifkan NTP secara persisten dan start daemon sinkronisasi yang tersedia.",
         "Salah. `ntpdate` one-shot legacy; tidak ada daemon yang menjaga sinkronisasi terus-menerus.",
-        "Salah. `chronyc makestep` melakukan satu kali step — bukan enable layanan NTP.",
-        "Salah. `--hctosys` menyalin hardware clock ke system clock sekali, bukan sync NTP."
+        "Salah. `chronyc makestep` melakukan satu kali step — bukan enable layanan NTP."
       ]
     },
     {
       "id": "sys-admin-dnf-info",
       "prompt": "Cek versi & repo package nginx TANPA menginstalnya (sebelum keputusan upgrade)…",
       "options": [
+        "repoquery --version nginx",
         "dnf info nginx",
         "rpm -qi nginx",
-        "dnf check-update nginx",
-        "repoquery --version nginx"
+        "dnf check-update nginx"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanations": [
+        "Salah. `repoquery` bukan command mandiri standar (dia sub-command dnf/rpm); sintaks di sana juga tidak langsung.",
         "Benar. `dnf info <pkg>` menampilkan versi, release, size, repo — terpasang atau tidak.",
         "Salah. `rpm -qi` hanya bekerja kalau package SUDAH terinstall.",
-        "Salah. `check-update` hanya menunjukkan apakah ada update, bukan detail paket.",
-        "Salah. `repoquery` bukan command mandiri standar (dia sub-command dnf/rpm); sintaks di sana juga tidak langsung."
+        "Salah. `check-update` hanya menunjukkan apakah ada update, bukan detail paket."
       ]
     },
     {
@@ -893,34 +893,34 @@
       "id": "sys-admin-find-size",
       "prompt": "Cari semua file > 100MB di filesystem root (/) TANPA menyeberang ke filesystem lain (/proc, /sys, mount lain)…",
       "options": [
-        "find / -xdev -size +100M",
-        "find / -size +100M",
         "du -h / | sort",
-        "ls -lS /"
+        "ls -lS /",
+        "find / -xdev -size +100M",
+        "find / -size +100M"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanations": [
-        "Benar. `-xdev` membatasi pencarian ke satu filesystem — cepat dan tidak masuk /proc//sys.",
-        "Salah. Tanpa `-xdev`, find menyelusuri semua mount termasuk /proc (file 'palsu') — lambat dan noisy.",
         "Salah. `du` merangkum per-direktori, bukan file individual.",
-        "Salah. `ls` hanya level pertama direktori, tidak rekursif."
+        "Salah. `ls` hanya level pertama direktori, tidak rekursif.",
+        "Benar. `-xdev` membatasi pencarian ke satu filesystem — cepat dan tidak masuk /proc//sys.",
+        "Salah. Tanpa `-xdev`, find menyelusuri semua mount termasuk /proc (file 'palsu') — lambat dan noisy."
       ]
     },
     {
       "id": "sys-admin-lsof",
       "prompt": "File /data/db.sqlite tidak bisa di-hapus: 'resource busy'. Cari proses yang memegangnya…",
       "options": [
-        "lsof /data/db.sqlite",
-        "ls -l /data/db.sqlite",
         "stat /data/db.sqlite",
-        "find /data -name db.sqlite"
+        "find /data -name db.sqlite",
+        "lsof /data/db.sqlite",
+        "ls -l /data/db.sqlite"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanations": [
-        "Benar. `lsof <file>` menampilkan PID + proses yang membuka file tersebut — langsung ke pelakunya.",
-        "Salah. `ls -l` hanya metadata permission, bukan pembuka file.",
         "Salah. `stat` metadata inode (uid, mode, waktu), bukan open file.",
-        "Salah. `find` mencari nama file, bukan siapa yang membukanya."
+        "Salah. `find` mencari nama file, bukan siapa yang membukanya.",
+        "Benar. `lsof <file>` menampilkan PID + proses yang membuka file tersebut — langsung ke pelakunya.",
+        "Salah. `ls -l` hanya metadata permission, bukan pembuka file."
       ]
     },
     {
@@ -944,170 +944,170 @@
       "id": "sys-admin-rsync-n",
       "prompt": "Simulasikan rsync /data ke NAS SEBELUM benar-benar jalan (lihat file apa yang akan dikirim, tanpa mengubah apa pun)…",
       "options": [
-        "rsync -avnz /data nas:/backup/",
         "rsync --checksum -a /data nas:/backup/",
         "rsync -a --progress /data nas:/backup/",
-        "rsync -a --delete /data nas:/backup/"
+        "rsync -a --delete /data nas:/backup/",
+        "rsync -avnz /data nas:/backup/"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanations": [
-        "Benar. `-n` (dry-run) menjalankan transfer secara simulasi penuh tanpa menuliskan apa pun.",
         "Salah. `--checksum` membandingkan isi file (biar akurat) — tapi tetap transferan sungguhan.",
         "Salah. `--progress` hanya menampilkan kemajuan transfer nyata.",
-        "Salah. `--delete` malah menghapus file di destination yang tidak ada di source — bahaya tanpa simulasi."
+        "Salah. `--delete` malah menghapus file di destination yang tidak ada di source — bahaya tanpa simulasi.",
+        "Benar. `-n` (dry-run) menjalankan transfer secara simulasi penuh tanpa menuliskan apa pun."
       ]
     },
     {
       "id": "sys-admin-tcpdump",
       "prompt": "Tangkap semua traffic TCP port 443 di antarmuka enp3s0 (diagnosis TLS), output angka saja tanpa DNS lookup…",
       "options": [
-        "tcpdump -i enp3s0 -nn port 443",
         "tcpdump -i enp3s0 port 80",
         "ss -tlnp",
-        "iptables -L -n"
+        "iptables -L -n",
+        "tcpdump -i enp3s0 -nn port 443"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanations": [
-        "Benar. `-i` pilih interface, `-nn` tanpa resolve port/domain, filter `port 443` — presisi untuk debug TLS.",
         "Salah. Port 80 = HTTP plaintext, bukan 443/TLS.",
         "Salah. `ss` hanya daftar socket saat ini, tidak menangkap packet yang lewat.",
-        "Salah. `iptables -L` menampilkan rule firewall, bukan capture trafik."
+        "Salah. `iptables -L` menampilkan rule firewall, bukan capture trafik.",
+        "Benar. `-i` pilih interface, `-nn` tanpa resolve port/domain, filter `port 443` — presisi untuk debug TLS."
       ]
     },
     {
       "id": "sys-admin-openssl-cert",
       "prompt": "Cek sertifikat TLS yang disajikan server db.fds.co.id:443 (subject, issuer, expiry) langsung dari koneksi…",
       "options": [
+        "keytool -list -host db.fds.co.id",
         "openssl s_client -connect db.fds.co.id:443",
         "openssl x509 -in db.fds.co.id",
-        "curl -k https://db.fds.co.id",
-        "keytool -list -host db.fds.co.id"
+        "curl -k https://db.fds.co.id"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanations": [
+        "Salah. `keytool` itu util Java untuk keystore, bukan untuk inspect server TLS.",
         "Benar. `s_client -connect` membuka TLS handshake dan menampilkan certificate chain + detail sertifikat server.",
         "Salah. `x509 -in` butuh FILE sertifikat lokal, bukan koneksi ke server.",
-        "Salah. `curl -k` malah MELAYAKAN verifikasi TLS, dan tidak menampilkan detail sertifikat.",
-        "Salah. `keytool` itu util Java untuk keystore, bukan untuk inspect server TLS."
+        "Salah. `curl -k` malah MELAYAKAN verifikasi TLS, dan tidak menampilkan detail sertifikat."
       ]
     },
     {
       "id": "sys-admin-logrotate",
       "prompt": "Konfigurasi logrotate kamu baru di-edit. Validasi config TANPA melakukan rotasi apa pun (mode debug)…",
       "options": [
+        "service logrotate status",
         "logrotate -d /etc/logrotate.conf",
         "logrotate --force /etc/logrotate.conf",
-        "systemctl restart rsyslog",
-        "service logrotate status"
+        "systemctl restart rsyslog"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanations": [
+        "Salah. Tidak ada service logrotate yang ber-status; itu cron job/systemd timer.",
         "Benar. `-d` (debug) menjalankan logrotate secara virtual: menampilkan apa yang akan dilakukan, tanpa efek.",
         "Salah. `--force` memaksa rotasi SEKARANG — justru berlawanan dengan yang diminta.",
-        "Salah. Restart rsyslog tidak memvalidasi config logrotate.",
-        "Salah. Tidak ada service logrotate yang ber-status; itu cron job/systemd timer."
+        "Salah. Restart rsyslog tidak memvalidasi config logrotate."
       ]
     },
     {
       "id": "sys-admin-kubectl-logs",
       "prompt": "Stream log pod web-1 secara terus-menerus (live tail) untuk debugging aplikasi…",
       "options": [
+        "kubectl describe pod web-1",
         "kubectl logs -f web-1",
         "kubectl get pods -o yaml",
-        "journalctl -u web-1",
-        "kubectl describe pod web-1"
+        "journalctl -u web-1"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanations": [
+        "Salah. `describe` untuk event/status pod (scheduling, probe), bukan stream log.",
         "Benar. `logs -f` = follow log container, ekuivalen `tail -f` untuk pod.",
         "Salah. `get -o yaml` menampilkan manifest pod, bukan isi log aplikasi.",
-        "Salah. `journalctl` itu log node (daemon); log aplikasi di k8s lewat `kubectl logs`.",
-        "Salah. `describe` untuk event/status pod (scheduling, probe), bukan stream log."
+        "Salah. `journalctl` itu log node (daemon); log aplikasi di k8s lewat `kubectl logs`."
       ]
     },
     {
       "id": "sys-admin-daemon-reload",
       "prompt": "Kamu edit file unit /etc/systemd/system/myservice.service langsung (bukan via systemctl edit). Agar perubahan terbaca systemd…",
       "options": [
-        "systemctl daemon-reload",
         "systemctl restart myservice langsung tanpa reload",
         "systemctl daemon-reexec myservice",
-        "reboot server"
+        "reboot server",
+        "systemctl daemon-reload"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanations": [
-        "Benar. Setelah ubah file unit manual, `daemon-reload` memuat ulang semua definisi unit dari disk.",
         "Salah. Restart tanpa reload memakai definisi lama yang masih di memori — perubahanmu belum terbaca.",
         "Salah. `daemon-reexec` itu untuk systemd memperbarui binary-nya sendiri (update paket), bukan memuat unit.",
-        "Salah. Reboot pasti berhasil, tapi bukan cara operasional yang benar."
+        "Salah. Reboot pasti berhasil, tapi bukan cara operasional yang benar.",
+        "Benar. Setelah ubah file unit manual, `daemon-reload` memuat ulang semua definisi unit dari disk."
       ]
     },
     {
       "id": "sys-admin-systemd-run",
       "prompt": "Jalankan sekali command (misal script maintenance) sebagai unit transient systemd (ada unit, ada log di journal, bisa dipantau)…",
       "options": [
-        "systemd-run /usr/local/bin/maintenance.sh",
-        "crontab -e lalu tambah @reboot",
         "nohup /usr/local/bin/maintenance.sh &",
-        "systemctl start /usr/local/bin/maintenance.sh"
+        "systemctl start /usr/local/bin/maintenance.sh",
+        "systemd-run /usr/local/bin/maintenance.sh",
+        "crontab -e lalu tambah @reboot"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanations": [
-        "Benar. `systemd-run` membungkus command sebagai transient scope/service — termanajemen, ter-log di journal.",
-        "Salah. Cron @reboot itu untuk saat boot, bukan eksekusi sekali sekarang.",
         "Salah. `nohup &` tidak punya unit, log tercecer, dan tidak bisa dipantau via systemd.",
-        "Salah. `systemctl start` mengambil NAMA UNIT, bukan path script."
+        "Salah. `systemctl start` mengambil NAMA UNIT, bukan path script.",
+        "Benar. `systemd-run` membungkus command sebagai transient scope/service — termanajemen, ter-log di journal.",
+        "Salah. Cron @reboot itu untuk saat boot, bukan eksekusi sekali sekarang."
       ]
     },
     {
       "id": "sys-admin-journal-window",
       "prompt": "Ambil log 30 menit terakhir hingga 1 jam yang lalu (window waktu spesifik) untuk insiden…",
       "options": [
-        "journalctl --since \"-1h\" --until \"-30min\"",
         "journalctl --since \"1 hour ago\" | head",
         "journalctl --timestamps -30min",
-        "journalctl --from 30min --to 1hour"
+        "journalctl --from 30min --to 1hour",
+        "journalctl --since \"-1h\" --until \"-30min\""
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanations": [
-        "Benar. `--since`/`--until` menerima waktu relatif (\"-1h\", \"-30min\") — window presisi tanpa parsing manual.",
         "Salah. `head` memotong N baris pertama dari window 1 jam — bukan 30 menit yang dimaksud, dan bisa salah potong.",
         "Salah. Opsi `--timestamps` bukan untuk memfilter waktu.",
-        "Salah. `--from`/`--to` bukan opsi journalctl."
+        "Salah. `--from`/`--to` bukan opsi journalctl.",
+        "Benar. `--since`/`--until` menerima waktu relatif (\"-1h\", \"-30min\") — window presisi tanpa parsing manual."
       ]
     },
     {
       "id": "sys-admin-journal-disk",
       "prompt": "Cek berapa disk yang dikonsumsi journal (sebelum memutuskan cleanup)…",
       "options": [
+        "systemctl status systemd-journald | grep size",
         "journalctl --disk-usage",
         "du -sh /var/log/journal",
-        "journalctl --size",
-        "systemctl status systemd-journald | grep size"
+        "journalctl --size"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanations": [
+        "Salah. Output `status` tidak memuat ukuran penyimpanan journal.",
         "Benar. `--disk-usage` adalah perintah resmi (mencakup journal persisten di /var/log/journal).",
         "Salah. `du` bisa mendekati, tapi tidak menghitung bagian yang masih di memori (volatile) dan bukan alat resmi.",
-        "Salah. `--size` bukan opsi journalctl.",
-        "Salah. Output `status` tidak memuat ukuran penyimpanan journal."
+        "Salah. `--size` bukan opsi journalctl."
       ]
     },
     {
       "id": "sys-admin-reset-failed",
       "prompt": "Banyak unit gagal menumpuk di daftar `systemctl --failed` dan menutupi unit yang baru gagal. Bersihkan status failed-nya…",
       "options": [
-        "systemctl reset-failed",
-        "systemctl daemon-reload",
         "journalctl --vacuum-time=1s",
-        "rm /run/systemd/system/*.d"
+        "rm /run/systemd/system/*.d",
+        "systemctl reset-failed",
+        "systemctl daemon-reload"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanations": [
-        "Benar. `reset-failed` mengosongkan daftar unit failed (tanpa memulai ulang unit apa pun).",
-        "Salah. `daemon-reload` memuat ulang unit file, tidak menyentuh status failed.",
         "Salah. `--vacuum-time` membuang ENTRY journal lama — bukan status unit.",
-        "Salah. Menghapus direktori runtime systemd secara manual = merusak state yang dikelola systemd."
+        "Salah. Menghapus direktori runtime systemd secara manual = merusak state yang dikelola systemd.",
+        "Benar. `reset-failed` mengosongkan daftar unit failed (tanpa memulai ulang unit apa pun).",
+        "Salah. `daemon-reload` memuat ulang unit file, tidak menyentuh status failed."
       ]
     },
     {
@@ -1131,136 +1131,136 @@
       "id": "sys-admin-nft-ruleset",
       "prompt": "RHEL 9 memakai nftables. Lihat SELURUH rule firewall yang aktif saat ini…",
       "options": [
-        "nft list ruleset",
         "iptables -L",
         "nft show all",
-        "firewall-cmd --show-rules"
+        "firewall-cmd --show-rules",
+        "nft list ruleset"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanations": [
-        "Benar. `nft list ruleset` = semua tables/chains/rules yang aktif — pandangan lengkap nftables.",
         "Salah. `iptables -L` legacy API (kompatibilitas); di RHEL 9 yang native nftables adalah `nft`.",
         "Salah. Opsi `show all` tidak ada di nft.",
-        "Salah. `firewall-cmd --list-all` yang benar (dan itu hanya rule yang dikelola firewalld, bukan ruleset mentah)."
+        "Salah. `firewall-cmd --list-all` yang benar (dan itu hanya rule yang dikelola firewalld, bukan ruleset mentah).",
+        "Benar. `nft list ruleset` = semua tables/chains/rules yang aktif — pandangan lengkap nftables."
       ]
     },
     {
       "id": "sys-admin-firewalld-list",
       "prompt": "Audit cepat: daftar SELURUH konfigurasi aktif firewalld (zone, port, service, rich rules) dalam satu perintah…",
       "options": [
-        "firewall-cmd --list-all",
         "firewall-cmd --list-ports && firewall-cmd --list-services",
         "nft list ruleset",
-        "systemctl status firewalld"
+        "systemctl status firewalld",
+        "firewall-cmd --list-all"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanations": [
-        "Benar. `--list-all` memuat zone aktif + semua port/service/interface/rich rules sekaligus — ringkasan audit terbaik.",
         "Salah. Dua command terpisah melewatkan rich rules, masquerade, dan forward masquerade.",
         "Salah. `nft list ruleset` menampilkan rule mentah — lengkap tapi bukan ringkasan logis firewalld (dan rule dari app lain ikut).",
-        "Salah. `status` hanya on/off daemon, bukan isi rule."
+        "Salah. `status` hanya on/off daemon, bukan isi rule.",
+        "Benar. `--list-all` memuat zone aktif + semua port/service/interface/rich rules sekaligus — ringkasan audit terbaik."
       ]
     },
     {
       "id": "sys-admin-ss-ti",
       "prompt": "Diagnosis TCP: retransmit tinggi, window kecil. Melihat detail parameter TCP per-koneksi (retrans, cwnd, rtt)…",
       "options": [
-        "ss -ti",
-        "ss -tlnp",
         "netstat -t",
-        "ip -s link"
+        "ip -s link",
+        "ss -ti",
+        "ss -tlnp"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanations": [
-        "Benar. `ss -ti` menampilkan info TCP internal: retransmits, congestion window, RTT, packet loss — alat diagnosis TCP yang tepat.",
-        "Salah. `-tlnp` hanya state listener + proses, tanpa parameter TCP.",
         "Salah. `netstat -t` ringkasan statistik agregat, bukan detail per-koneksi.",
-        "Salah. `ip -s link` statistik L2 (frame/packet per antarmuka)."
+        "Salah. `ip -s link` statistik L2 (frame/packet per antarmuka).",
+        "Benar. `ss -ti` menampilkan info TCP internal: retransmits, congestion window, RTT, packet loss — alat diagnosis TCP yang tepat.",
+        "Salah. `-tlnp` hanya state listener + proses, tanpa parameter TCP."
       ]
     },
     {
       "id": "sys-admin-ping-mtu",
       "prompt": "Test apakah paket MTU 1400 bisa sampai tujuan TANPA di-fragment di jaringan (deteksi PMTU blackhole)…",
       "options": [
+        "traceroute -m 1400 172.31.252.1",
         "ping -M do -s 1380 172.31.252.1",
         "ping -M want -s 1380 172.31.252.1",
-        "ping -c 10 172.31.252.1",
-        "traceroute -m 1400 172.31.252.1"
+        "ping -c 10 172.31.252.1"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanations": [
+        "Salah. `traceroute -m` itu jumlah hop maksimum, bukan size packet.",
         "Benar. `-M do` men-set DF (don't fragment); `-s 1380` + header 20 byte = 1400. Kalau DF dan terlalu besar, packet drop — indikasi MTU path masalah.",
         "Salah. `-M want` mengizinkan fragmentasi — tidak menguji PMTU.",
-        "Salah. Ping biasa (size default 56) terlalu kecil untuk menguji MTU.",
-        "Salah. `traceroute -m` itu jumlah hop maksimum, bukan size packet."
+        "Salah. Ping biasa (size default 56) terlalu kecil untuk menguji MTU."
       ]
     },
     {
       "id": "sys-admin-tcpdump-w",
       "prompt": "Simpan capture traffic port 22 ke file pcap untuk dianalisis di Wireshark nanti…",
       "options": [
+        "ss -t port 22 | tee /tmp/ssh.pcap",
         "tcpdump -i enp3s0 -w /tmp/ssh.pcap port 22",
         "tcpdump -i enp3s0 port 22 > /tmp/ssh.pcap",
-        "tcpdump -r /tmp/ssh.pcap port 22",
-        "ss -t port 22 | tee /tmp/ssh.pcap"
+        "tcpdump -r /tmp/ssh.pcap port 22"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanations": [
+        "Salah. `ss` menampilkan socket, bukan menangkap packet stream.",
         "Benar. `-w` menulis capture mentah ke file pcap — format yang dibaca Wireshark.",
         "Salah. `>` redirect output TEKS ke file — bukan pcap valid.",
-        "Salah. `-r` itu READ (membaca) file pcap, kebalikan dari yang diminta.",
-        "Salah. `ss` menampilkan socket, bukan menangkap packet stream."
+        "Salah. `-r` itu READ (membaca) file pcap, kebalikan dari yang diminta."
       ]
     },
     {
       "id": "sys-admin-ip-addr-add",
       "prompt": "Tambah IP sekunder 10.0.0.5/24 ke antarmuka enp3s0 (runtime, tanpa reboot)…",
       "options": [
+        "ip link add 10.0.0.5/24 type enp3s0",
         "ip addr add 10.0.0.5/24 dev enp3s0",
         "ip addr set 10.0.0.5/24 up",
-        "ifconfig enp3s0:1 10.0.0.5 netmask 255.255.255.0",
-        "ip link add 10.0.0.5/24 type enp3s0"
+        "ifconfig enp3s0:1 10.0.0.5 netmask 255.255.255.0"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanations": [
+        "Salah. `ip link add` untuk membuat antarmuka VIRTUAL baru (bridge, veth), bukan menambah IP.",
         "Benar. `ip addr add <ip> dev <dev>` menambah alamat tambahan di antarmuka yang ada.",
         "Salah. `ip addr set` men-SET (mengganti) konfigurasi, dan butuh `dev` — tanpa dev akan salah sasaran.",
-        "Salah. Sintaks `ifconfig` alias interface era net-tools — legacy dan tidak tersedia default di RHEL 9.",
-        "Salah. `ip link add` untuk membuat antarmuka VIRTUAL baru (bridge, veth), bukan menambah IP."
+        "Salah. Sintaks `ifconfig` alias interface era net-tools — legacy dan tidak tersedia default di RHEL 9."
       ]
     },
     {
       "id": "sys-admin-ip-route-add",
       "prompt": "Subnet 172.31.250.0/24 hanya terjangkau lewat gateway 172.31.252.1. Tambah route statis-nya…",
       "options": [
-        "ip route add 172.31.250.0/24 via 172.31.252.1",
         "ip route add 172.31.252.1 172.31.250.0/24",
         "route add -net 172.31.250.0/24 gw 172.31.252.1",
-        "ip neigh add 172.31.252.1 dev enp3s0"
+        "ip neigh add 172.31.252.1 dev enp3s0",
+        "ip route add 172.31.250.0/24 via 172.31.252.1"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanations": [
-        "Benar. `ip route add <prefix> via <gateway>` = sintaks iproute2 untuk route statis.",
         "Salah. Tanpa keyword `via`, argumen kedua tidak dikenal — sintaks rusak.",
         "Salah. `route` itu net-tools (legacy); selain itu prefix di net-tools pakai netmask, bukan CIDR.",
-        "Salah. `ip neigh` menambah entry ARP, bukan route."
+        "Salah. `ip neigh` menambah entry ARP, bukan route.",
+        "Benar. `ip route add <prefix> via <gateway>` = sintaks iproute2 untuk route statis."
       ]
     },
     {
       "id": "sys-admin-vgcreate",
       "prompt": "PV /dev/vdb sudah dibuat (pvcreate). Langkah SELANJUTNYA untuk Volume Group bernama vg0…",
       "options": [
-        "vgcreate vg0 /dev/vdb",
         "lvcreate -L 10G vg0",
         "mkvg vg0 /dev/vdb",
-        "vgextend vg0 /dev/vdb"
+        "vgextend vg0 /dev/vdb",
+        "vgcreate vg0 /dev/vdb"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanations": [
-        "Benar. `vgcreate <vgname> <pv...>` merakit PV menjadi Volume Group — langkah kedua setelah pvcreate.",
         "Salah. `lvcreate` butuh VG yang sudah ada — belum ada VG di sini.",
         "Salah. `mkvg` bukan command LVM (konfusinya dengan mkfs/mkswap; LVM memakai vgcreate).",
-        "Salah. `vgextend` menambah PV ke VG yang SUDAH ADA."
+        "Salah. `vgextend` menambah PV ke VG yang SUDAH ADA.",
+        "Benar. `vgcreate <vgname> <pv...>` merakit PV menjadi Volume Group — langkah kedua setelah pvcreate."
       ]
     },
     {
@@ -1284,51 +1284,51 @@
       "id": "sys-admin-xfs-no-shrink",
       "prompt": "Kapasitas /data (XFS) ternyata kelebihan 500GB. Yang PALING penting kamu ketahui sebelum merencanakan pengurangan…",
       "options": [
-        "XFS tidak bisa di-shrink (diperkecil) — hanya grow",
         "XFS bisa di-shrink online dengan xfs_shrinkfs",
         "XFS bisa di-shrink asalkan unmount dulu",
-        "XFS bisa di-shrink kalau LVM-nya allow"
+        "XFS bisa di-shrink kalau LVM-nya allow",
+        "XFS tidak bisa di-shrink (diperkecil) — hanya grow"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanations": [
-        "Benar. Batasan fundamental XFS: online shrink tidak didukung — planning kapasitas harus tepat di awal (berbeda dengan ext4).",
         "Salah. `xfs_shrinkfs` tidak ada.",
         "Salah. Offline pun XFS tidak bisa dikecilkan (hanya ext4 yang bisa resize kedua arah).",
-        "Salah. Kemampuan shrink adalah sifat filesystem, bukan LVM."
+        "Salah. Kemampuan shrink adalah sifat filesystem, bukan LVM.",
+        "Benar. Batasan fundamental XFS: online shrink tidak didukung — planning kapasitas harus tepat di awal (berbeda dengan ext4)."
       ]
     },
     {
       "id": "sys-admin-mdadm-create",
       "prompt": "Buat RAID1 (mirror) dari dua disk /dev/vdb dan /dev/vdc sebagai /dev/md0…",
       "options": [
-        "mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/vdb /dev/vdc",
-        "mdadm --assemble /dev/md0 /dev/vdb /dev/vdc",
         "mdadm --create /dev/md0 --level=2 /dev/vdb /dev/vdc",
-        "mdadm /dev/md0 mirror /dev/vdb /dev/vdc"
+        "mdadm /dev/md0 mirror /dev/vdb /dev/vdc",
+        "mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/vdb /dev/vdc",
+        "mdadm --assemble /dev/md0 /dev/vdb /dev/vdc"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanations": [
-        "Benar. `--level=1` = RAID1, `--raid-devices=2` jumlah disk, lalu daftar device — sintaks mdadm create.",
-        "Salah. `--assemble` merakit array yang SUDAH PERNAH dibuat (dari metadata), bukan membuat baru.",
         "Salah. `--level=2` itu RAID2 (bit-level parity, legacy) — bukan mirror.",
-        "Salah. `mdadm` memakai flag `--`, bukan kata kunci `mirror`."
+        "Salah. `mdadm` memakai flag `--`, bukan kata kunci `mirror`.",
+        "Benar. `--level=1` = RAID1, `--raid-devices=2` jumlah disk, lalu daftar device — sintaks mdadm create.",
+        "Salah. `--assemble` merakit array yang SUDAH PERNAH dibuat (dari metadata), bukan membuat baru."
       ]
     },
     {
       "id": "sys-admin-mdadm-detail",
       "prompt": "Cek kesehatan array /dev/md0: status tiap member, RAID level, aktivitas rebuild…",
       "options": [
-        "mdadm --detail /dev/md0",
         "mdadm --monitor /dev/md0",
         "cat /proc/mdstat | head",
-        "lsblk -f /dev/md0"
+        "lsblk -f /dev/md0",
+        "mdadm --detail /dev/md0"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanations": [
-        "Benar. `--detail` = laporan lengkap per-array: state, level, size, status tiap device, recovery progress.",
         "Salah. `--monitor` itu daemon pelacak (berjalan terus, kirim alert) — bukan sekali lihat detail.",
         "Salah. `/proc/mdstat` ringkas (status agregat), tidak selengkap `--detail` (mis. tidak ada info metadata per-member).",
-        "Salah. `lsblk -f` filesystem/label, bukan detail array RAID."
+        "Salah. `lsblk -f` filesystem/label, bukan detail array RAID.",
+        "Benar. `--detail` = laporan lengkap per-array: state, level, size, status tiap device, recovery progress."
       ]
     },
     {
@@ -1352,17 +1352,17 @@
       "id": "sys-admin-xfs-repair",
       "prompt": "XFS di /dev/vg0/data corrupt setelah power loss (unmount). Command untuk memperbaikinya…",
       "options": [
+        "xfs_growfs /data",
         "xfs_repair /dev/vg0/data",
         "fsck /dev/vg0/data",
-        "xfs_check -n /dev/vg0/data lalu mount",
-        "xfs_growfs /data"
+        "xfs_check -n /dev/vg0/data lalu mount"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanations": [
+        "Salah. `xfs_growfs` memperbesar, tidak memperbaiki.",
         "Benar. `xfs_repair` adalah fsck untuk XFS — dijalankan saat UNMOUNT (offline).",
         "Salah. `fsck` (e2fsck family) untuk ext2/3/4 — tidak untuk XFS (akan menolak).",
-        "Salah. `xfs_check` bukan nama tool-nya (`xfs_repair -n` yang jadi mode check-only).",
-        "Salah. `xfs_growfs` memperbesar, tidak memperbaiki."
+        "Salah. `xfs_check` bukan nama tool-nya (`xfs_repair -n` yang jadi mode check-only)."
       ]
     },
     {
@@ -1386,17 +1386,17 @@
       "id": "sys-admin-swapfile",
       "prompt": "Buat swapfile 4G di /swapfile secara benar (urutan yang tepat)…",
       "options": [
+        "mkswap 4G /swapfile && chmod 600 /swapfile",
         "fallocate -l 4G /swapfile; chmod 600 /swapfile; mkswap /swapfile; swapon /swapfile",
         "swapon /swapfile; mkswap /swapfile; fallocate -l 4G /swapfile",
-        "dd if=/dev/zero of=/swapfile; swapon /swapfile",
-        "mkswap 4G /swapfile && chmod 600 /swapfile"
+        "dd if=/dev/zero of=/swapfile; swapon /swapfile"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanations": [
+        "Salah. `mkswap` tidak menerima ukuran sebagai argumen (file harus sudah ada).",
         "Benar. Urutannya: buat file → permission 600 (Wajib! swap tidak boleh readable selain root) → mkswap → swapon.",
         "Salah. Urutan terbalik total: swapon butuh file yang sudah di-mkswap.",
-        "Salah. Lewat `mkswap` — swapon akan menolak file tanpa swap signature.",
-        "Salah. `mkswap` tidak menerima ukuran sebagai argumen (file harus sudah ada)."
+        "Salah. Lewat `mkswap` — swapon akan menolak file tanpa swap signature."
       ]
     },
     {
@@ -1420,68 +1420,68 @@
       "id": "sys-admin-limit-nofile",
       "prompt": "Aplikasi error 'Too many open files'. Cek limit file descriptor yang berlaku untuk unit aplikasi itu…",
       "options": [
-        "systemctl show <unit> -p LimitNOFILE",
-        "ulimit -n di shell kamu",
         "cat /etc/security/limits.conf",
-        "sysctl fs.file-max"
+        "sysctl fs.file-max",
+        "systemctl show <unit> -p LimitNOFILE",
+        "ulimit -n di shell kamu"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanations": [
-        "Benar. Limit yang berlaku untuk unit ada di unit-nya: `systemctl show -p LimitNOFILE` menunjukkan nilai aktual (default 10240 — sering terlalu kecil).",
-        "Salah. Limit shell kamu ≠ limit proses di unit systemd (lingkungan beda).",
         "Salah. limits.conf untuk sesi PAM/login, bukan untuk unit systemd.",
-        "Salah. `fs.file-max` itu batas GLOBAL sistem, bukan per-proses."
+        "Salah. `fs.file-max` itu batas GLOBAL sistem, bukan per-proses.",
+        "Benar. Limit yang berlaku untuk unit ada di unit-nya: `systemctl show -p LimitNOFILE` menunjukkan nilai aktual (default 10240 — sering terlalu kecil).",
+        "Salah. Limit shell kamu ≠ limit proses di unit systemd (lingkungan beda)."
       ]
     },
     {
       "id": "sys-admin-ssh-keygen",
       "prompt": "Buat pasangan key SSH modern (default terbaik saat ini) untuk akses non-password…",
       "options": [
-        "ssh-keygen -t ed25519",
         "ssh-keygen -t rsa -b 1024",
         "ssh-keygen -t dsa",
-        "ssh-keygen --modern"
+        "ssh-keygen --modern",
+        "ssh-keygen -t ed25519"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanations": [
-        "Benar. Ed25519: pendek, cepat, kuat — default modern ssh-keygen.",
         "Salah. RSA 1024 bit sudah dianggap lemah (minimum 2048, ideal 3072+) — dan bukan default.",
         "Salah. DSA sudah tidak didukung modern (kurang kuat, length terbatas).",
-        "Salah. Opsi `--modern` tidak ada."
+        "Salah. Opsi `--modern` tidak ada.",
+        "Benar. Ed25519: pendek, cepat, kuat — default modern ssh-keygen."
       ]
     },
     {
       "id": "sys-admin-ssh-copy-id",
       "prompt": "Salin public key kamu ke server 172.31.252.197 (user app) agar bisa login tanpa password…",
       "options": [
-        "ssh-copy-id app@172.31.252.197",
-        "scp ~/.ssh/id_ed25519 app@172.31.252.197:~/.ssh/",
         "ssh app@172.31.252.197 'cat > ~/.ssh/authorized_keys'",
-        "rsync ~/.ssh/ app@172.31.252.197:~/"
+        "rsync ~/.ssh/ app@172.31.252.197:~/",
+        "ssh-copy-id app@172.31.252.197",
+        "scp ~/.ssh/id_ed25519 app@172.31.252.197:~/.ssh/"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanations": [
-        "Benar. `ssh-copy-id` men-APPEND public key ke authorized_keys dengan permission yang benar — alat resmi.",
-        "Salah. `scp` private key ke remote = salah arah (yang dibutuhkan adalah KEY PUBLIK di sisi server) dan scp tidak menyetel permission.",
         "Salah. `cat >` (overwrite) menghapus key lain yang ada; juga tidak menyetel permission direktori .ssh.",
-        "Salah. `rsync ~/.ssh/` menyalin SEMUA (termasuk private key) dan tidak menjamin permission."
+        "Salah. `rsync ~/.ssh/` menyalin SEMUA (termasuk private key) dan tidak menjamin permission.",
+        "Benar. `ssh-copy-id` men-APPEND public key ke authorized_keys dengan permission yang benar — alat resmi.",
+        "Salah. `scp` private key ke remote = salah arah (yang dibutuhkan adalah KEY PUBLIK di sisi server) dan scp tidak menyetel permission."
       ]
     },
     {
       "id": "sys-admin-useradd",
       "prompt": "Buat user sistem `app`: home directory dibuat, shell /bin/bash…",
       "options": [
-        "useradd -m -s /bin/bash app",
-        "useradd app",
         "adduser --system app",
-        "useradd -r -s /sbin/nologin app"
+        "useradd -r -s /sbin/nologin app",
+        "useradd -m -s /bin/bash app",
+        "useradd app"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanations": [
-        "Benar. `-m` buat home directory, `-s` set shell — sesuai spesifikasi persis.",
-        "Salah. `useradd` polos: TIDAK membuat home (default) dan shell /sbin/nologin.",
         "Salah. `adduser --system` itu user sistem (tanpa home, nologin) — Debian-nya, dan bukan shell bash.",
-        "Salah. `-r` (system) + nologin kebalikan dari yang diminta."
+        "Salah. `-r` (system) + nologin kebalikan dari yang diminta.",
+        "Benar. `-m` buat home directory, `-s` set shell — sesuai spesifikasi persis.",
+        "Salah. `useradd` polos: TIDAK membuat home (default) dan shell /sbin/nologin."
       ]
     },
     {
@@ -1505,17 +1505,17 @@
       "id": "sys-admin-chage-l",
       "prompt": "Lihat semua aging policy password user `app` (usia min/max, terakhir diganti, expiry) dalam satu tampilan…",
       "options": [
-        "chage -l app",
-        "chage app",
         "passwd -S app",
-        "getent shadow app"
+        "getent shadow app",
+        "chage -l app",
+        "chage app"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanations": [
-        "Benar. `chage -l` (list) menampilkan aging lengkap secara human-readable.",
-        "Salah. `chage` tanpa opsi butuh flag (seperti -l) — tidak akan menampilkan apa pun.",
         "Salah. `passwd -S` hanya ringkasan status (LK/PS/!), bukan aging detail.",
-        "Salah. `getent shadow` baris mentah (field terseparasi :) — bisa, tapi bukan tampilan aging."
+        "Salah. `getent shadow` baris mentah (field terseparasi :) — bisa, tapi bukan tampilan aging.",
+        "Benar. `chage -l` (list) menampilkan aging lengkap secara human-readable.",
+        "Salah. `chage` tanpa opsi butuh flag (seperti -l) — tidak akan menampilkan apa pun."
       ]
     },
     {
@@ -1539,119 +1539,119 @@
       "id": "sys-admin-setsebool",
       "prompt": "Aktifkan SELinux boolean httpd_can_network_connect secara PERMANEN (survive reboot)…",
       "options": [
-        "setsebool -P httpd_can_network_connect on",
-        "setenforce httpd_can_network_connect",
         "semanage boolean --on httpd_can_network_connect",
-        "setsebool httpd_can_network_connect on"
+        "setsebool httpd_can_network_connect on",
+        "setsebool -P httpd_can_network_connect on",
+        "setenforce httpd_can_network_connect"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanations": [
-        "Benar. `-P` = persistent: disimpan ke binary config boolean (survive reboot).",
-        "Salah. `setenforce` mengubah MODE (0/1/permissive), bukan boolean spesifik.",
         "Salah. Opsi `semanage boolean` untuk menambah/menghapus boolean baru, bukan men-set nilai yang ada.",
-        "Salah. Tanpa `-P` hanya berlaku runtime — hilang saat reboot."
+        "Salah. Tanpa `-P` hanya berlaku runtime — hilang saat reboot.",
+        "Benar. `-P` = persistent: disimpan ke binary config boolean (survive reboot).",
+        "Salah. `setenforce` mengubah MODE (0/1/permissive), bukan boolean spesifik."
       ]
     },
     {
       "id": "sys-admin-dnf-provides",
       "prompt": "Cari package mana yang menyediakan file /usr/sbin/nginx (untuk kebutuhan offline install)…",
       "options": [
-        "dnf provides /usr/sbin/nginx",
-        "dnf list /usr/sbin/nginx",
         "rpm -q /usr/sbin/nginx",
-        "dnf file /usr/sbin/nginx"
+        "dnf file /usr/sbin/nginx",
+        "dnf provides /usr/sbin/nginx",
+        "dnf list /usr/sbin/nginx"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanations": [
-        "Benar. `dnf provides <path>` memetakan file → package (mencakup semua repo, terinstall atau tidak).",
-        "Salah. `dnf list` mengambil nama package/pattern, bukan path file.",
         "Salah. `rpm -q` = query package (per nama), bukan per-file; `rpm -qf` yang per-file (tapi hanya package terinstall).",
-        "Salah. `dnf file` bukan subcommand (itu `dnf provides` / `repoquery --file`)."
+        "Salah. `dnf file` bukan subcommand (itu `dnf provides` / `repoquery --file`).",
+        "Benar. `dnf provides <path>` memetakan file → package (mencakup semua repo, terinstall atau tidak).",
+        "Salah. `dnf list` mengambil nama package/pattern, bukan path file."
       ]
     },
     {
       "id": "sys-admin-rpm-va",
       "prompt": "Verifikasi integritas SEMUA file terinstall (CRC, size) — deteksi file yang berubah tanpa diketahui…",
       "options": [
+        "md5sum $(rpm -qa --qf '%{FILENAMES}\\n')",
         "rpm -Va",
         "rpm -qa",
-        "dnf verify",
-        "md5sum $(rpm -qa --qf '%{FILENAMES}\\n')"
+        "dnf verify"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanations": [
+        "Salah. `md5sum` manual tanpa baseline untuk dibandingkan — hasilnya tidak bermakna.",
         "Benar. `-Va` = verify ALL: membandingkan setiap file terinstall dengan metadata (size, md5, mtime, dll); output hanya baris yang BEDA.",
         "Salah. `-qa` hanya MELIST semua package, tidak memverifikasi isinya.",
-        "Salah. `dnf verify` bukan subcommand (dnf tidak punya verify menyeluruh seperti rpm -Va).",
-        "Salah. `md5sum` manual tanpa baseline untuk dibandingkan — hasilnya tidak bermakna."
+        "Salah. `dnf verify` bukan subcommand (dnf tidak punya verify menyeluruh seperti rpm -Va)."
       ]
     },
     {
       "id": "sys-admin-df-i",
       "prompt": "Filesystem penuh padahal `df -h` bilang masih banyak ruang. Curiga: inode habis. Cek-nya…",
       "options": [
-        "df -i",
         "df -h",
         "ls -l / | wc -l",
-        "stat -f /"
+        "stat -f /",
+        "df -i"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanations": [
-        "Benar. `df -i` menampilkan penggunaan INODE — 100% iused = tidak bisa buat file baru walau byte masih ada.",
         "Salah. `df -h` itu byte, yang tadi sudah menunjukkan 'masih ada ruang'.",
         "Salah. Menghitung isi root directory tidak mengukur inode keseluruhan filesystem.",
-        "Salah. `stat -f` fstatfs sekali — bisa, tapi `df -i` adalah alat yang tepat (dan terbaca langsung)."
+        "Salah. `stat -f` fstatfs sekali — bisa, tapi `df -i` adalah alat yang tepat (dan terbaca langsung).",
+        "Benar. `df -i` menampilkan penggunaan INODE — 100% iused = tidak bisa buat file baru walau byte masih ada."
       ]
     },
     {
       "id": "sys-admin-du-sh",
       "prompt": "Cari direktori terbesa di /data (untuk investigasi disk penuh), terurut dari terbesar…",
       "options": [
-        "du -sh /data/* | sort -rh",
-        "du -s /data",
         "ls -laS /data",
-        "df /data"
+        "df /data",
+        "du -sh /data/* | sort -rh",
+        "du -s /data"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanations": [
-        "Benar. `du -sh` per-subdirektori + `sort -rh` (human, descending) — langsung terlihat yang terbesar.",
-        "Salah. `du -s` hanya TOTAL /data, tanpa rincian per-subdirektori.",
         "Salah. `ls -laS` hanya ukuran file di level pertama (bukan rekursif per-direktori).",
-        "Salah. `df` ukuran filesystem, bukan per-direktori."
+        "Salah. `df` ukuran filesystem, bukan per-direktori.",
+        "Benar. `du -sh` per-subdirektori + `sort -rh` (human, descending) — langsung terlihat yang terbesar.",
+        "Salah. `du -s` hanya TOTAL /data, tanpa rincian per-subdirektori."
       ]
     },
     {
       "id": "sys-admin-bash-x",
       "prompt": "Debug skrip shell yang macet: jalankan dengan trace per-baris (setiap command + variabel) untuk melihat di baris mana gagal…",
       "options": [
-        "bash -x skrip.sh",
-        "bash -n skrip.sh",
         "bash --debug skrip.sh",
-        "set -e skrip.sh"
+        "set -e skrip.sh",
+        "bash -x skrip.sh",
+        "bash -n skrip.sh"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanations": [
-        "Benar. `-x` (xtrace) mencetak setiap command yang dieksekusi ke stderr — alat debug shell utama.",
-        "Salah. `-n` hanya syntax check (noexec), tidak mengeksekusi apa pun.",
         "Salah. `--debug` bukan opsi bash (yang ada `-x`, `-v`, `-n`).",
-        "Salah. `set -e` (exit on error) adalah perilaku, bukan mode trace; dan `set` tidak bisa dipanggil di depan nama script begitu."
+        "Salah. `set -e` (exit on error) adalah perilaku, bukan mode trace; dan `set` tidak bisa dipanggil di depan nama script begitu.",
+        "Benar. `-x` (xtrace) mencetak setiap command yang dieksekusi ke stderr — alat debug shell utama.",
+        "Salah. `-n` hanya syntax check (noexec), tidak mengeksekusi apa pun."
       ]
     },
     {
       "id": "sys-admin-ssh-l",
       "prompt": "Akses web app di localhost:3000 di server remote 172.31.252.197 dari laptopmu (tanpa membuka port 3000 ke internet)…",
       "options": [
-        "ssh -L 3000:localhost:3000 app@172.31.252.197",
-        "ssh -R 3000:localhost:3000 app@172.31.252.197",
         "ssh -N -D 3000 app@172.31.252.197",
-        "ssh app@172.31.252.197 && curl localhost:3000"
+        "ssh app@172.31.252.197 && curl localhost:3000",
+        "ssh -L 3000:localhost:3000 app@172.31.252.197",
+        "ssh -R 3000:localhost:3000 app@172.31.252.197"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanations": [
-        "Benar. `-L` local port forward: port 3000 di LAPTOP → terowongan SSH → localhost:3000 di server. Akses aman, port tidak terbuka.",
-        "Salah. `-R` remote forward — arahnya kebalik (membuka port di sisi server).",
         "Salah. `-D` itu SOCKS proxy (dynamic), bukan forward ke satu tujuan spesifik.",
-        "Salah. `curl` di sana dijalankan di shell SERVER (setelah login), bukan dari laptop."
+        "Salah. `curl` di sana dijalankan di shell SERVER (setelah login), bukan dari laptop.",
+        "Benar. `-L` local port forward: port 3000 di LAPTOP → terowongan SSH → localhost:3000 di server. Akses aman, port tidak terbuka.",
+        "Salah. `-R` remote forward — arahnya kebalik (membuka port di sisi server)."
       ]
     },
     {
@@ -1692,17 +1692,17 @@
       "id": "sys-admin-backup-321",
       "prompt": "Prinsip 3-2-1 dalam strategi backup berarti…",
       "options": [
+        "3 user akses, 2 approval, 1 audit",
         "3 salinan data, 2 media berbeda, 1 offsite",
         "3 backup per hari, 2 per minggu, 1 per bulan",
-        "3 tier storage, 2 zone, 1 region",
-        "3 user akses, 2 approval, 1 audit"
+        "3 tier storage, 2 zone, 1 region"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanations": [
+        "Salah. Itu model akses/kebijakan, bukan backup.",
         "Benar. 3-2-1: tiga salinan (1 prod + 2 backup), dua jenis media, satu di lokasi terpisah — proteksi berlapis (disk gagal, fire, ransomware).",
         "Salah. Itu pola frekuensi, bukan prinsip 3-2-1.",
-        "Salah. Itu arsitektur ketersediaan (availability zone), bukan prinsip backup.",
-        "Salah. Itu model akses/kebijakan, bukan backup."
+        "Salah. Itu arsitektur ketersediaan (availability zone), bukan prinsip backup."
       ]
     }
   ],

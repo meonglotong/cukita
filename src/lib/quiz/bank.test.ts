@@ -40,6 +40,16 @@ it("every question is well-formed (4 options, valid correctIndex, 4 explanations
   }
 });
 
+it("answer distribution is not degenerate (no option index > 40% of a track's pool)", () => {
+  for (const t of loadTracks()) {
+    const counts = [0, 0, 0, 0];
+    for (const q of t.questions) counts[q.correctIndex]++;
+    for (const c of counts) {
+      expect(c).toBeLessThanOrEqual(Math.ceil(t.questions.length * 0.4));
+    }
+  }
+});
+
 it("sampleQuestions returns exactly `size` distinct items from the pool", () => {
   const pool = Array.from({ length: 100 }, (_, i) => `q${i}`);
   const sample = sampleQuestions(pool, 60);
