@@ -12,3 +12,4 @@ next-env.d.ts
 .tmp-
 /docs/superpowers/
 .tmp_*
+content/tutorial-sysadmin/
