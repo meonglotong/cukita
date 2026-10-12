@@ -2,7 +2,7 @@
   "slug": "devops",
   "title": "DevOps",
   "description": "Praktik DevOps modern: Docker, Kubernetes, Git workflow, CI/CD, IaC (Ansible/Terraform), reverse proxy, TLS, dan observability.",
-  "durationSec": 1800,
+  "durationSec": 3600,
   "passingPercent": 80,
   "questions": [
     {
