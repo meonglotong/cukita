@@ -2,9 +2,9 @@
 import { it, expect } from "vitest";
 import { loadTracks, getTrack, sampleQuestions } from "./bank";
 
-it("loads all three tracks sorted by slug", () => {
+it("loads all four tracks sorted by slug", () => {
   const tracks = loadTracks();
-  expect(tracks.map((t) => t.slug)).toEqual(["dba", "devops", "sysadmin"]);
+  expect(tracks.map((t) => t.slug)).toEqual(["dba", "devops", "networking", "sysadmin"]);
 });
 
 it("every track has sane meta", () => {

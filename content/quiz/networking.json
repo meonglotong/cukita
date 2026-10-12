@@ -1,0 +1,1710 @@
+{
+  "slug": "networking",
+  "title": "Networking — JNCIA (Junos)",
+  "description": "Soal praktis gaya JNCIA-Junos: CLI & workflow konfigurasi (commit/rollback), switching L2 (VLAN/LACP/STP), routing (static/OSPF/BGP), firewall filter, NAT/VPN, dan monitoring Junos.",
+  "durationSec": 3600,
+  "passingPercent": 80,
+  "examSize": 60,
+  "questions": [
+    {
+      "id": "net-cli-configure",
+      "prompt": "Di Junos, kamu sudah login ke operational mode. Masuk ke configuration mode untuk mengubah config…",
+      "options": [
+        "configure",
+        "edit",
+        "start",
+        "set mode config"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `configure` (atau `conf`) mengaktifkan configuration mode; prompt berubah ke [edit].",
+        "Salah. `edit` itu untuk turun ke hierarchy level tertentu — dan hanya tersedia SETELAH di config mode.",
+        "Salah. `start` bukan command Junos untuk masuk config mode.",
+        "Salah. `set mode config` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-cli-commit",
+      "prompt": "Perubahan di candidate configuration sudah selesai. Menyimpannya ke running configuration agar aktif…",
+      "options": [
+        "commit",
+        "save",
+        "apply",
+        "write"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `commit` memvalidasi lalu menerapkan candidate config ke running config.",
+        "Salah. `save` bukan command config Junos (itu untuk file).",
+        "Salah. `apply` bukan command Junos.",
+        "Salah. `write memory` itu IOS; Junos memakai `commit`."
+      ]
+    },
+    {
+      "id": "net-cli-commit-check",
+      "prompt": "Validasi syntax candidate configuration TANPA benar-benar meng-commit-nya…",
+      "options": [
+        "commit check",
+        "check config",
+        "commit dry-run",
+        "validate"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `commit check` menjalankan validasi penuh tanpa mengubah running config — aman untuk preview.",
+        "Salah. `check config` bukan command Junos.",
+        "Salah. `commit dry-run` bukan command Junos.",
+        "Salah. `validate` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-cli-commit-confirmed",
+      "prompt": "Kamu sedang di console fisik, takut commit-nya bikin router tidak bisa diakses dan kamu tidak bisa revert. Commit yang aman (auto-rollback kalau tidak dikonfirmasi)…",
+      "options": [
+        "commit confirmed 5",
+        "commit safe",
+        "commit backup",
+        "commit timeout 5"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `commit confirmed 5` auto-rollback setelah 5 menit jika kamu tidak menjalankan `commit` lagi untuk mengkonfirmasi — jaring pengaman standar.",
+        "Salah. `commit safe` bukan command Junos.",
+        "Salah. `commit backup` bukan command Junos.",
+        "Salah. `commit timeout 5` bukan syntax Junos."
+      ]
+    },
+    {
+      "id": "net-cli-rollback",
+      "prompt": "Commit terakhir ternyata salah. Kembalikan configuration ke state SEBELUM commit terakhir…",
+      "options": [
+        "rollback 1",
+        "rollback last",
+        "revert 1",
+        "undo commit"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `rollback 1` memulihkan candidate config dari commit 1 generasi lalu (kemudian `commit`).",
+        "Salah. `rollback last` bukan syntax Junos (pakai angka).",
+        "Salah. `revert` bukan command Junos.",
+        "Salah. `undo commit` itu IOS."
+      ]
+    },
+    {
+      "id": "net-cli-rollback-generations",
+      "prompt": "Berapa jumlah rollback generation yang disimpan JUNOS secara default…",
+      "options": [
+        "50",
+        "10",
+        "5",
+        "Tidak ada (hanya 1)"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Junos menyimpan 50 rollback generation secara default — bisa `rollback` sampai 49.",
+        "Salah. 10 bukan default Junos.",
+        "Salah. 5 itu angka untuk `commit confirmed`, bukan jumlah generation.",
+        "Salah. Junos menyimpan banyak generasi, bukan hanya satu."
+      ]
+    },
+    {
+      "id": "net-cli-edit-hierarchy",
+      "prompt": "Turun langsung ke hierarchy `protocols ospf` untuk mengedit OSPF (tanpa naik-turun satu per satu level)…",
+      "options": [
+        "edit protocols ospf",
+        "cd protocols ospf",
+        "go protocols ospf",
+        "move protocols ospf"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `edit <path>` langsung melompat ke hierarchy level yang dituju.",
+        "Salah. `cd` itu command shell, bukan Junos config.",
+        "Salah. `go` bukan command Junos config.",
+        "Salah. `move` bukan command Junos config."
+      ]
+    },
+    {
+      "id": "net-cli-top",
+      "prompt": "Kamu di hierarchy [edit protocols ospf area 0.0.0.0]. Ke atas ke paling root hierarchy [edit]…",
+      "options": [
+        "top",
+        "exit",
+        "up",
+        "root"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `top` langsung kembali ke [edit] (root hierarchy).",
+        "Salah. `exit` naik SATU level, bukan ke root.",
+        "Salah. `up` bukan command Junos (exit yang naik satu level).",
+        "Salah. `root` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-cli-set",
+      "prompt": "Cara IDIOMATIK Junos untuk menambah/mengubah statement config (tanpa harus edit manual per baris)…",
+      "options": [
+        "set",
+        "write",
+        "add",
+        "insert"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `set <path> <value>` adalah cara utama config Junos — otomatis membuat hierarchy yang diperlukan.",
+        "Salah. `write` bukan command config Junos.",
+        "Salah. `add` bukan command config Junos.",
+        "Salah. `insert` bukan command config Junos."
+      ]
+    },
+    {
+      "id": "net-cli-delete",
+      "prompt": "Hapus satu statement config tertentu dari candidate configuration…",
+      "options": [
+        "delete <path>",
+        "remove <path>",
+        "erase <path>",
+        "unset <path>"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `delete <path>` menghapus statement (dan subtree-nya jika path-nya tinggi).",
+        "Salah. `remove` bukan command config Junos.",
+        "Salah. `erase` bukan command config Junos.",
+        "Salah. `unset` bukan command config Junos."
+      ]
+    },
+    {
+      "id": "net-cli-compare",
+      "prompt": "Lihat DIFF antara candidate configuration dan commit terakhir (apa yang berubah)…",
+      "options": [
+        "show | compare",
+        "show | diff",
+        "compare last",
+        "show changes"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show | compare` menampilkan perbedaan candidate vs running config (+ untuk tambah, - untuk hapus).",
+        "Salah. `diff` bukan pipe Junos (yang benar `compare`).",
+        "Salah. `compare last` bukan syntax Junos.",
+        "Salah. `show changes` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-cli-compare-rollback",
+      "prompt": "Bandingkan candidate config dengan rollback generation 5 (untuk preview sebelum rollback)…",
+      "options": [
+        "show | compare rollback 5",
+        "show | diff rollback 5",
+        "compare 5",
+        "show rollback 5"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show | compare rollback N` menampilkan diff candidate vs generasi N.",
+        "Salah. `diff` bukan pipe Junos.",
+        "Salah. `compare 5` bukan syntax Junos.",
+        "Salah. `show rollback 5` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-cli-display-set",
+      "prompt": "Tampilkan configuration dalam format satu-per-statement (set ...), enak untuk copy/paste atau audit…",
+      "options": [
+        "show | display set",
+        "show | format set",
+        "display set",
+        "show config set"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show | display set` mengubah output hierarkis jadi baris-baris `set`.",
+        "Salah. `format` bukan pipe Junos.",
+        "Salah. `display` sendiri hanya menampilkan config hierarkis, bukan format set.",
+        "Salah. `show config set` bukan syntax Junos."
+      ]
+    },
+    {
+      "id": "net-cli-request-reboot",
+      "prompt": "Reboot router Junos (dari operational mode)…",
+      "options": [
+        "request system reboot",
+        "reboot",
+        "system reboot",
+        "reload"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `request system reboot` adalah command reboot Junos (bisa tambah `at`/`in` untuk schedule).",
+        "Salah. `reboot` saja bukan command Junos.",
+        "Salah. `system reboot` bukan syntax Junos.",
+        "Salah. `reload` itu command lain (mis. reload route), bukan reboot sistem."
+      ]
+    },
+    {
+      "id": "net-cli-request-software",
+      "prompt": "Install/upgrade paket JUNOS versi baru dari file (tanpa reboot manual dulu)…",
+      "options": [
+        "request system software add <file> no-validate",
+        "install junos <file>",
+        "system update <file>",
+        "copy <file> system"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `request system software add` mengunggah + install package JUNOS; `no-validate` untuk skip validate (umum dipakai).",
+        "Salah. `install junos` bukan command Junos.",
+        "Salah. `system update` bukan command Junos.",
+        "Salah. `copy ... system` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-cli-show-version",
+      "prompt": "Cek versi JUNOS, model chassis, dan uptime perangkat…",
+      "options": [
+        "show version",
+        "show system version",
+        "display version",
+        "show software"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show version` (di operational mode) menampilkan versi JUNOS, model, serial, uptime.",
+        "Salah. `show system version` bukan command Junos.",
+        "Salah. `display version` bukan command Junos (display itu di config mode).",
+        "Salah. `show software` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-cli-show-alarms",
+      "prompt": "Cek alarm aktif di sistem (power, fan, temperature, dll)…",
+      "options": [
+        "show system alarms",
+        "show alarms",
+        "show chassis alarms",
+        "show environment"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show system alarms` menampilkan alarm aktif (dan `show system alarms clear` untuk yang sudah clear).",
+        "Salah. `show alarms` bukan command Junos.",
+        "Salah. `show chassis alarms` bukan command Junos (alarm di `show system alarms`).",
+        "Salah. `show environment` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-cli-show-hardware",
+      "prompt": "Lihat hardware chassis: PIC, RE, model, serial number…",
+      "options": [
+        "show chassis hardware",
+        "show hardware",
+        "show system hardware",
+        "show chassis"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show chassis hardware` menampilkan slot, PIC, RE, model, serial.",
+        "Salah. `show hardware` bukan command Junos.",
+        "Salah. `show system hardware` bukan command Junos.",
+        "Salah. `show chassis` saja tidak valid (butuh subcommand seperti hardware/fpc/routing-engine)."
+      ]
+    },
+    {
+      "id": "net-cli-monitor-traffic",
+      "prompt": "Capture packet di interface (alternatif lebih sederhana dari tcpdump di Junos)…",
+      "options": [
+        "monitor traffic interface ge-0/0/0",
+        "tcpdump interface ge-0/0/0",
+        "capture traffic ge-0/0/0",
+        "show traffic ge-0/0/0"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `monitor traffic` adalah command capture Junos (lebih user-friendly); bisa tambah filter/size/count.",
+        "Salah. tcpdump memang ada di Junos, tapi command idiomatik Junos adalah `monitor traffic`.",
+        "Salah. `capture` bukan command Junos.",
+        "Salah. `show traffic` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-cli-monitor-boot",
+      "prompt": "Lihat log boot process terakhir (untuk debug masalah saat startup)…",
+      "options": [
+        "monitor boot",
+        "show boot",
+        "show system boot",
+        "display boot"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `monitor boot` menampilkan output boot sequence terakhir.",
+        "Salah. `show boot` bukan command Junos.",
+        "Salah. `show system boot` bukan command Junos.",
+        "Salah. `display boot` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-cli-show-storage",
+      "prompt": "Cek penggunaan disk/storage di perangkat…",
+      "options": [
+        "show system storage",
+        "show disk",
+        "show system disk",
+        "df -h"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show system storage` menampilkan filesystem dan persentase pemakaian disk.",
+        "Salah. `show disk` bukan command Junos.",
+        "Salah. `show system disk` bukan command Junos.",
+        "Salah. `df -h` itu command shell, bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-cli-show-processes",
+      "prompt": "Lihat process yang jalan di routing engine beserta CPU/memory usage (untuk debug process macet)…",
+      "options": [
+        "show system processes extensive",
+        "show processes",
+        "top",
+        "show system task"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show system processes extensive` menampilkan daftar process + CPU/mem detail — alat debug RE.",
+        "Salah. `show processes` bukan command Junos.",
+        "Salah. `top` bisa via shell, tapi command Junos yang idiomatik adalah `show system processes`.",
+        "Salah. `show system task` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-cli-show-core",
+      "prompt": "Cek apakah ada core dump (indikasi crash process) di sistem…",
+      "options": [
+        "show system core-dumps",
+        "show core",
+        "show system crash",
+        "show core-dump"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show system core-dumps` menampilkan core dump yang tersimpan (bukti process crash).",
+        "Salah. `show core` bukan command Junos.",
+        "Salah. `show system crash` bukan command Junos.",
+        "Salah. `show core-dump` (tunggal) bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-cli-show-uptime",
+      "prompt": "Cek uptime system (sejak kapan RE terakhir boot)…",
+      "options": [
+        "show system uptime",
+        "show uptime",
+        "show system up",
+        "uptime"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show system uptime` menampilkan berapa lama sistem berjalan.",
+        "Salah. `show uptime` bukan command Junos.",
+        "Salah. `show system up` bukan command Junos.",
+        "Salah. `uptime` itu command shell."
+      ]
+    },
+    {
+      "id": "net-cli-show-temperature",
+      "prompt": "Cek temperature komponen chassis (overheating)…",
+      "options": [
+        "show chassis temperature",
+        "show temperature",
+        "show chassis temp",
+        "show environment temperature"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show chassis temperature` menampilkan temperature per slot/komponen.",
+        "Salah. `show temperature` bukan command Junos.",
+        "Salah. `show chassis temp` (singkatan) tidak valid — gunakan `temperature`.",
+        "Salah. `show environment temperature` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-cli-show-power",
+      "prompt": "Cek status power supply (PSU) chassis…",
+      "options": [
+        "show chassis power",
+        "show power",
+        "show system power",
+        "show chassis psu"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show chassis power` menampilkan status PSU (online/offline, wattage).",
+        "Salah. `show power` bukan command Junos.",
+        "Salah. `show system power` bukan command Junos.",
+        "Salah. `show chassis psu` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-cli-file-copy",
+      "prompt": "Salin file dari perangkat ke server TFTP (backup config)…",
+      "options": [
+        "file copy /config/recovery.conf tftp://10.1.1.1/backup.conf",
+        "copy /config/recovery.conf tftp://10.1.1.1/backup.conf",
+        "scp /config/recovery.conf 10.1.1.1:backup.conf",
+        "download /config/recovery.conf tftp://10.1.1.1/"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `file copy <src> <dest>` adalah command Junos untuk menyalin file (mendukung tftp/ftp/scp/http).",
+        "Salah. `copy` saja bukan command Junos (pakai `file copy`).",
+        "Salah. `scp` bisa via shell, tapi command Junos idiomatik adalah `file copy`.",
+        "Salah. `download` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-cli-file-list",
+      "prompt": "Lihat isi direktori file di perangkat…",
+      "options": [
+        "file list /var/log",
+        "ls /var/log",
+        "dir /var/log",
+        "show files /var/log"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `file list <path>` menampilkan isi direktori di perangkat Junos.",
+        "Salah. `ls` itu command shell (bisa, tapi bukan command Junos).",
+        "Salah. `dir` bukan command Junos.",
+        "Salah. `show files` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-cli-file-show",
+      "prompt": "Tampilkan isi file log (mis. messages) di perangkat…",
+      "options": [
+        "file show /var/log/messages",
+        "cat /var/log/messages",
+        "show file /var/log/messages",
+        "tail /var/log/messages"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `file show <path>` menampilkan isi file di perangkat Junos.",
+        "Salah. `cat` itu shell command.",
+        "Salah. `show file` bukan command Junos.",
+        "Salah. `tail` itu shell command."
+      ]
+    },
+    {
+      "id": "net-cli-show-log",
+      "prompt": "Lihat log system (bukan file raw, tapi via command Junos)…",
+      "options": [
+        "show log",
+        "show system log",
+        "show logs",
+        "display log"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show log` (bisa `show log <file>`) menampilkan isi log via command Junos.",
+        "Salah. `show system log` bukan command Junos.",
+        "Salah. `show logs` (jamak) bukan command Junos.",
+        "Salah. `display log` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-cli-show-statistics",
+      "prompt": "Lihat statistik system (CPU, memory, network) agregat…",
+      "options": [
+        "show system statistics",
+        "show statistics",
+        "show system stats",
+        "show cpu"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show system statistics` menampilkan statistik CPU/mem/traffic agregat (bisa `clear system statistics` untuk reset).",
+        "Salah. `show statistics` bukan command Junos.",
+        "Salah. `show system stats` (singkatan) tidak valid.",
+        "Salah. `show cpu` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-cli-show-fpc",
+      "prompt": "Lihat status Forwarding Packet Card (FPC/PIC) per slot…",
+      "options": [
+        "show chassis fpc",
+        "show fpc",
+        "show chassis pic",
+        "show chassis card"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show chassis fpc` menampilkan status FPC/PIC per slot (online/offline, model).",
+        "Salah. `show fpc` bukan command Junos.",
+        "Salah. `show chassis pic` bukan command Junos (FPC-nya yang benar).",
+        "Salah. `show chassis card` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-cli-show-re",
+      "prompt": "Lihat status Routing Engine (RE) — online/offline, uptime, memory…",
+      "options": [
+        "show chassis routing-engine",
+        "show re",
+        "show routing engine",
+        "show chassis re"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show chassis routing-engine` menampilkan status RE (untuk platform dual-RE: RE0/RE1).",
+        "Salah. `show re` bukan command Junos.",
+        "Salah. `show routing engine` bukan command Junos.",
+        "Salah. `show chassis re` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-cli-show-lldp",
+      "prompt": "Lihat tetangga (device + port yang terhubung) via LLDP…",
+      "options": [
+        "show lldp neighbors",
+        "show cdp neighbors",
+        "show neighbors",
+        "show lldp"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show lldp neighbors` menampilkan device+port tetangga (LLDP, standar; CDP itu Cisco).",
+        "Salah. `show cdp neighbors` itu Cisco (CDP proprietary).",
+        "Salah. `show neighbors` bukan command Junos.",
+        "Salah. `show lldp` saja kurang spesifik (yang umum `show lldp neighbors`)."
+      ]
+    },
+    {
+      "id": "net-cli-clear-statistics",
+      "prompt": "Reset counter statistik system (agar pengukuran mulai dari nol)…",
+      "options": [
+        "clear system statistics",
+        "reset system statistics",
+        "clear statistics",
+        "zero system stats"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `clear system statistics` meng-reset counter statistik system.",
+        "Salah. `reset` bukan command Junos (pakai `clear`).",
+        "Salah. `clear statistics` tidak valid (harus `clear system statistics`).",
+        "Salah. `zero` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-cli-show-interfaces-terse",
+      "prompt": "Ringkasan singkat SEMUA interface (status admin/operational, brief) — paling cepat untuk overview…",
+      "options": [
+        "show interfaces terse",
+        "show interfaces",
+        "show interfaces brief",
+        "show interfaces summary"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show interfaces terse` (atau `show interfaces terse <intf>`) = output ringkas per-interface, cepat untuk overview.",
+        "Salah. `show interfaces` (tanpa flag) outputnya panjang per-interface.",
+        "Salah. `brief` bukan modifier `show interfaces` (yang benar `terse`).",
+        "Salah. `summary` bukan modifier Junos."
+      ]
+    },
+    {
+      "id": "net-cli-show-if-extensive",
+      "prompt": "Detail interface termasuk error/collision/discard counter…",
+      "options": [
+        "show interfaces ge-0/0/0 extensive",
+        "show interfaces ge-0/0/0 detail",
+        "show interfaces ge-0/0/0 errors",
+        "show interfaces ge-0/0/0 statistics"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show interfaces <intf> extensive` menampilkan detail lengkap termasuk error/discard.",
+        "Salah. `detail` bukan modifier Junos (yang benar `extensive`).",
+        "Salah. `errors` bukan modifier Junos.",
+        "Salah. `show interfaces <intf> statistics` ada tapi fokus statistik; `extensive` yang lebih lengkap."
+      ]
+    },
+    {
+      "id": "net-cli-clear-if-statistics",
+      "prompt": "Reset counter interface (packet/error) untuk pengukuran baru…",
+      "options": [
+        "clear interfaces statistics",
+        "clear interfaces",
+        "reset interfaces statistics",
+        "clear if stats"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `clear interfaces statistics` meng-reset counter interface.",
+        "Salah. `clear interfaces` saja tidak valid (butuh `statistics`).",
+        "Salah. `reset` bukan command Junos.",
+        "Salah. `clear if stats` bukan syntax Junos."
+      ]
+    },
+    {
+      "id": "net-cli-show-configuration",
+      "prompt": "Di operational mode, lihat running configuration aktif…",
+      "options": [
+        "show configuration",
+        "display configuration",
+        "show config",
+        "cat /config/file.conf"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show configuration` menampilkan running config aktif (bisa ditambah pipe: `| display set`, `| match`, dll).",
+        "Salah. `display` itu command di configuration mode, bukan operational mode.",
+        "Salah. `show config` (tanpa 'uration') tidak valid.",
+        "Salah. File mentah bisa dilihat, tapi command idiomatik Junos adalah `show configuration`."
+      ]
+    },
+    {
+      "id": "net-cli-show-tech",
+      "prompt": "Lapor masalah ke support Juniper — output lengkap (config, route, interface, log) untuk diagnosa support…",
+      "options": [
+        "show tech-support",
+        "show tech",
+        "show system support",
+        "show diagnostics"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show tech-support` mengumpulkan output diagnostik lengkap — lampiran standar untuk tiket support.",
+        "Salah. `show tech` (singkatan) tidak valid.",
+        "Salah. `show system support` bukan command Junos.",
+        "Salah. `show diagnostics` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-l2-vlan-create",
+      "prompt": "Buat VLAN bernama vlan10 dengan L3 interface irb.10 di Junos…",
+      "options": [
+        "set vlans vlan10 l3-interface irb.10",
+        "create vlan 10",
+        "vlan 10 name vlan10",
+        "set vlans 10 l3-interface irb.10"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `set vlans <nama> l3-interface irb.<vid>` membuat VLAN; irb = inter-RA bridge (interface L3 untuk VLAN).",
+        "Salah. `create vlan` bukan syntax Junos.",
+        "Salah. `vlan 10` itu syntax Cisco.",
+        "Salah. VLAN di Junos diberi NAMA, bukan angka saja (angka vid diturunkan dari nama `vlanNN`)."
+      ]
+    },
+    {
+      "id": "net-l2-access-mode",
+      "prompt": "Set interface ge-0/0/0 sebagai port ACCESS ke vlan10 (port host)…",
+      "options": [
+        "set interfaces ge-0/0/0 unit 0 family ethernet-switching interface-mode access + set interfaces ge-0/0/0 unit 0 family ethernet-switching vlan members vlan10",
+        "set interfaces ge-0/0/0 switchport access vlan 10",
+        "vlan access 10 ge-0/0/0",
+        "set interfaces ge-0/0/0 access-vlan vlan10"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Dua langkah: `interface-mode access` + `vlan members <nama>` di unit 0 family ethernet-switching.",
+        "Salah. `switchport access vlan` itu syntax Cisco IOS.",
+        "Salah. `vlan access` bukan syntax Junos.",
+        "Salah. `access-vlan` bukan statement Junos."
+      ]
+    },
+    {
+      "id": "net-l2-trunk-mode",
+      "prompt": "Set interface ge-0/0/1 sebagai trunk yang melewatkan vlan10 dan vlan20…",
+      "options": [
+        "set interfaces ge-0/0/1 unit 0 family ethernet-switching interface-mode trunk + vlan members [vlan10 vlan20]",
+        "set interfaces ge-0/0/1 switchport trunk allowed vlan 10,20",
+        "set interfaces ge-0/0/1 trunk-vlan 10 20",
+        "interface ge-0/0/1 encapsulation trunk"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `interface-mode trunk` + `vlan members` berisi daftar VLAN yang diizinkan di trunk.",
+        "Salah. `switchport trunk allowed vlan` itu Cisco.",
+        "Salah. `trunk-vlan` bukan statement Junos.",
+        "Salah. `encapsulation trunk` bukan syntax Junos."
+      ]
+    },
+    {
+      "id": "net-l2-show-vlans",
+      "prompt": "Lihat semua VLAN beserta anggota interface-nya…",
+      "options": [
+        "show ethernet-switching vlans",
+        "show vlan",
+        "show switch vlan",
+        "display vlan"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show ethernet-switching vlans` menampilkan daftar VLAN + interface member.",
+        "Salah. `show vlan` bukan command Junos.",
+        "Salah. `show switch vlan` bukan command Junos.",
+        "Salah. `display` itu config mode."
+      ]
+    },
+    {
+      "id": "net-l2-show-switching-if",
+      "prompt": "Cek interface mana yang tergabung di VLAN mana (pandangan per-interface)…",
+      "options": [
+        "show ethernet-switching interfaces",
+        "show interfaces vlan",
+        "show switchport",
+        "show vlan membership"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show ethernet-switching interfaces` menampilkan VLAN membership per-interface.",
+        "Salah. `show interfaces vlan` bukan command Junos.",
+        "Salah. `show switchport` itu Cisco.",
+        "Salah. `show vlan membership` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-l2-lacp-member",
+      "prompt": "Jadikan ge-0/0/2 dan ge-0/0/3 sebagai anggota LACP ke aggregated interface ae0…",
+      "options": [
+        "set interfaces ge-0/0/2 ether 802.3ad + set interfaces ge-0/0/3 ether 802.3ad (ae0 otomatis dibuat)",
+        "set interfaces ge-0/0/2 channel-group 1 mode active",
+        "port-channel ge-0/0/2 ge-0/0/3",
+        "set interfaces ae0 members ge-0/0/2 ge-0/0/3"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `ether 802.3ad` di member interface yang membuatnya masuk LACP bundle; `ae0` otomatis terbentuk saat member pertama di-set.",
+        "Salah. `channel-group ... mode active` itu syntax Cisco.",
+        "Salah. `port-channel` bukan syntax Junos.",
+        "Salah. Urutan Junos: `ether 802.3ad` di member-nya, bukan `members` di ae0."
+      ]
+    },
+    {
+      "id": "net-l2-lacp-active",
+      "prompt": "Agar Junos LACP bersifat ACTIVE (mengirim LACPDU) pada ae0…",
+      "options": [
+        "set interfaces ae0 lacp active",
+        "set interfaces ae0 lacp-mode on",
+        "set interfaces ge-0/0/2 lacp enable",
+        "set lacp active"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `set interfaces ae0 lacp active` membuat endpoint aktif mengirim LACPDU (default pasif).",
+        "Salah. `lacp-mode` bukan statement Junos.",
+        "Salah. LACP di-set di ae (aggregated), bukan di member interface.",
+        "Salah. `set lacp` (global) bukan statement Junos."
+      ]
+    },
+    {
+      "id": "net-l2-show-lacp",
+      "prompt": "Verifikasi status LACP: anggota bundle, state, sync…",
+      "options": [
+        "show lacp interface",
+        "show lacp",
+        "show ether 802.3ad",
+        "show interfaces lacp"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show lacp interface` menampilkan agregasi, anggota, dan state LACP.",
+        "Salah. `show lacp` tanpa subcommand tidak valid.",
+        "Salah. `show ether 802.3ad` bukan command Junos.",
+        "Salah. `show interfaces lacp` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-l2-aggregate-min-links",
+      "prompt": "ae0 baru boleh aktif minimal 2 link (hindari hairpin/performance drop saat 1 link putus)…",
+      "options": [
+        "set interfaces ae0 aggregate ether minimum-links 2",
+        "set interfaces ae0 min-links 2",
+        "set interfaces ae0 threshold 2",
+        "set ae0 minimum 2"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `aggregate ether minimum-links N` — ae tetap up walau ada link mati, tapi jika di bawah N, ae dimatikan.",
+        "Salah. `min-links` bukan statement Junos.",
+        "Salah. `threshold` bukan statement Junos.",
+        "Salah. `set ae0` bukan syntax Junos."
+      ]
+    },
+    {
+      "id": "net-l2-deactivate",
+      "prompt": "Matikan interface SEWAKTU (tetap bisa diaktifkan ulang cepat, tanpa hapus config)…",
+      "options": [
+        "deactivate interface ge-0/0/0",
+        "shutdown interface ge-0/0/0",
+        "disable interface ge-0/0/0",
+        "no interface ge-0/0/0"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `deactivate` menonaktifkan sementara; `activate` mengembalikannya (config tetap ada).",
+        "Salah. `shutdown` itu Cisco; Junos memakai `deactivate` (atau `set ... disable`).",
+        "Salah. `disable` sebagai command bukan command Junos (yang benar `deactivate`).",
+        "Salah. `no interface` itu Cisco untuk hapus."
+      ]
+    },
+    {
+      "id": "net-l2-irb",
+      "prompt": "Interface L3 untuk VLAN (SVI di Junos) dinamakan apa…",
+      "options": [
+        "irb.<vid>",
+        "vlan-interface <vid>",
+        "svi <vid>",
+        "l3-interface <vid>"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `irb` = Integrated Routing and Bridging; `irb.10` adalah L3 interface untuk VLAN 10.",
+        "Salah. `vlan-interface` bukan penamaan Junos.",
+        "Salah. `svi` itu istilah Cisco.",
+        "Salah. `l3-interface` bukan penamaan Junos."
+      ]
+    },
+    {
+      "id": "net-l2-show-arp",
+      "prompt": "Lihat tabel ARP/neighbor (IP → MAC) di perangkat…",
+      "options": [
+        "show arp",
+        "show ip arp",
+        "show neighbors",
+        "show l2-table"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show arp` menampilkan tabel ARP (di Junos, `show arp` untuk IPv4).",
+        "Salah. `show ip arp` itu Cisco.",
+        "Salah. `show neighbors` bukan command Junos.",
+        "Salah. `show l2-table` itu MAC address table, bukan ARP."
+      ]
+    },
+    {
+      "id": "net-l2-show-mac",
+      "prompt": "Lihat MAC address table (L2 forwarding table)…",
+      "options": [
+        "show l2-table",
+        "show mac address-table",
+        "show l2 cache",
+        "show forwarding-table"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show l2-table` menampilkan MAC address table (bisa filter per-VLAN/per-interface).",
+        "Salah. `show mac address-table` itu Cisco.",
+        "Salah. `show l2 cache` bukan command Junos.",
+        "Salah. `show forwarding-table` itu L3 RIB/FIB, bukan L2 MAC table."
+      ]
+    },
+    {
+      "id": "net-stp-root",
+      "prompt": "Dalam STP, bridge yang menjadi ROOT bridge ditentukan oleh…",
+      "options": [
+        "Bridge ID terendah (priority + MAC)",
+        "Bridge dengan paling banyak link up",
+        "Bridge yang pertama boot",
+        "Bridge dengan IP terendah"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Root bridge = bridge ID terendah; bridge ID = priority (default 32768) + MAC address.",
+        "Salah. Jumlah link tidak menentukan root.",
+        "Salah. Urutan boot tidak menentukan root.",
+        "Salah. IP tidak terlibat dalam pemilihan root STP."
+      ]
+    },
+    {
+      "id": "net-stp-enable",
+      "prompt": "Aktifkan STP secara global di perangkat…",
+      "options": [
+        "set protocols stp",
+        "spanning-tree enable",
+        "stp on",
+        "set stp global"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `set protocols stp` mengaktifkan protokol STP di Junos.",
+        "Salah. `spanning-tree enable` itu Cisco.",
+        "Salah. `stp on` bukan syntax Junos.",
+        "Salah. `set stp` (tanpa protocols) bukan statement Junos."
+      ]
+    },
+    {
+      "id": "net-stp-show-bridge",
+      "prompt": "Lihat status bridge STP (root, priority, state)…",
+      "options": [
+        "show stp bridge",
+        "show spanning-tree",
+        "show stp",
+        "show bridge"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show stp bridge` menampilkan informasi bridge STP (root bridge, priority, state).",
+        "Salah. `show spanning-tree` itu Cisco.",
+        "Salah. `show stp` tanpa subcommand tidak valid.",
+        "Salah. `show bridge` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-stp-show-interface",
+      "prompt": "Cek peran port (root/port/alternate) dan state STP per-interface…",
+      "options": [
+        "show stp interface",
+        "show spanning-tree interface",
+        "show stp port",
+        "show interface stp"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show stp interface` menampilkan peran + state STP per-port.",
+        "Salah. `show spanning-tree interface` itu Cisco.",
+        "Salah. `show stp port` bukan command Junos.",
+        "Salah. `show interface stp` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-stp-edge-port",
+      "prompt": "Port langsung ke host (bukan switch lain) — set STP agar tidak berpartisipasi dalam perhitungan topology (cepat forward)…",
+      "options": [
+        "set protocols stp interface ge-0/0/0 stp-edge",
+        "spanning-tree portfast",
+        "set stp edge-port ge-0/0/0",
+        "set protocols stp interface ge-0/0/0 edge"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `stp-edge` membuat port langsung forward (bypass listening/learning) — cocok untuk port host.",
+        "Salah. `spanning-tree portfast` itu Cisco.",
+        "Salah. `set stp edge-port` bukan statement Junos.",
+        "Salah. `edge` bukan kata kuncinya (yang benar `stp-edge`)."
+      ]
+    },
+    {
+      "id": "net-stp-priority",
+      "prompt": "Prioritaskan switch ini menjadi root bridge (set priority rendah)…",
+      "options": [
+        "set protocols stp priority 4096",
+        "spanning-tree priority 4096",
+        "set stp root priority",
+        "set bridge priority 4096"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `set protocols stp priority <nilai>` menurunkan bridge ID → lebih berpotensi jadi root.",
+        "Salah. `spanning-tree priority` itu Cisco.",
+        "Salah. `set stp root priority` bukan statement Junos.",
+        "Salah. `set bridge` bukan statement Junos."
+      ]
+    },
+    {
+      "id": "net-stp-rstp",
+      "prompt": "Perbedaan utama RSTP (802.1w) dibanding STP klasik (802.1D)…",
+      "options": [
+        "Konvergensi jauh lebih cepat (state tambahan, proposal/agreement)",
+        "RSTP tidak mendukung loop prevention",
+        "RSTP hanya untuk layer 3",
+        "RSTP membutuhkan IP address di tiap port"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. RSTP mempercepat konvergensi dengan state tambahan (discarding/learning/forwarding) + mekanisme proposal/agreement.",
+        "Salah. RSTP tetap mencegah loop.",
+        "Salah. RSTP itu protokol layer 2.",
+        "Salah. RSTP tidak butuh IP di port."
+      ]
+    },
+    {
+      "id": "net-stp-mstp",
+      "prompt": "MSTP (802.1s) memungkinkan…",
+      "options": [
+        "Beberapa instance STP untuk VLAN yang berbeda (load balancing antar-VLAN)",
+        "Mati total fungsi STP",
+        "STP hanya di layer 3",
+        "Menghapus root bridge"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. MSTP membuat beberapa instance STP, masing-masing untuk kelompok VLAN — memungkinkan load balancing + satu topology per instance.",
+        "Salah. MSTP justru meningkatkan STP, bukan mematikan.",
+        "Salah. MSTP tetap layer 2.",
+        "Salah. MSTP tetap memiliki root (per instance)."
+      ]
+    },
+    {
+      "id": "net-rte-static",
+      "prompt": "Tambahkan static route: jaringan 10.1.1.0/24 via next-hop 192.168.1.1…",
+      "options": [
+        "set routing-options static route 10.1.1.0/24 next-hop 192.168.1.1",
+        "ip route 10.1.1.0 255.255.255.0 192.168.1.1",
+        "route add 10.1.1.0/24 via 192.168.1.1",
+        "set route static 10.1.1.0/24 192.168.1.1"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `set routing-options static route <prefix> next-hop <ip>` — syntax static route Junos.",
+        "Salah. `ip route` itu syntax Cisco/Linux.",
+        "Salah. `route add` itu syntax Windows/Linux.",
+        "Salah. `set route` bukan statement Junos."
+      ]
+    },
+    {
+      "id": "net-rte-default",
+      "prompt": "Set default route (route untuk semua tujuan) via next-hop 192.168.1.1…",
+      "options": [
+        "set routing-options static route 0.0.0.0/0 next-hop 192.168.1.1",
+        "ip route default 192.168.1.1",
+        "set default-gateway 192.168.1.1",
+        "set routing-options default 192.168.1.1"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Prefix `0.0.0.0/0` adalah default route di Junos.",
+        "Salah. `ip route default` itu Cisco/Linux.",
+        "Salah. `default-gateway` bukan statement Junos.",
+        "Salah. `set routing-options default` bukan statement Junos."
+      ]
+    },
+    {
+      "id": "net-rte-show-route",
+      "prompt": "Lihat routing table (semua route aktif)…",
+      "options": [
+        "show route",
+        "show ip route",
+        "show routes",
+        "display route"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show route` menampilkan routing table lengkap (bisa filter `protocol`, `active`, `table`, dll).",
+        "Salah. `show ip route` itu Cisco.",
+        "Salah. `show routes` (jamak) bukan command Junos.",
+        "Salah. `display` itu config mode."
+      ]
+    },
+    {
+      "id": "net-rte-show-route-proto",
+      "prompt": "Lihat hanya route yang di-learn dari OSPF…",
+      "options": [
+        "show route protocol ospf",
+        "show route ospf",
+        "show ospf route",
+        "show route filter ospf"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show route protocol ospf` memfilter RIB per-protocol.",
+        "Salah. `show route ospf` bukan syntax Junos.",
+        "Salah. `show ospf route` bukan command Junos (OSPF punya `show ospf neighbor/interface/database`).",
+        "Salah. `show route filter` bukan syntax Junos."
+      ]
+    },
+    {
+      "id": "net-ospf-area",
+      "prompt": "Aktifkan OSPF di area 0 (backbone) pada interface ge-0/0/0.0…",
+      "options": [
+        "set protocols ospf area 0.0.0.0 interface ge-0/0/0.0",
+        "router ospf 1 / network 10.0.0.0 0.0.0.255 area 0",
+        "ospf enable area 0",
+        "set ospf area 0 interface ge-0/0/0"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `set protocols ospf area 0.0.0.0 interface <intf>` mengaktifkan OSPF di area backbone untuk interface itu.",
+        "Salah. `router ospf / network` itu syntax Cisco IOS.",
+        "Salah. `ospf enable` bukan syntax Junos.",
+        "Salah. `set ospf` (tanpa protocols) bukan statement Junos."
+      ]
+    },
+    {
+      "id": "net-ospf-backbone",
+      "prompt": "Area OSPF yang disebut 'backbone' adalah…",
+      "options": [
+        "Area 0",
+        "Area 1",
+        "Area dengan paling banyak router",
+        "Area terakhir yang dikonfigurasi"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Area 0 (0.0.0.0) adalah backbone; semua area lain harus terhubung ke area 0.",
+        "Salah. Area 1 itu area biasa.",
+        "Salah. Ukuran area tidak menentukan backbone.",
+        "Salah. Urutan konfigurasi tidak menentukan."
+      ]
+    },
+    {
+      "id": "net-ospf-neighbor",
+      "prompt": "Verifikasi apakah OSPF neighbor sudah terbentuk (state Full)…",
+      "options": [
+        "show ospf neighbor",
+        "show ip ospf neighbor",
+        "show ospf peers",
+        "show neighbors ospf"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show ospf neighbor` menampilkan neighbor + state (Full = adjacency terbentuk).",
+        "Salah. `show ip ospf neighbor` itu Cisco.",
+        "Salah. `show ospf peers` bukan command Junos.",
+        "Salah. `show neighbors ospf` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-ospf-interface",
+      "prompt": "Cek status OSPF per-interface (state, cost, neighbor)…",
+      "options": [
+        "show ospf interface",
+        "show ip ospf interface",
+        "show ospf if",
+        "show interface ospf"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show ospf interface` menampilkan detail OSPF per-interface.",
+        "Salah. `show ip ospf interface` itu Cisco.",
+        "Salah. `show ospf if` (singkatan) tidak valid.",
+        "Salah. `show interface ospf` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-ospf-database",
+      "prompt": "Lihat LS database OSPF (Link State Database)…",
+      "options": [
+        "show ospf database",
+        "show ip ospf database",
+        "show ospf lsa",
+        "show ospf lsdb"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show ospf database` menampilkan LSA yang tersimpan di LSDB.",
+        "Salah. `show ip ospf database` itu Cisco.",
+        "Salah. `show ospf lsa` bukan command Junos.",
+        "Salah. `show ospf lsdb` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-bgp-as",
+      "prompt": "Set Autonomous System number router ini ke 65001 (prasyarat BGP)…",
+      "options": [
+        "set routing-options autonomous-system 65001",
+        "router bgp 65001",
+        "set bgp as 65001",
+        "set as-number 65001"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `set routing-options autonomous-system <AS>` menetapkan AS number — wajib sebelum konfigurasi BGP.",
+        "Salah. `router bgp` itu syntax Cisco.",
+        "Salah. `set bgp as` bukan statement Junos.",
+        "Salah. `set as-number` itu syntax lain (quagga/frr)."
+      ]
+    },
+    {
+      "id": "net-bgp-neighbor",
+      "prompt": "Buat BGP neighbor eksternal (iBGP/eBGP) 10.1.1.1 dalam grup 'peers'…",
+      "options": [
+        "set protocols bgp group peers type external + set protocols bgp group peers neighbor 10.1.1.1",
+        "neighbor 10.1.1.1 remote-as 65002",
+        "set bgp peer 10.1.1.1",
+        "add bgp neighbor 10.1.1.1"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Model Junos: `group` → `type` → `neighbor`. Grup memberi parameter bersama, neighbor merujuk ke grup.",
+        "Salah. `neighbor ... remote-as` itu syntax Cisco.",
+        "Salah. `set bgp peer` bukan statement Junos.",
+        "Salah. `add bgp` bukan statement Junos."
+      ]
+    },
+    {
+      "id": "net-bgp-summary",
+      "prompt": "Cek status BGP: neighbor up/down, prefix diterima/dikirim…",
+      "options": [
+        "show bgp summary",
+        "show ip bgp summary",
+        "show bgp",
+        "show bgp neighbors"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show bgp summary` menampilkan tabel status semua BGP session (state, received/sent prefixes).",
+        "Salah. `show ip bgp summary` itu Cisco.",
+        "Salah. `show bgp` tanpa subcommand tidak valid.",
+        "Salah. `show bgp neighbors` bukan command Junos (yang benar `show bgp summary` / `show route protocol bgp`)."
+      ]
+    },
+    {
+      "id": "net-bgp-route",
+      "prompt": "Lihat route yang di-learn dari BGP di RIB…",
+      "options": [
+        "show route protocol bgp",
+        "show ip bgp",
+        "show bgp routes",
+        "show route bgp"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show route protocol bgp` menampilkan route BGP di routing table.",
+        "Salah. `show ip bgp` itu Cisco (menampilkan tabel BGP, bukan RIB).",
+        "Salah. `show bgp routes` bukan command Junos.",
+        "Salah. `show route bgp` bukan syntax Junos."
+      ]
+    },
+    {
+      "id": "net-bgp-local-address",
+      "prompt": "Buat BGP group memakai local address spesifik (bukan IP interface)…",
+      "options": [
+        "set protocols bgp group peers local-address 10.0.0.1",
+        "set bgp local-ip 10.0.0.1",
+        "neighbor local 10.0.0.1",
+        "set protocols bgp source 10.0.0.1"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `local-address` di group menentukan IP source untuk BGP session itu.",
+        "Salah. `set bgp local-ip` bukan statement Junos.",
+        "Salah. `neighbor local` itu syntax Cisco.",
+        "Salah. `source` bukan statement Junos."
+      ]
+    },
+    {
+      "id": "net-bgp-ibgp-ebgp",
+      "prompt": "Perbedaan iBGP dan eBGP…",
+      "options": [
+        "iBGP = antar-router AS yang sama; eBGP = antar-AS berbeda",
+        "iBGP lebih cepat, eBGP lebih lambat",
+        "iBGP hanya untuk IPv6, eBGP untuk IPv4",
+        "eBGP tidak memerlukan AS number"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. iBGP (internal) = AS sama; eBGP (external) = AS berbeda — parameter dan policy-nya berbeda.",
+        "Salah. Kecepatan bukan pembeda utama.",
+        "Salah. Keduanya mendukung IPv4 & IPv6.",
+        "Salah. eBGP justru PASTI melibatkan AS number yang berbeda."
+      ]
+    },
+    {
+      "id": "net-fw-filter-create",
+      "prompt": "Buat firewall filter bernama FF_INET di Junos (family inet)…",
+      "options": [
+        "set firewall family inet filter FF_INET",
+        "access-list 100",
+        "ip access-list standard FF_INET",
+        "create filter FF_INET"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `set firewall family inet filter <nama>` membuat firewall filter (termasuk term-nya di bawahnya).",
+        "Salah. `access-list` itu syntax Cisco.",
+        "Salah. `ip access-list` itu Cisco.",
+        "Salah. `create filter` bukan syntax Junos."
+      ]
+    },
+    {
+      "id": "net-fw-term",
+      "prompt": "Tambahkan term yang MATCH source address 10.0.0.0/8 dan ACTION accept…",
+      "options": [
+        "set firewall family inet filter FF_INET term allow-10 from source-address 10.0.0.0/8 + set firewall family inet filter FF_INET term allow-10 then accept",
+        "permit ip 10.0.0.0 0.255.255.255 any",
+        "access-list 100 permit 10.0.0.0 0.255.255.255",
+        "set filter FF_INET rule 10 match 10.0.0.0/8 accept"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Term = `from` (matchCondition) + `then` (action); Junos memakai `from source-address` + `then accept`.",
+        "Salah. `permit ip` itu syntax Cisco ACL.",
+        "Salah. `access-list ... permit` itu Cisco.",
+        "Salah. `set filter ... rule` bukan syntax Junos."
+      ]
+    },
+    {
+      "id": "net-fw-apply",
+      "prompt": "Terapkan firewall filter FF_INET sebagai filter INPUT di interface ge-0/0/0…",
+      "options": [
+        "set interfaces ge-0/0/0 unit 0 family inet filter input FF_INET",
+        "ip access-group FF_INET in",
+        "apply filter FF_INET in ge-0/0/0",
+        "set ge-0/0/0 input-filter FF_INET"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Filter diterapkan per-interface: `family inet filter input|output <nama-filter>`.",
+        "Salah. `ip access-group` itu Cisco.",
+        "Salah. `apply filter` bukan syntax Junos.",
+        "Salah. `set <intf> input-filter` bukan statement Junos."
+      ]
+    },
+    {
+      "id": "net-fw-actions",
+      "prompt": "Aksi yang VALID dalam `then` sebuah firewall filter term…",
+      "options": [
+        "accept, discard, count, log, next-term, routing-instance",
+        "permit, deny, drop",
+        "allow, block, monitor",
+        "pass, fail, next"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Aksi Junos: `accept`, `discard`, `count`, `log`, `next-term`, `routing-instance`, dll.",
+        "Salah. `permit/deny` itu istilah Cisco.",
+        "Salah. `allow/block` bukan aksi Junos.",
+        "Salah. `pass/fail` bukan aksi Junos."
+      ]
+    },
+    {
+      "id": "net-fw-next-term",
+      "prompt": "Agar packet yang match sebuah term LANJUT dicek ke term berikutnya (bukan langsung berhenti)…",
+      "options": [
+        "then next-term",
+        "then continue",
+        "then next",
+        "then pass-through"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `then next-term` melanjutkan evaluasi ke term berikutnya (default berhenti di term pertama yang match).",
+        "Salah. `continue` bukan aksi Junos.",
+        "Salah. `next` bukan aksi Junos.",
+        "Salah. `pass-through` bukan aksi Junos."
+      ]
+    },
+    {
+      "id": "net-fw-show-filter",
+      "prompt": "Lihat konfigurasi firewall filter yang aktif…",
+      "options": [
+        "show firewall",
+        "show access-lists",
+        "show filters",
+        "display firewall"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show firewall` menampilkan konfigurasi firewall filter (di operational mode).",
+        "Salah. `show access-lists` itu Cisco.",
+        "Salah. `show filters` bukan command Junos.",
+        "Salah. `display` itu config mode (bisa, tapi `show` yang lazim)."
+      ]
+    },
+    {
+      "id": "net-fw-counters",
+      "prompt": "Cek hitungan packet per-term firewall filter (untuk verifikasi filter bekerja)…",
+      "options": [
+        "show firewall filter",
+        "show firewall statistics",
+        "show access-list counters",
+        "show filter count"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show firewall filter` menampilkan term + counter-nya (packet match per-term).",
+        "Salah. `show firewall statistics` bukan command Junos (counter ada di `show firewall filter`).",
+        "Salah. `show access-list counters` itu Cisco.",
+        "Salah. `show filter count` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-nat-pool",
+      "prompt": "Buat NAT pool untuk source NAT (PAT) dengan range 203.0.113.10-203.0.113.20…",
+      "options": [
+        "set security nat source pool PAT_Pool address 203.0.113.10-203.0.113.20",
+        "ip nat inside source list 1 interface GigabitEthernet0/0 overload",
+        "nat pool 203.0.113.10-20",
+        "set nat source pool range 203.0.113.10-203.0.113.20"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `set security nat source pool <nama> address <range>` mendefinisikan pool address untuk source NAT.",
+        "Salah. `ip nat inside source` itu syntax Cisco.",
+        "Salah. `nat pool` bukan syntax Junos.",
+        "Salah. `set nat` (tanpa security) bukan statement Junos."
+      ]
+    },
+    {
+      "id": "net-nat-rule-set",
+      "prompt": "Struktur rule-set untuk NAT source di Junos…",
+      "options": [
+        "set security nat source rule-set <nama> from zone <in> to zone <out> + rule + match + then source-nat",
+        "ip nat inside source static",
+        "nat rule-set",
+        "set nat ruleset"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. NAT source = `rule-set` dengan `from zone`/`to zone`, `rule` (match + then source-nat pool/translations).",
+        "Salah. `ip nat` itu Cisco.",
+        "Salah. `nat rule-set` bukan syntax Junos.",
+        "Salah. `set nat` (tanpa security) bukan statement Junos."
+      ]
+    },
+    {
+      "id": "net-nat-pat",
+      "prompt": "PAT (Port Address Translation) di Junos berarti…",
+      "options": [
+        "Banyak host internal dipetakan ke sedikit/satu IP publik dengan berbeda port",
+        "Satu host ke satu IP (static)",
+        "NAT hanya untuk IPv6",
+        "NAT tanpa perubahan port"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. PAT = overloading: banyak address internal → satu (sedikit) address publik, dibedakan oleh port.",
+        "Salah. Satu-ke-satu itu static NAT, bukan PAT.",
+        "Salah. NAT mendukung IPv4 (dan IPv6).",
+        "Salah. PAT justru mengubah port."
+      ]
+    },
+    {
+      "id": "net-nat-static",
+      "prompt": "Static NAT: host internal 10.1.1.5 SELALU dipetakan ke publik 203.0.113.5 (1:1)…",
+      "options": [
+        "set security nat static rule-set RS from source-address 10.1.1.5/32 then translated address 203.0.113.5/32",
+        "ip nat inside source static 10.1.1.5 203.0.113.5",
+        "nat static 10.1.1.5 203.0.113.5",
+        "set nat static pair 10.1.1.5 203.0.113.5"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. NAT static: `security nat static rule-set ... from source-address ... then translated address ...` (1:1).",
+        "Salah. `ip nat inside source static` itu Cisco.",
+        "Salah. `nat static` bukan syntax Junos.",
+        "Salah. `set nat static pair` bukan syntax Junos."
+      ]
+    },
+    {
+      "id": "net-nat-show",
+      "prompt": "Lihat statistik/session NAT yang aktif…",
+      "options": [
+        "show security nat statistics",
+        "show ip nat translations",
+        "show nat",
+        "display nat"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show security nat statistics` menampilkan counter NAT (per-rule/pool).",
+        "Salah. `show ip nat translations` itu Cisco.",
+        "Salah. `show nat` bukan command Junos.",
+        "Salah. `display` itu config mode."
+      ]
+    },
+    {
+      "id": "net-vpn-iike",
+      "prompt": "Komponen yang menangani NEGOSIASI security association (SA) pada IPsec VPN di Junos…",
+      "options": [
+        "IKE (Internet Key Exchange)",
+        "IPsec",
+        "ESP",
+        "AH"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. IKE (Phase 1/2) menegosiasikan + mengamankan pembentukan SA; IPsec (ESP/AH) meng-enkripsi data.",
+        "Salah. IPsec adalah framework enkripsi datanya, bukan negosiasi SA.",
+        "Salah. ESP (Encapsulating Security Payload) = enkripsi payload, bukan negosiasi.",
+        "Salah. AH (Authentication Header) = autentikasi, bukan negosiasi."
+      ]
+    },
+    {
+      "id": "net-vpn-esp",
+      "prompt": "IPsec yang menyediakan ENKRIPSI (confidentiality) payload…",
+      "options": [
+        "ESP (Encapsulating Security Payload)",
+        "AH (Authentication Header)",
+        "IKE",
+        "UDP"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. ESP meng-enkripsi payload (confidentiality) + integritas; AH hanya integritas/autentikasi (tanpa enkripsi payload).",
+        "Salah. AH tidak meng-enkripsi payload.",
+        "Salah. IKE untuk negosiasi, bukan enkripsi data.",
+        "Salah. UDP adalah transport (IKE pakai UDP 500/4500), bukan protokol IPsec."
+      ]
+    },
+    {
+      "id": "net-vpn-gateway",
+      "prompt": "Di Junos, konfigurasi site-to-site IPsec VPN umumnya memakai…",
+      "options": [
+        "set security ike + ipsec (gateway, proposal, policy)",
+        "crypto map",
+        "tunnel mode",
+        "set vpn site-to-site"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Junos: `security ike` (gateway/proposal/policy) + `security ipsec` (ipsec policy/proposal) — model klasik Junos VPN.",
+        "Salah. `crypto map` itu Cisco.",
+        "Salah. `tunnel mode` bukan konfigurasi Junos.",
+        "Salah. `set vpn` bukan statement Junos."
+      ]
+    },
+    {
+      "id": "net-mon-show-chassis-env",
+      "prompt": "Lihat environment chassis (temperature, fan, voltage, power) secara lengkap…",
+      "options": [
+        "show chassis environment",
+        "show environment",
+        "show chassis status",
+        "show hardware environment"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show chassis environment` menampilkan temperature/fan/voltage/power per-slot.",
+        "Salah. `show environment` bukan command Junos.",
+        "Salah. `show chassis status` bukan command Junos.",
+        "Salah. `show hardware environment` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-mon-show-fabric",
+      "prompt": "Lihat statistik fabric (bandwidth antar-PIC/RE) pada platform modular…",
+      "options": [
+        "show chassis fabric statistics",
+        "show fabric",
+        "show chassis bandwidth",
+        "show fabric stats"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show chassis fabric statistics` menampilkan utilisasi/backplane fabric.",
+        "Salah. `show fabric` bukan command Junos.",
+        "Salah. `show chassis bandwidth` bukan command Junos.",
+        "Salah. `show fabric stats` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-mon-clear-alarms",
+      "prompt": "Alarm sudah di-clear (masalah selesai). Lihat daftar alarm yang SUDAH clear (riwayat)…",
+      "options": [
+        "show system alarms clear",
+        "show alarms history",
+        "show system alarms cleared",
+        "show clear alarms"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show system alarms clear` menampilkan alarm yang sudah di-clear (riwayat).",
+        "Salah. `show alarms history` bukan command Junos.",
+        "Salah. `cleared` bukan kata kuncinya (yang benar `clear`).",
+        "Salah. `show clear alarms` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-junos-candidate",
+      "prompt": "Konsep 'candidate configuration' di Junos berarti…",
+      "options": [
+        "Perubahan di-edit di candidate; hanya di-commit baru masuk ke running config",
+        "Setiap perubahan langsung aktif (auto-commit)",
+        "Candidate adalah backup otomatis",
+        "Candidate hanya untuk simulasi, tidak bisa di-commit"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Model Junos: edit di candidate config → `commit` → aktif di running config. Ini yang membuatnya aman.",
+        "Salah. Junos TIDAK auto-aktif; harus commit.",
+        "Salah. Candidate bukan backup (backup = rollback generation).",
+        "Salah. Candidate memang bisa (dan harus) di-commit untuk aktif."
+      ]
+    },
+    {
+      "id": "net-junos-hierarchy",
+      "prompt": "Struktur konfigurasi Junos bersifat…",
+      "options": [
+        "Hierarkis (tree); tiap statement berada di path tertentu",
+        "Flat (satu file besar tanpa struktur)",
+        "Berdasarkan database SQL",
+        "Berdasarkan registry"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Config Junos = hierarchy tree; `edit` menavigasi, `set` mengisi path, `top` kembali ke root.",
+        "Salah. Bukan flat.",
+        "Salah. Bukan SQL.",
+        "Salah. Bukan registry."
+      ]
+    },
+    {
+      "id": "net-junos-commit-check-first",
+      "prompt": "Best practice sebelum `commit` pada perubahan besar…",
+      "options": [
+        "Jalankan `commit check` (validasi syntax) dulu",
+        "Langsung `commit`",
+        "Reboot dulu",
+        "Hapus semua config lama"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `commit check` memvalidasi tanpa mengubah running config — menangkap error sebelum commit.",
+        "Salah. Commit langsung berisiko (kalau error, sudah terlanjur aktif/rollback).",
+        "Salah. Reboot bukan validasi.",
+        "Salah. Hapus config lama = overkill."
+      ]
+    },
+    {
+      "id": "net-junos-rollback-number",
+      "prompt": "Melihat daftar rollback generation (nomor + timestamp commit)…",
+      "options": [
+        "show system commit",
+        "show rollback",
+        "show commit history",
+        "show configuration rollback"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `show system commit` menampilkan daftar commit/rollback generation + waktu.",
+        "Salah. `show rollback` bukan command Junos.",
+        "Salah. `show commit history` bukan command Junos.",
+        "Salah. `show configuration rollback` bukan command Junos."
+      ]
+    },
+    {
+      "id": "net-junos-interface-naming",
+      "prompt": "Penamaan `ge-0/0/2` di Junos artinya…",
+      "options": [
+        "Gigabit Ethernet, PIC/slot 0, port 0, subport 2",
+        "Gigabit, slot 2, port 0",
+        "Ethernet 10G, port 2",
+        "Geometric interface 2"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `ge-<pic>/<slot>/<port>` — ge = gigabit ethernet, diikuti identifier PIC/posisi/port.",
+        "Salah. Penafsiran slot-nya salah.",
+        "Salah. `ge` = gigabit (1G), bukan 10G (itu `xe`).",
+        "Salah. Bukan 'geometric'."
+      ]
+    },
+    {
+      "id": "net-junos-xe-ge",
+      "prompt": "Prefix interface untuk 10 Gigabit Ethernet di Junos…",
+      "options": [
+        "xe",
+        "ge",
+        "et",
+        "ten"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `xe` = 10 Gigabit Ethernet (10GE); `ge` = 1G, `xe-` untuk 10G.",
+        "Salah. `ge` itu 1G.",
+        "Salah. `et` bukan prefix Junos.",
+        "Salah. `ten` bukan prefix Junos."
+      ]
+    }
+  ]
+}
