@@ -38,6 +38,18 @@ function validateQuestion(q: unknown, file: string): QuizQuestion {
   };
 }
 
+// Fisher–Yates partial shuffle: return `size` distinct items from `pool`.
+// `rng` is injectable so tests can be deterministic.
+export function sampleQuestions<T>(pool: T[], size: number, rng: () => number = Math.random): T[] {
+  if (size >= pool.length) return [...pool];
+  const a = [...pool];
+  for (let i = a.length - 1; i > a.length - size; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a.slice(0, size);
+}
+
 export function loadTracksFromDir(dir: string): QuizTrack[] {
   return readdirSync(dir)
     .filter((f) => f.endsWith(".json"))
@@ -51,12 +63,15 @@ export function loadTracksFromDir(dir: string): QuizTrack[] {
       const questions = r.questions.map((q) => validateQuestion(q, f));
       const ids = new Set(questions.map((q) => q.id));
       if (ids.size !== questions.length) fail(f, "question ids must be unique");
+      const examSize = asInt(r.examSize, f, "examSize", 1, 500);
+      if (examSize > questions.length) fail(f, "examSize cannot exceed the question pool");
       return {
         slug,
         title: asString(r.title, f, "title"),
         description: asString(r.description, f, "description"),
         durationSec: asInt(r.durationSec, f, "durationSec", 60, 7200),
         passingPercent: asInt(r.passingPercent, f, "passingPercent", 0, 100),
+        examSize,
         questions,
       } satisfies QuizTrack;
     });

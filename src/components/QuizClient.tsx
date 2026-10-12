@@ -4,6 +4,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { grade } from "@/lib/quiz/grade";
 import type { BoardEntry } from "@/lib/quiz/service";
@@ -35,6 +36,7 @@ function fmtDuration(sec: number): string {
 }
 
 export function QuizClient({ track }: { track: QuizTrack }) {
+  const router = useRouter();
   const [phase, setPhase] = useState<Phase>("briefing");
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [current, setCurrent] = useState(0);
@@ -73,7 +75,12 @@ export function QuizClient({ track }: { track: QuizTrack }) {
       const res = await fetch("/api/quiz/submit", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ track: track.slug, answers: snapshot, durationSec: track.durationSec }),
+        body: JSON.stringify({
+          track: track.slug,
+          answers: snapshot,
+          questionIds: track.questions.map((q) => q.id),
+          durationSec: track.durationSec,
+        }),
       });
       const json: ServerResult & { error?: string } = await res.json();
       if (!res.ok) throw new Error(json.error ?? "gagal mengirim jawaban");
@@ -250,8 +257,14 @@ export function QuizClient({ track }: { track: QuizTrack }) {
       </div>
 
       <div className="quiz-results-actions">
-        <button type="button" className="btn btn-primary" onClick={() => setPhase("briefing")}>
-          Kerjakan Lagi
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={() =>
+            router.push(`/test/${track.slug}?r=${Math.random().toString(36).slice(2)}`)
+          }
+        >
+          Kerjakan Lagi (soal baru)
         </button>
         <Link className="btn" href="/test">Pilih Track Lain</Link>
       </div>

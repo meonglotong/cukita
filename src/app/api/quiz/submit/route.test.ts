@@ -45,28 +45,43 @@ it("400 for unknown track", async () => {
 
 it("400 for an answer on an unknown question", async () => {
   globalThis.__TEST_SESSION__ = fakeUserSession;
-  const res = await post({ track: "sysadmin", answers: { "nope": 1 } });
+  const track = getTrack("sysadmin")!;
+  const res = await post({ track: "sysadmin", answers: { "nope": 1 }, questionIds: [track.questions[0].id] });
   expect(res.status).toBe(400);
 });
 
 it("400 for an out-of-range option index", async () => {
   globalThis.__TEST_SESSION__ = fakeUserSession;
   const track = getTrack("sysadmin")!;
-  const res = await post({ track: "sysadmin", answers: { [track.questions[0].id]: 7 } });
+  const res = await post({ track: "sysadmin", answers: { [track.questions[0].id]: 7 }, questionIds: [track.questions[0].id] });
   expect(res.status).toBe(400);
 });
 
-it("200: records the server-graded score and returns rank + top", async () => {
+it("400 when questionIds is missing or not an array", async () => {
+  globalThis.__TEST_SESSION__ = fakeUserSession;
+  expect((await post({ track: "sysadmin", answers: {} })).status).toBe(400);
+  expect((await post({ track: "sysadmin", answers: {}, questionIds: "nope" })).status).toBe(400);
+});
+
+it("400 when questionIds contains an id outside the pool", async () => {
+  globalThis.__TEST_SESSION__ = fakeUserSession;
+  const res = await post({ track: "sysadmin", answers: {}, questionIds: ["nope"] });
+  expect(res.status).toBe(400);
+});
+
+it("200: grades ONLY the sampled subset and returns rank + top", async () => {
   globalThis.__TEST_SESSION__ = fakeUserSession;
   const track = getTrack("sysadmin")!;
-  // Answer the first 10 questions correctly, leave the rest unanswered → 10/20 = 50%.
+  // Simulate a 20-question exam drawn from the pool; answer 10 of them correctly.
+  const exam = track.questions.slice(0, 20);
+  const questionIds = exam.map((q) => q.id);
   const answers: Record<string, number> = {};
-  for (const q of track.questions.slice(0, 10)) answers[q.id] = q.correctIndex;
-  const res = await post({ track: "sysadmin", answers, durationSec: 1234 });
+  for (const q of exam.slice(0, 10)) answers[q.id] = q.correctIndex;
+  const res = await post({ track: "sysadmin", answers, questionIds, durationSec: 1234 });
   expect(res.status).toBe(200);
   const json = await res.json();
   expect(json.score).toBe(10);
-  expect(json.total).toBe(20);
+  expect(json.total).toBe(20); // subset size, not pool size
   expect(json.percent).toBe(50);
   expect(json.passed).toBe(false);
   expect(json.rank).toBe(1);

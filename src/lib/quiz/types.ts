@@ -20,6 +20,9 @@ export interface QuizTrack {
   durationSec: number;
   // 0-100 score needed to pass.
   passingPercent: number;
+  // Number of questions in each exam, randomly drawn from the pool.
+  examSize: number;
+  // Full question pool (the exam is a random sample of this).
   questions: QuizQuestion[];
 }
 

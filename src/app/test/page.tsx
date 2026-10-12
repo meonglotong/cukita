@@ -36,13 +36,13 @@ export default async function TestHomePage() {
             <div className="track-card" key={t.slug}>
               <div className="track-head">
                 <h2>{t.title}</h2>
-                <span className="track-badge">{t.questions.length} soal</span>
+                <span className="track-badge">{t.examSize} soal</span>
               </div>
               <p className="track-desc">{t.description}</p>
               <ul className="track-meta">
                 <li>⏱ {fmtDuration(t.durationSec)}</li>
                 <li>🎯 Passing line {t.passingPercent}%</li>
-                <li>📝 {t.questions.length} soal pilihan ganda</li>
+                <li>📝 {t.examSize} soal diacak dari {t.questions.length} bank</li>
               </ul>
               <Leaderboard title="Top 5" entries={boards[i].entries} limit={5} />
               <Link className="btn btn-primary track-start" href={`/test/${t.slug}`}>

@@ -344,6 +344,1367 @@
         "Salah. Mematikan alert non-critical menyembunyikan masalah sebelum jadi critical.",
         "Salah. Menunggu 99% (3.6 jam/bulan downtime) terlambat — SLO yang sehat jauh lebih ketat."
       ]
+    },
+    {
+      "id": "devops-docker-ps-a",
+      "prompt": "List SEMUA container di host (termasuk yang sudah berhenti) dengan ID, nama, dan status…",
+      "options": [
+        "docker ps -a",
+        "docker ps",
+        "docker container list --stopped",
+        "docker ps --all-stopped"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `-a` = all: running + exited + created. Ini cara standar melihat semua container.",
+        "Salah. Tanpa `-a`, hanya container yang SEDANG jalan yang tampil.",
+        "Salah. Opsi `--stopped` tidak ada; `--filter status=exited` yang benar.",
+        "Salah. `--all-stopped` bukan flag docker ps."
+      ]
+    },
+    {
+      "id": "devops-docker-prune",
+      "prompt": "Bersihkan resource Docker yang TIDAK DIPAKAI (stopped containers, dangling images, unused networks) — tapi jangan volume…",
+      "options": [
+        "docker system prune",
+        "docker system prune -a",
+        "docker system prune --volumes",
+        "docker rm $(docker ps -q)"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `docker system prune` = stopped containers + dangling images + unused networks + build cache; volume TERSIMPAN (aman).",
+        "Salah. `-a` juga menghapus SEMUA image yang tidak dipakai container running — lebih agresif dari yang diminta.",
+        "Salah. `--volumes` justru ikut menghapus volume — kebalikan dari 'jangan volume'.",
+        "Salah. `rm $(docker ps -q)` hanya menghapus container yang JALAN (ps tanpa -a), dan tidak menyentuh image/network."
+      ]
+    },
+    {
+      "id": "devops-docker-exec",
+      "prompt": "Masuk shell container web-1 yang sedang jalan untuk debugging (interaktif, TTY) tanpa membuat container baru…",
+      "options": [
+        "docker exec -it web-1 sh",
+        "docker run -it web-1 sh",
+        "docker attach web-1",
+        "docker login web-1"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `exec` menjalankan process BARU di dalam container yang sudah ada; `-it` = TTY interaktif.",
+        "Salah. `docker run web-1` membuat container BARU (menyalin image), bukan masuk ke yang sedang jalan.",
+        "Salah. `attach` menempel ke MAIN process container (bukan shell terpisah) — kalau main process mati, session-nya ikut.",
+        "Salah. `docker login` itu untuk registry."
+      ]
+    },
+    {
+      "id": "devops-docker-stop-kill",
+      "prompt": "Hentikan container web-1: dulu dengan graceful (SIGTERM, beri waktu), baru paksa kalau membandel…",
+      "options": [
+        "docker stop web-1; docker kill web-1",
+        "docker kill web-1; docker stop web-1",
+        "docker pause web-1; docker unpause web-1",
+        "docker rm web-1 --force"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `stop` = SIGTERM + timeout (default 10 detik) = graceful; `kill` = SIGKILL langsung = fallback.",
+        "Salah. Urutan terbalik: kill dulu membuang kesempatan graceful shutdown (flush buffer, tutup koneksi).",
+        "Salah. `pause/unpause` (SIGSTOP/SIGCONT) hanya membekukan process — bukan shutdown.",
+        "Salah. `rm --force` menghapus container — data overlay hilang, dan itu bukan urutan stop→kill."
+      ]
+    },
+    {
+      "id": "devops-compose-scale",
+      "prompt": "Naikkan jumlah replica service `web` di compose ke 4 (skala horizontal cepat) tanpa edit file…",
+      "options": [
+        "docker compose up -d --scale web=4",
+        "docker compose scale web x4",
+        "docker run --scale web=4",
+        "docker compose multiply web 4"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `up -d --scale <svc>=N` adalah cara resmi compose untuk mengubah replica.",
+        "Salah. Subcommand `scale` tidak ada di docker compose.",
+        "Salah. `docker run` menjalankan satu container dari image, bukan scaling service compose.",
+        "Salah. `multiply` bukan subcommand compose."
+      ]
+    },
+    {
+      "id": "devops-docker-save-load",
+      "prompt": "Pindahkan image lokal `app:1.0` ke server lain yang TIDAK terhubung registry (offline transfer)…",
+      "options": [
+        "docker save app:1.0 > app.tar; kirim; docker load < app.tar",
+        "docker push app:1.0 lalu docker pull di tujuan",
+        "docker export app:1.0 > app.tar; docker import",
+        "docker cp app:1.0 server:/images/"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `save` = serialisasi IMAGE (layer + metadata); `load` memulihkannya — transfer offline yang benar.",
+        "Salah. `push/pull` butuh registry dan koneksi — padahal skenarionya offline.",
+        "Salah. `export`/`import` itu untuk filesystem CONTAINER (menjadi image), bukan mentransfer image yang sudah ada.",
+        "Salah. `docker cp` itu untuk file di dalam/out container, bukan image."
+      ]
+    },
+    {
+      "id": "devops-docker-tag-push",
+      "prompt": "Kirim image lokal `app:1.0` ke registry private 172.31.252.100 sebagai `app:prod`…",
+      "options": [
+        "docker tag app:1.0 172.31.252.100/app:prod; docker push 172.31.252.100/app:prod",
+        "docker push app:1.0 172.31.252.100/app:prod",
+        "docker tag app:1.0 172.31.252.100/app; docker push 172.31.252.100/app:prod",
+        "docker send app:1.0 --registry 172.31.252.100"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `tag` memberi nama baru dengan prefix registry (tanpa menghapus tag lama), lalu `push` nama registry-nya.",
+        "Salah. `push` hanya menerima SATU argumen image (tanpa target terpisah) — dan target harus nama image, bukan dua argumen.",
+        "Salah. Tag-nya `172.31.252.100/app` (tanpa :prod) tidak match push `:prod` — tag-nya yang harus sama persis.",
+        "Salah. `docker send` bukan subcommand."
+      ]
+    },
+    {
+      "id": "devops-docker-multistage",
+      "prompt": "Image build Node.js membengkak 1.2GB karena node_modules + toolchain. Cara membuat image akhir HANYA berisi runtime…",
+      "options": [
+        "Multi-stage: stage 1 build (node:20), stage 2 copy hasil ke node:20-alpine",
+        "Naikkan --build-arg COMPRESSION=9",
+        "Tambahkan .dockerignore untuk semua file",
+        "Jalankan docker image prune setelah build"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Multi-stage build: compile di stage berat, salin ARTIFAK akhir ke stage ringan — image final bersih dari toolchain.",
+        "Salah. Kompresi transfer tidak mengurangi size layer yang tereksekusi.",
+        "Salah. .dockerignore mengurangi context yang DIKIRIM, bukan isi layer build (node_modules tetap dibuat di dalam).",
+        "Salah. `image prune` menghapus image yang tidak terpakai, bukan mengecilkan image yang baru di-build."
+      ]
+    },
+    {
+      "id": "devops-docker-healthcheck",
+      "prompt": "Docker harus bisa mendeteksi container yang 'jalan tapi aplikasi hang' (liveness di level container)…",
+      "options": [
+        "HEALTHCHECK CMD curl -f http://localhost:3000/health || exit 1",
+        "ENTRYPOINT [\"curl\", \"-f\", \"http://localhost:3000/health\"]",
+        "CMD [\"curl\", \"-f\", \"http://localhost:3000/health\"]",
+        "EXPOSE 3000"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `HEALTHCHECK` di Dockerfile: command exit 0 = healthy, != 0 = unhealthy (tampil di `docker ps`).",
+        "Salah. `ENTRYPOINT` itu process utama container — curl-nya akan MENGGANTI aplikasi dan mati setelah cek.",
+        "Salah. `CMD` menggantikan command default — sama masalahnya dengan ENTRYPOINT.",
+        "Salah. `EXPOSE` hanya dokumentasi port, tidak ada cek kesehatan."
+      ]
+    },
+    {
+      "id": "devops-docker-arg-env",
+      "prompt": "Secret (password DB) harus bisa diset DI WAKTU RUNTIME (bukan dibakar ke layer image) — instruksi yang tepat…",
+      "options": [
+        "ENV DB_PASSWORD (di Dockerfile) lalu docker run -e DB_PASSWORD=rahasia",
+        "ARG DB_PASSWORD=rahasia di Dockerfile",
+        "Bakar secret ke layer: COPY .env /app/.env lalu run",
+        "LABEL db_password=rahasia"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `ENV` (atau tanpa ENV) + `-e` di runtime = secret masuk container dari lingkungan, tidak tertinggal di metadata layer.",
+        "Salah. `ARG` hanya ada WAKTU BUILD — nilainya hilang setelah build (dan bisa bocor via `docker history` jika default-nya secret).",
+        "Salah. COPY .env ke layer = secret permanen di image (bisa dilihat siapa pun yang pull).",
+        "Salah. `LABEL` itu metadata, tidak tersedia di runtime app."
+      ]
+    },
+    {
+      "id": "devops-entrypoint-cmd",
+      "prompt": "Image CLI `migrate` harus SELALU menjalankan `migrate` tapi argument-nya bisa ditambah dari luar (`migrate --up`)…",
+      "options": [
+        "ENTRYPOINT [\"migrate\"] + CMD [\"--up\"]",
+        "CMD [\"migrate\", \"--up\"] saja",
+        "ENTRYPOINT [\"migrate\", \"--up\"] saja",
+        "HEALTHCHECK CMD migrate --up"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `ENTRYPOINT` = binary yang tetap; `CMD` = default args yang bisa ditimpa: `docker run img --down` → `migrate --down`.",
+        "Salah. `CMD` saja bisa ditimpa seluruhnya oleh `docker run img bash` — binary-nya tidak 'terkunci'.",
+        "Salah. `ENTRYPOINT` saja mengunci args — `--up` tidak bisa diganti.",
+        "Salah. `HEALTHCHECK` itu cek kesehatan, bukan command utama."
+      ]
+    },
+    {
+      "id": "devops-docker-user",
+      "prompt": "Best practice security: aplikasi web (bukan daemon yang butuh binding port < 1024) sebaiknya di-run sebagai…",
+      "options": [
+        "USER appuser (non-root, UID eksplisit) di Dockerfile",
+        "USER root (default) biar bisa install apa saja",
+        "USER nobody:nogroup selalu",
+        "USER systemd"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Non-root user mengurangi blast radius kalau app di-exploit; buat user eksplisit (bukan nobody yang permission-nya aneh).",
+        "Salah. Root di container = proses yang di-compromise dapat kontrol container (dan mount) — hindari untuk app biasa.",
+        "Salah. `nobody` bisa dipakai, tapi user eksplisit lebih bersih (home, permission, audit).",
+        "Salah. `systemd` bukan user yang relevan di image app."
+      ]
+    },
+    {
+      "id": "devops-kubectl-label",
+      "prompt": "Ambil SEMUA pod dengan label app=web di semua namespace…",
+      "options": [
+        "kubectl get pods -A -l app=web",
+        "kubectl get pods -l app=web",
+        "kubectl get pods | grep web",
+        "kubectl get pods --label app web"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `-A` semua namespace + `-l app=web` label selector — persis permintaan.",
+        "Salah. Tanpa `-A`, hanya namespace TERKUNCI (default) — pod di namespace lain terlewat.",
+        "Salah. `grep` terhadap nama pod — false positive/negative, dan bukan selector resmi.",
+        "Salah. Sintaks-nya `-l app=web` (atau `--labels`), bukan `--label app web`."
+      ]
+    },
+    {
+      "id": "devops-kubectl-apply",
+      "prompt": "Deploy manifest deployment.yaml ke cluster (idempotent: safe dijalankan ulang) — command standar sekarang…",
+      "options": [
+        "kubectl apply -f deployment.yaml",
+        "kubectl create -f deployment.yaml",
+        "kubectl replace -f deployment.yaml",
+        "kubectl run -f deployment.yaml"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `apply` = declarative & idempotent (create jika belum ada, update jika ada) — standar modern.",
+        "Salah. `create` GAGAL jika objek sudah ada — tidak idempotent.",
+        "Salah. `replace` GAGAL jika objek BELUM ada — juga tidak idempotent.",
+        "Salah. `kubectl run` itu untuk membuat deployment sederhana dari image, bukan apply manifest."
+      ]
+    },
+    {
+      "id": "devops-kubectl-port-forward",
+      "prompt": "Akses database cluster (svc postgres, port 5432) dari laptop via port 15432 — tanpa exposure ke internet…",
+      "options": [
+        "kubectl port-forward svc/postgres 15432:5432",
+        "kubectl expose svc postgres --port=15432",
+        "kubectl cp postgres /tmp:5432",
+        "kubectl proxy --port=15432"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `port-forward` membuka terowongan lokal (15432) → service (5432) via API server — akses debugging aman.",
+        "Salah. `expose` membuat service BARU (bukan terowongan lokal) — dan svc postgres sudah ada.",
+        "Salah. `kubectl cp` itu menyalin FILE, bukan forward port.",
+        "Salah. `kubectl proxy` itu proxy API server (port default 8001), bukan forward ke service spesifik."
+      ]
+    },
+    {
+      "id": "devops-kubectl-exec",
+      "prompt": "Jalankan `psql` sekali di dalam pod api-1 (container utama) untuk cek data…",
+      "options": [
+        "kubectl exec api-1 -- psql -U app -d cukita",
+        "kubectl exec psql api-1",
+        "kubectl run psql --rm -it --image=postgres -- psql -h api-1",
+        "kubectl port-forward api-1 5432"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `kubectl exec <pod> -- <command>` — `--` memisahkan arg kubectl dari command di dalam container.",
+        "Salah. Urutan salah: command harus SETELAH `--`.",
+        "Salah. `kubectl run` itu alternatif (pod baru), bukan menjalankan di pod yang ada — lebih berat.",
+        "Salah. `port-forward` membuka akses port, bukan menjalankan command di dalam pod."
+      ]
+    },
+    {
+      "id": "devops-kubectl-rollout-status",
+      "prompt": "Setelah `kubectl set image`, pantau apakah rollout deployment web selesai (semua pod baru ready)…",
+      "options": [
+        "kubectl rollout status deployment/web",
+        "kubectl get deployment web",
+        "kubectl describe deployment web",
+        "kubectl logs deployment/web"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `rollout status` menunggu dan melaporkan progres sampai complete (atau timeout) — tool resmi untuk memantau rollout.",
+        "Salah. `get` satu snapshot (replicas ready) — tidak 'menunggu' sampai selesai.",
+        "Salah. `describe` detail + event, tapi tidak blocking sampai rollout complete.",
+        "Salah. `logs` menampilkan output aplikasi, bukan status rollout."
+      ]
+    },
+    {
+      "id": "devops-kubectl-rollout-undo",
+      "prompt": "Deploy terakhir ternyata bug. Balikkan deployment web ke REVISI SEBELUMNYA…",
+      "options": [
+        "kubectl rollout undo deployment/web",
+        "kubectl delete deployment web",
+        "kubectl rollout status deployment/web",
+        "kubectl set image deployment/web web=<image-lama> (tanpa tahu image-nya)"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `rollout undo` membalikkan ke revisi sebelumnya secara terkelola (dengan `--to-revision=N` untuk spesifik).",
+        "Salah. `delete` menghapus deployment — pod ikut mati, bukan rollback.",
+        "Salah. `rollout status` hanya memantau, tidak mengubah apa pun.",
+        "Salah. Set image manual bisa jalan TAPI kamu perlu tahu image-nya; `undo` melakukannya otomatis dari riwayat."
+      ]
+    },
+    {
+      "id": "devops-k8s-configmap",
+      "prompt": "Konfigurasi non-secret (level log, fitur toggle) untuk semua pod web — mekanisme yang tepat…",
+      "options": [
+        "ConfigMap + env dari configMapKeyRef",
+        "Secret (base64) untuk semua config",
+        "Hardcode di Deployment.yaml dan redeploy tiap ganti",
+        "Volume dari PVC yang di-mount ke /etc/app"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. ConfigMap = data non-secret terkelola; bisa di-update TANPA rebuild image (pod perlu restart untuk env).",
+        "Salah. Secret itu untuk data sensitive (credential, key) — bukan untuk config umum.",
+        "Salah. Hardcode = setiap perubahan butuh redeploy + edit manifest — tidak terkelola.",
+        "Salah. PVC itu untuk STATE (data persisten), bukan konfigurasi."
+      ]
+    },
+    {
+      "id": "devops-k8s-pvc",
+      "prompt": "Pod database butuh penyimpanan 20GB yang TETAP saat pod di-restart/pindah node…",
+      "options": [
+        "PersistentVolumeClaim 20Gi + mount ke pod",
+        "emptyDir: true di volume",
+        "hostPath ke disk node",
+        "Menulis data ke /tmp di container"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. PVC = klaim ke PersistentVolume yang lifecycle-nya terpisah dari pod — data bertahan restart & reschedule.",
+        "Salah. `emptyDir` kosong saat pod dibuat dan HILANG saat pod dihapus.",
+        "Salah. `hostPath` mengikat pod ke node spesifik (tidak portabel, tidak dinamis).",
+        "Salah. `/tmp` overlay container — hilang saat pod dihapus."
+      ]
+    },
+    {
+      "id": "devops-k8s-liveness",
+      "prompt": "Aplikasi hang (process hidup tapi tidak responsif). Mekanisme k8s yang membuat pod di-RESTART otomatis…",
+      "options": [
+        "Liveness probe (gagal → kubelet restart container)",
+        "Readiness probe",
+        "Startup probe",
+        "Resource limit CPU"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Liveness = 'apakah app hidup?'; gagal berulang → container di-restart. Tepat untuk kasus hang.",
+        "Salah. Readiness = 'apakah siap terima traffic?'; gagal = di-OUT dari service (pod TIDAK di-restart).",
+        "Salah. Startup = toleransi waktu START awal (untuk app lambat); bukan untuk hang di runtime.",
+        "Salah. Limit CPU = throttle, bukan restart."
+      ]
+    },
+    {
+      "id": "devops-k8s-taints",
+      "prompt": "Node GPU hanya boleh dipakai pod yang memang butuh GPU. Mekanisme 'menolak' pod biasa dari node itu…",
+      "options": [
+        "Taint di node + toleration di pod yang boleh",
+        "NodeAffinity required saja",
+        "PodAntiAffinity",
+        "Resource request GPU di semua pod"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Taint = 'push' (node menolak); toleration = pod menyatakan 'saya boleh di sini'. Kombinasi keduanya = seleksi satu arah.",
+        "Salah. NodeAffinity itu 'tarik' (pod memilih node) — tanpa taint, pod tanpa affinity tetap bisa masuk.",
+        "Salah. PodAntiAffinity mengatur jarak antar-pod, bukan seleksi node.",
+        "Salah. Request GPU membuat pod TIDAK BISA di-schedule tanpa GPU (resource scheduling), tapi tidak EXKLUSIF dari pod non-GPU."
+      ]
+    },
+    {
+      "id": "devops-kubectl-top",
+      "prompt": "Cek penggunaan CPU & memori aktual per-pod (butuh metrics-server terpasang)…",
+      "options": [
+        "kubectl top pods",
+        "kubectl get pods -o wide",
+        "kubectl describe pod",
+        "kubectl logs --tail"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `kubectl top` (dari metrics-server) = metrik real-time per-pod/node.",
+        "Salah. `-o wide` menampilkan IP & node, bukan penggunaan resource.",
+        "Salah. `describe` menampilkan spec/limit/event, bukan konsumsi aktual.",
+        "Salah. `logs` itu output aplikasi."
+      ]
+    },
+    {
+      "id": "devops-k8s-hpa",
+      "prompt": "Replica web harus naik otomatis 2→10 saat CPU rata-rata > 70%, turun saat sepi…",
+      "options": [
+        "HorizontalPodAutoscaler (HPA) target CPU 70%",
+        "kubectl scale manual via cron",
+        "NodeAffinity ke node besar",
+        "Naikkan resource limit"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. HPA = autoscaling otomatis berdasarkan metrik (CPU/mem/custom) — persis permintaan.",
+        "Salah. Cron scale manual tidak responsif terhadap beban aktual (dan tetap 'manual').",
+        "Salah. Affinity menentukan DI MANA, bukan BERTAPA BANYAK.",
+        "Salah. Naikkan limit = headroom lebih besar, bukan menambah replica."
+      ]
+    },
+    {
+      "id": "devops-k8s-cronjob",
+      "prompt": "Job maintenance DB (backup) harus jalan otomatis tiap malam 02:00…",
+      "options": [
+        "CronJob (schedule: \"0 2 * * *\")",
+        "Deployment dengan 1 replica",
+        "Job (tanpa schedule)",
+        "DaemonSet"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `CronJob` = Job yang di-schedule cron — untuk pekerjaan periodik.",
+        "Salah. Deployment itu untuk workload yang SELALU jalan, bukan job periodik.",
+        "Salah. `Job` sekali jalan (manual/kubectl create job) — tidak ada schedule.",
+        "Salah. DaemonSet = satu pod per node yang selalu jalan."
+      ]
+    },
+    {
+      "id": "devops-k8s-ingress",
+      "prompt": "Route domain api.cukita.id → service api (path /) dan web.cukita.id → service web, di cluster yang sama…",
+      "options": [
+        "Ingress dengan 2 host rules",
+        "Dua LoadBalancer service terpisah",
+        "NodePort + config DNS manual per port",
+        "Port-forward dari tiap service"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Ingress = L7 routing based-on-host/path di satu entry point — cara standar multi-domain.",
+        "Salah. 2 LoadBalancer = 2 IP/endpoint — boros dan tidak scale.",
+        "Salah. NodePort + DNS per-port bisa, tapi rawan dan tidak elegan (DNS mengarah ke port, bukan host).",
+        "Salah. Port-forward itu akses debugging, bukan endpoint produksi."
+      ]
+    },
+    {
+      "id": "devops-git-bisect",
+      "prompt": "Build mulai gagal di commit tertentu dari 200 commit terakhir. Cari commit pembuatnya secara otomatis (biner)…",
+      "options": [
+        "git bisect start; git bisect bad HEAD; git bisect good <commit-stabil>; (git jalankan build tiap iterasi)",
+        "git log -p | grep -n 'gagal' dan baca manual",
+        "git revert semua commit satu-satu sampai build lolos",
+        "git blame file-yang-error"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `git bisect` = binary search commit: ~8 langkah untuk 200 commit; bisa otomatis dengan `git bisect run <cmd>`.",
+        "Salah. Baca diff manual 200 commit = lambat dan rawat salah.",
+        "Salah. Revert satu-satu = O(n) dan mengotori history.",
+        "Salah. `blame` menunjukkan BAIK commit terakhir yang menyentuh BARIS — berguna, tapi tidak otomatis mengidentifikasi commit penyebab (dan untuk build failure, baris penyebab belum tentu yang diblame)."
+      ]
+    },
+    {
+      "id": "devops-git-cherry-pick",
+      "prompt": "Satu commit fix (a1b2c3d) di branch feature perlu masuk ke main (tanpa seluruh branch-nya)…",
+      "options": [
+        "git checkout main && git cherry-pick a1b2c3d",
+        "git merge feature (semua commit ikut)",
+        "git rebase main feature",
+        "git reset --hard main"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `cherry-pick` mengambil SATU commit (dibuat ulang dengan hash baru) ke branch aktif — tepat untuk backport fix.",
+        "Salah. `merge` mengambil SELURUH branch — tidak selektif.",
+        "Salah. `rebase` memindahkan seluruh series commit, bukan satu.",
+        "Salah. `reset --hard` menggeser pointer branch — commit fix tetap tidak masuk."
+      ]
+    },
+    {
+      "id": "devops-cd-bluegreen",
+      "prompt": "Strategi deploy: dua environment identik (biru=prod lama, hijau=versi baru). Uji hijau, lalu alihkan traffic SEKALIGUS — risiko downtime minimal…",
+      "options": [
+        "Blue-Green deployment",
+        "Canary deployment",
+        "Rolling update",
+        "Recreate (kill all → deploy)"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Blue-Green: dua set lengkap, switch atomic (load balancer) — rollback = balikkan switch.",
+        "Salah. Canary: traffic sebagian ke versi baru secara bertahap — bukan switch sekaligus dua environment.",
+        "Salah. Rolling: pod diganti satu per satu — bukan dua environment penuh.",
+        "Salah. Recreate = ada jeda saat semua mati — downtime nyata."
+      ]
+    },
+    {
+      "id": "devops-cd-canary",
+      "prompt": "Uji versi baru ke 5% user dulu; kalau metrics sehat, naikkan ke 25% → 50% → 100%. Kalau ada anomali, kembalikan…",
+      "options": [
+        "Canary deployment (progressive traffic shifting)",
+        "Blue-Green",
+        "Rolling update",
+        "Feature flag (on/off global)"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Canary = exposure bertahap ke sebagian traffic dengan gate metrik — persis skenario.",
+        "Salah. Blue-Green = switch 0/100, tidak ada tahap 5/25/50.",
+        "Salah. Rolling update mengganti pod bertahap — tidak berbasis persentase TRAFFIC.",
+        "Salah. Feature flag on/off global tidak membagi traffic bertahap secara otomatis."
+      ]
+    },
+    {
+      "id": "devops-ansible-handler",
+      "prompt": "Ubah /etc/nginx/nginx.conf via task template; nginx harus di-reload TAPI hanya jika file benar-benar berubah (bukan tiap run)…",
+      "options": [
+        "Task notify: reload-nginx + Handler (notify hanya saat task changed)",
+        "Tambahkan task kedua: shell nginx -s reload (tanpa notify)",
+        "set_fact: restart=always",
+        "Jalankan reload di bagian `pre_tasks`"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Handler hanya dijalankan saat task-nya `changed` — idempotent dan efisien.",
+        "Salah. Task reload polos dijalankan TIAP play (walau config tidak berubah).",
+        "Salah. `set_fact` hanya variabel, tidak memicu apa-apa.",
+        "Salah. `pre_tasks` jalan SEBELUM task utama — reload sebelum config di-update = percuma."
+      ]
+    },
+    {
+      "id": "devops-ansible-template",
+      "prompt": "File /etc/app/config.conf berisi banyak placeholder ({{ db_host }}, {{ port }}) yang harus diisi dari variable Ansible…",
+      "options": [
+        "Modul template: src=config.conf.j2 dest=/etc/app/config.conf",
+        "Modul copy: (tanpa render)",
+        "Modul file: state=present",
+        "Modul shell: echo 'db_host' > /etc/app/config.conf"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Modul `template` merender Jinja2 ({{ var }}) dari variable Ansible ke destination — alat resmi untuk config dinamis.",
+        "Salah. `copy` menyalin HARGA apa adanya — placeholder tidak di-render.",
+        "Salah. `file` hanya managing metadata (permission, ownership, existence).",
+        "Salah. `shell echo` meng-hardcode nilai — tidak memakai variable Ansible."
+      ]
+    },
+    {
+      "id": "devops-terraform-plan",
+      "prompt": "Setelah mengubah main.tf, lihat APA YANG AKAN DIUBAH (create/update/destroy) TANPA benar-benar mengubah infra…",
+      "options": [
+        "terraform plan",
+        "terraform apply",
+        "terraform destroy",
+        "terraform refresh"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `plan` = diff terplan: apa yang akan dicreate/diupdate/dihapus — langkah wajib sebelum apply.",
+        "Salah. `apply` MENGESKUSI perubahan (bukan preview).",
+        "Salah. `destroy` menghapus semuanya — kebalikan dari preview.",
+        "Salah. `refresh` sinkronkan state dengan realita (preview-nya `plan -refresh-only`)."
+      ]
+    },
+    {
+      "id": "devops-terraform-state-mv",
+      "prompt": "Resource AWS instance yang bernama lama perlu 'pindah nama' di state TANPA destroy+create di cloud…",
+      "options": [
+        "terraform state mv \"aws_instance.old\" \"aws_instance.new\"",
+        "terraform destroy lalu apply lagi",
+        "Hapus baris di file .tfstate manual",
+        "terraform taint aws_instance.old"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `state mv` = rename resource di state — resource di cloud tetap, tidak ada destroy/create.",
+        "Salah. Destroy+apply = instance HILANG (IP/data berubah) — overkill dan berisiko.",
+        "Salah. Edit .tfstate manual = rawan korup (bukan cara yang didukung).",
+        "Salah. `taint` memaksa destroy+create resource itu — kebalikan dari yang diinginkan."
+      ]
+    },
+    {
+      "id": "devops-nginx-upstream",
+      "prompt": "Load balancing request ke 3 backend app (round-robin default) di nginx…",
+      "options": [
+        "upstream backend { server 10.0.0.11:3000; server 10.0.0.12:3000; server 10.0.0.13:3000; }",
+        "proxy_pass http://10.0.0.11:3000,10.0.0.12:3000,10.0.0.13:3000;",
+        "load_balance 10.0.0.11 10.0.0.12 10.0.0.13;",
+        "server { upstream 10.0.0.11:3000; }"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Blok `upstream` mendefinisikan pool server; `proxy_pass http://backend` memakai-nya. Default = round-robin.",
+        "Salah. `proxy_pass` hanya menerima SATU URL (bukan daftar koma).",
+        "Salah. `load_balance` bukan directive nginx.",
+        "Salah. `upstream` bukan bagian dari blok `server` seperti itu."
+      ]
+    },
+    {
+      "id": "devops-nginx-proxy-header",
+      "prompt": "Backend (di belakang nginx) selalu melihat client IP = 127.0.0.1. Agar backend melihat IP aslinya…",
+      "options": [
+        "proxy_set_header X-Forwarded-For $remote_addr;",
+        "proxy_set_header Host $host; saja",
+        "client_ip_header on;",
+        "real_ip_from $remote_addr;"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `X-Forwarded-For` membawa IP klien asli; backend membacanya (misal via lib atau module).",
+        "Salah. `Host` itu nama domain, bukan IP klien.",
+        "Salah. `client_ip_header` bukan directive nginx.",
+        "Salah. `real_ip_from` bukan directive (yang ada `set_real_ip_from` untuk module realip)."
+      ]
+    },
+    {
+      "id": "devops-openssl-enddate",
+      "prompt": "Cek kapan sertifikat TLS server db.fds.co.id EXPIRE (sebelum klien komplain)…",
+      "options": [
+        "openssl s_client -connect db.fds.co.id:443 2>/dev/null | openssl x509 -noout -enddate",
+        "openssl x509 -in db.fds.co.id -noout -enddate",
+        "cert-check db.fds.co.id",
+        "curl -I https://db.fds.co.id | grep expires"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Pipeline: ambil sertifikat dari server (`s_client`) → ekstrak enddate (`x509 -noout -enddate`).",
+        "Salah. `-in db.fds.co.id` butuh FILE lokal — di sini sertifikatnya di server.",
+        "Salah. `cert-check` bukan util standar.",
+        "Salah. Header HTTP tidak memuat expiry sertifikat (itu di TLS handshake, bukan HTTP)."
+      ]
+    },
+    {
+      "id": "devops-dns-a-cname",
+      "prompt": "Domain utama (apex) cukita.id harus menunjuk ke server 172.31.252.197. Record yang PALING AMAN di level apex…",
+      "options": [
+        "A record (ip: 172.31.252.197)",
+        "CNAME ke server.fds.co.id",
+        "TXT record dengan IP di dalamnya",
+        "MX record ke 172.31.252.197"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. A record = apex menunjuk langsung ke IP — standar dan aman (CNAME di apex dilarang RFC secara historis, meski ada CNAME flattening di beberapa registrar).",
+        "Salah. CNAME di apex = konflik dengan record SOA/NS (apex butuh tipe-tipe khusus); A lebih tepat.",
+        "Salah. TXT itu metadata (verifikasi, DMARC), bukan pointer IP.",
+        "Salah. MX = mail exchanger, bukan web server."
+      ]
+    },
+    {
+      "id": "devops-jq",
+      "prompt": "API /users mengembalikan JSON array. Ekstrak nama email user ke-3 (index 2) saja…",
+      "options": [
+        "curl -s https://api/users | jq '.[2].email'",
+        "curl -s https://api/users | grep email | head -3",
+        "curl -s https://api/users | python3 -m json.tool | sed 3p",
+        "jq '.email' https://api/users"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `jq` = JSON processor: path `.[2].email` mengambil field email dari elemen index 2 — presisi.",
+        "Salah. `grep email` mengambil baris yang MENYEBUT 'email' (bisa false positive), `head -3` mengambil 3 BARIS pertama (bukan user ke-3).",
+        "Salah. `sed 3p` mengambil baris ke-3 dari output pretty-print — bukan struktur JSON.",
+        "Salah. `jq` tidak menerima URL (butuh `curl`/`http_get`); dan `.[2]`-nya hilang."
+      ]
+    },
+    {
+      "id": "devops-curl-flags",
+      "prompt": "Healthcheck via curl: fail secara eksplisit saat HTTP >= 400 (exit code != 0), tanpa menampilkan progress bar, dan retry 3x saat jaringan goyang…",
+      "options": [
+        "curl -fsS --retry 3 http://app/health",
+        "curl -v http://app/health",
+        "curl -o /dev/null http://app/health",
+        "curl --fail http://app/health"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `-f` (fail, exit != 0 untuk >= 400) + `-s` (silent) + `-S` (tetap tampil error) + `--retry 3` — lengkap sesuai permintaan.",
+        "Salah. `-v` = verbose (bising), dan tanpa `-f` exit code 0 walau 500.",
+        "Salah. `-o /dev/null` membuang BODY, tapi exit code tetap 0 untuk 404/500.",
+        "Salah. `--fail` (=-f) ada, tapi tidak ada `--retry` dan tidak silent."
+      ]
+    },
+    {
+      "id": "devops-docker-history",
+      "prompt": "Lihat lapisan (layer) apa saja di dalam image app:1.0 — untuk tahu layer mana yang membengkak…",
+      "options": [
+        "docker history app:1.0",
+        "docker inspect app:1.0 | head",
+        "docker diff app:1.0",
+        "docker images app:1.0 -v"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `history` menampilkan daftar layer (command, size, creator) — alat diagnosis ukuran image.",
+        "Salah. `inspect` JSON metadata lengkap (bukan per-layer size), dan `head` memotong mentah.",
+        "Salah. `diff` itu untuk perubahan filesystem CONTAINER (vs image), bukan struktur layer image.",
+        "Salah. `images -v` itu untuk image V2 (format lama), bukan per-layer."
+      ]
+    },
+    {
+      "id": "devops-docker-inspect-format",
+      "prompt": "Ekstrak IP address container web-1 (untuk wiring manual di script) — satu string bersih…",
+      "options": [
+        "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' web-1",
+        "docker inspect web-1 | grep IP",
+        "docker network ls web-1",
+        "docker ps web-1 -q"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `inspect -f` dengan Go template = ekstraksi field presisi, output bersih untuk dipipe ke script.",
+        "Salah. `grep IP` terhadap JSON mentah = rapuh (format berubah, false positive di key lain).",
+        "Salah. `network ls` daftar network, bukan IP container di dalamnya.",
+        "Salah. `ps -q` itu ID container, bukan IP."
+      ]
+    },
+    {
+      "id": "devops-docker-diff",
+      "prompt": "File apa saja yang berubah di container db-1 dibanding image-nya (audit footprint app)…",
+      "options": [
+        "docker diff db-1",
+        "docker history db-1",
+        "docker inspect db-1",
+        "docker images db-1"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `docker diff <container>` = filesystem diff (C=changed, A=added, ?=deleted) vs base image.",
+        "Salah. `history` itu layer image, bukan perubahan runtime container.",
+        "Salah. `inspect` metadata (config, state), bukan diff file.",
+        "Salah. `images` daftar image, bukan isi container."
+      ]
+    },
+    {
+      "id": "devops-docker-commit",
+      "prompt": "Container sudah kamu konfigurasi manual dan mau dijadiikan image (quick & dirty, bukan produksi)…",
+      "options": [
+        "docker commit db-1 app:manual-config",
+        "docker push db-1 app:manual-config",
+        "docker save db-1 > app.tar",
+        "docker build db-1 -t app:manual-config"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `commit` membekukan state container (layer + config) menjadi image baru.",
+        "Salah. `push` mengunggah ke registry — container tidak bisa di-push langsung.",
+        "Salah. `save` itu untuk IMAGE (container tidak bisa di-save langsung).",
+        "Salah. `build` butuh Dockerfile, bukan container."
+      ]
+    },
+    {
+      "id": "devops-docker-network-create",
+      "prompt": "Buat network bridge bernama `backend` untuk mengelompokkan container app (isolasi dari default)…",
+      "options": [
+        "docker network create -d bridge backend",
+        "docker network add backend",
+        "docker net new -d bridge backend",
+        "docker compose network backend"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `network create -d bridge <nama>` — bridge driver default, network terisolasi.",
+        "Salah. `add` bukan subcommand network.",
+        "Salah. `docker net` bukan perintah.",
+        "Salah. `docker compose network` bukan subcommand (network compose ada di file compose.yml)."
+      ]
+    },
+    {
+      "id": "devops-docker-volume-create",
+      "prompt": "Buat named volume `appdata` (dikelola Docker, persisten, portable antar-container)…",
+      "options": [
+        "docker volume create appdata",
+        "mkdir /var/lib/docker/volumes/appdata",
+        "docker network create appdata",
+        "docker volume mkdir appdata"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `volume create <nama>` membuat named volume di driver default (local).",
+        "Salah. mkdir manual = host path, bukan named volume yang dikelola (dan path-nya juga salah).",
+        "Salah. `network create` untuk network, bukan volume.",
+        "Salah. `volume mkdir` bukan subcommand."
+      ]
+    },
+    {
+      "id": "devops-compose-down",
+      "prompt": "Hentikan + hapus SELURUH stack compose (container, network) — clean state sebelum rebuild…",
+      "options": [
+        "docker compose down",
+        "docker compose stop",
+        "docker stop $(docker ps -q)",
+        "docker compose pause"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `down` = stop + remove container + network (volume tidak ikut, aman).",
+        "Salah. `stop` hanya menghentikan; container & network tetap ada (tidak 'clean').",
+        "Salah. `stop $(ps -q)` hanya container yang jalan — network dan container stopped tidak dihapus.",
+        "Salah. `pause` bukan subcommand compose yang umum (pause = suspend, bukan teardown)."
+      ]
+    },
+    {
+      "id": "devops-compose-build-nocache",
+      "prompt": "Build ulang image compose TAPI cache layer-nya tidak boleh dipakai (Dockerfile baru / base image berubah)…",
+      "options": [
+        "docker compose build --no-cache",
+        "docker compose build --fresh",
+        "docker system prune -a lalu docker compose build",
+        "docker compose rebuild"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `--no-cache` memaksa build dari nol (semua layer di-rebuild).",
+        "Salah. `--fresh` bukan flag compose build.",
+        "Salah. Prune -a menghapus SEMUA image yang tidak terpakai (bisa merusak image lain) — overkill; build saja sudah bisa --no-cache.",
+        "Salah. `rebuild` bukan subcommand compose (yang ada `build`)."
+      ]
+    },
+    {
+      "id": "devops-docker-workdir",
+      "prompt": "Pastikan proses aplikasi berjalan dari direktori /app di dalam container (bukan /)…",
+      "options": [
+        "WORKDIR /app di Dockerfile",
+        "CMD [\"cd /app && node server.js\"]",
+        "ENV CWD=/app",
+        "ENTRYPOINT [\"/bin/sh\", \"-c\", \"cd /app\"]"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `WORKDIR` menetapkan working directory default untuk CMD/ENTRYPOINT/exec — bersih dan idiomatic.",
+        "Salah. `cd` di CMD perlu shell form; exec form `CMD [\"cd\", ...]` tidak bekerja (cd bukan binary).",
+        "Salah. `ENV CWD` hanya variabel — process tidak otomatis membaca-nya.",
+        "Salah. ENTRYPOINT itu untuk binary utama, bukan untuk cd."
+      ]
+    },
+    {
+      "id": "devops-kubectl-create-ns",
+      "prompt": "Buat namespace `staging` yang akan dipakai tim lain…",
+      "options": [
+        "kubectl create namespace staging",
+        "kubectl create -f staging",
+        "kubectl apply staging",
+        "kubectl ns create staging"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `create namespace <nama>` = cara langsung (atau via manifest YAML).",
+        "Salah. `-f staging` butuh FILE manifest, bukan nama namespace.",
+        "Salah. `apply` butuh file (`-f`), bukan nama object.",
+        "Salah. `kubectl ns` bukan subcommand (ada `get namespaces`)."
+      ]
+    },
+    {
+      "id": "devops-kubectl-events",
+      "prompt": "Lihat event cluster terbaru (scheduling failure, probe gagal, OOM) terurut dari yang terbaru…",
+      "options": [
+        "kubectl get events --sort-by=.lastTimestamp",
+        "kubectl get pods -A -o wide",
+        "journalctl -u kubelet",
+        "kubectl logs -A"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `get events --sort-by=.lastTimestamp` = event terurut waktu (di namespace aktif; tambah `-A` untuk semua).",
+        "Salah. `get pods -o wide` status pod, bukan event.",
+        "Salah. `journalctl` itu log NODE (per-node), bukan event cluster terpusat.",
+        "Salah. `kubectl logs` = output aplikasi, bukan event scheduler/probe."
+      ]
+    },
+    {
+      "id": "devops-kubectl-pods-awide",
+      "prompt": "Snapshot cepat: semua pod di semua namespace + IP pod + node-nya…",
+      "options": [
+        "kubectl get pods -A -o wide",
+        "kubectl get pods -A",
+        "kubectl describe pods -A",
+        "kubectl get nodes -o wide"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `-A` semua namespace + `-o wide` menambah kolom POD IP & NODE — persis snapshot yang diminta.",
+        "Salah. Tanpa `-o wide`, kolom IP/node tidak tampil.",
+        "Salah. `describe` = detail panjang per pod (bukan tabel ringkas).",
+        "Salah. `get nodes` itu daftar NODE, bukan pod."
+      ]
+    },
+    {
+      "id": "devops-k8s-crashloop",
+      "prompt": "Pod stuck di CrashLoopBackOff. Langkah diagnosis PERTAMA yang paling informatif…",
+      "options": [
+        "kubectl logs <pod> --previous (log container yang crash)",
+        "kubectl describe node",
+        "kubectl get nodes",
+        "Naikkan resource limit dulu, nanti dilihat"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Log dari container yang MATI (`--previous`) menunjukkan error penyebab crash — informasi paling langsung.",
+        "Salah. `describe node` untuk masalah node (disk pressure, dll) — bukan root cause app crash.",
+        "Salah. `get nodes` status cluster, bukan pod.",
+        "Salah. Naikkan limit tanpa diagnosis = guessing (dan OOMKilled ≠ CrashLoopBackOff generik)."
+      ]
+    },
+    {
+      "id": "devops-k8s-imagepull",
+      "prompt": "Pod status ImagePullBackOff. Penyebab paling umum yang harus dicek…",
+      "options": [
+        "Nama/tag image salah ATAU imagePullSecrets untuk registry private tidak ada/invalid",
+        "Node kehabisan CPU",
+        "ConfigMap tidak ada",
+        "Liveness probe terlalu ketat"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. ImagePullBackOff = kubelet tidak bisa ambil image: typo tag, atau registry private butuh secret yang tidak terpasang.",
+        "Salah. CPU kurang = Pending (unschedulable), bukan ImagePull.",
+        "Salah. ConfigMap hilang = CreateContainerConfigError, bukan pull failure.",
+        "Salah. Liveness = post-start (CrashLoopBackOff), bukan saat pull."
+      ]
+    },
+    {
+      "id": "devops-k8s-oomkilled",
+      "prompt": "Pod di-kill dengan reason OOMKilled. Interpretasi yang benar…",
+      "options": [
+        "Container memakai memori melebihi limits.memory → naikkan limit ATAU perbaiki leak",
+        "Node kehabisan CPU",
+        "Disk node penuh",
+        "Image-nya korup"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. OOMKilled = penggunaan memori melewati `limits.memory` (cgroup kill). Solusi: limit lebih besar, atau perbaiki efisiensi/leak.",
+        "Salah. CPU tidak memicu OOMKilled (CPU di-throttle, bukan di-kill).",
+        "Salah. Disk penuh = Evicted (imagefs/node pressure), bukan OOMKilled.",
+        "Salah. Image korup = ImagePull/ContainerCreating error."
+      ]
+    },
+    {
+      "id": "devops-kubectl-scale",
+      "prompt": "Naikkan replica deployment web dari 2 ke 5 (sekarang juga)…",
+      "options": [
+        "kubectl scale deployment/web --replicas=5",
+        "kubectl set replicas deployment/web 5",
+        "kubectl edit deployment web (ubah angka manual)",
+        "kubectl apply --replicas 5 -f web.yaml"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `scale --replicas=N` = perintah langsung untuk mengubah replica count.",
+        "Salah. `set replicas` bukan subcommand (yang ada `set image/resources/env`).",
+        "Salah. `edit` berfungsi tapi manual & rawat typo — bukan perintah skala cepat.",
+        "Salah. `--replicas` bukan flag `kubectl apply`."
+      ]
+    },
+    {
+      "id": "devops-kubectl-set-image",
+      "prompt": "Ganti image container `web` di deployment web ke versi baru (trigger rolling update)…",
+      "options": [
+        "kubectl set image deployment/web web=registry/app:2.0",
+        "kubectl set container deployment/web web=registry/app:2.0",
+        "kubectl apply -f <manifest-baru>",
+        "kubectl update deployment/web image=registry/app:2.0"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `set image <deployment> <container>=<image>` — cara cepat immutable-trigger rolling update.",
+        "Salah. `set container` bukan subcommand (yang ada `set image`).",
+        "Salah. `apply -f manifest` juga valid sebagai cara, tapi `set image` adalah perintah yang dimaksud (tanpa edit file).",
+        "Salah. `kubectl update` bukan subcommand."
+      ]
+    },
+    {
+      "id": "devops-kubectl-label-add",
+      "prompt": "Tambahkan label env=prod ke deployment web (supaya bisa di-select -l env=prod)…",
+      "options": [
+        "kubectl label deployment/web env=prod",
+        "kubectl annotate deployment/web env=prod",
+        "kubectl set label env=prod deployment/web",
+        "kubectl create label env=prod"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `kubectl label <obj> key=value` menambah/mengganti label.",
+        "Salah. `annotate` itu untuk ANNOTATION (metadata non-seleksi), bukan label.",
+        "Salah. `set label` bukan subcommand (yang ada `set image/env/resources`).",
+        "Salah. `create label` bukan subcommand."
+      ]
+    },
+    {
+      "id": "devops-kubectl-jsonpath",
+      "prompt": "Ekstrak image yang dipakai pod web-1 (untuk audit versi) — satu string…",
+      "options": [
+        "kubectl get pod web-1 -o jsonpath='{.spec.containers[0].image}'",
+        "kubectl get pod web-1 -o yaml | grep image",
+        "kubectl describe pod web-1 | grep Image",
+        "kubectl get pod web-1 --image"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `-o jsonpath='{...}'` = ekstraksi field presisi, output bersih (cocok untuk script).",
+        "Salah. `grep image` rapuh (bisa match imagePullPolicy juga).",
+        "Salah. `describe | grep` juga rapuh, tapi lebih terbaca; `jsonpath` yang paling presisi.",
+        "Salah. `--image` bukan flag `kubectl get`."
+      ]
+    },
+    {
+      "id": "devops-kubectl-dryrun",
+      "prompt": "Validasi manifest TERHADAP API server (validasi RBAC + schema + immutable field) TANPA benar-benar apply…",
+      "options": [
+        "kubectl apply -f web.yaml --dry-run=server",
+        "kubectl apply -f web.yaml --dry-run=client",
+        "kubectl diff -f web.yaml",
+        "kubectl create -f web.yaml --validate"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `--dry-run=server` = API server memvalidasi penuh (termasuk RBAC) tanpa commit — validasi terkuat.",
+        "Salah. `client` dry-run hanya validasi di sisi CLI (tanpa tanya server) — lebih lemah.",
+        "Salah. `diff` menunjukkan perbedaan, tapi bukan validasi server-side penuh.",
+        "Salah. `--validate` itu flag lama (client-side); `create` juga tidak dry-run."
+      ]
+    },
+    {
+      "id": "devops-kubectl-context",
+      "prompt": "Pindah dari cluster `dev` ke `prod` di kubeconfig (tanpa edit file)…",
+      "options": [
+        "kubectl config use-context prod",
+        "kubectl switch prod",
+        "KUBECONFIG=prod kubectl get pods",
+        "kubectl cluster use prod"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `config use-context <nama>` mengganti context aktif (dan bisa `--namespace` sekalian).",
+        "Salah. `switch` bukan subcommand.",
+        "Salah. Men-set KUBECONFIG = file kubeconfig LAIN, bukan context di dalam file yang sama.",
+        "Salah. `cluster use` bukan subcommand."
+      ]
+    },
+    {
+      "id": "devops-kubectl-wait",
+      "prompt": "Tunggu sampai deployment web benar-benar ready (semua pod baru available) sebelum lanjut di pipeline…",
+      "options": [
+        "kubectl wait --for=condition=Available deployment/web --timeout=120s",
+        "sleep 120",
+        "kubectl rollout status deployment/web (tanpa timeout)",
+        "while true; do kubectl get pods; done"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `wait --for=condition=Available` blocking dengan timeout — idiom pipeline yang benar.",
+        "Salah. `sleep` = guessing (bukan observasi kondisi nyata).",
+        "Salah. `rollout status` juga valid, tapi `wait --for=condition` adalah perintah yang paling tepat untuk 'menunggu kondisi' generik.",
+        "Salah. Loop manual tanpa break/timeout = tidak terkelola."
+      ]
+    },
+    {
+      "id": "devops-helm-install",
+      "prompt": "Deploy chart `app` (lokal, di ./charts/app) ke namespace prod dengan nilai kustom di values-prod.yaml…",
+      "options": [
+        "helm install myapp ./charts/app -n prod --create-namespace -f values-prod.yaml",
+        "helm create myapp ./charts/app -n prod",
+        "kubectl apply -f ./charts/app",
+        "helm deploy myapp ./charts/app --values values-prod.yaml"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `helm install <release> <chart> -n <ns> --create-namespace -f <values>` — sintaks helm yang benar.",
+        "Salah. `helm create` untuk membuat chart TEMPLATE baru, bukan deploy.",
+        "Salah. Chart helm bukan manifest YAML biasa — `kubectl apply` tidak bisa membaca format chart.",
+        "Salah. `helm deploy` bukan subcommand (yang ada `install`/`upgrade`)."
+      ]
+    },
+    {
+      "id": "devops-kustomize-apply",
+      "prompt": "Deploy manifest yang sudah diatur dengan kustomization.yaml (patch, namePrefix, namespace injection)…",
+      "options": [
+        "kubectl apply -k ./deploy/",
+        "kubectl apply -f ./deploy/base/",
+        "kubectl kustomize ./deploy/ | kubectl apply -f -",
+        "kubectl deploy -k ./deploy/"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `kubectl apply -k <dir>` = build kustomization + apply dalam satu perintah (cara standar).",
+        "Salah. `-f base` hanya apply base tanpa patch/kustomization (override hilang).",
+        "Salah. `kubectl kustomize | apply -f -` juga bekerja, tapi `-k` adalah idiom yang lebih langsung dan resmi.",
+        "Salah. `kubectl deploy` bukan subcommand."
+      ]
+    },
+    {
+      "id": "devops-git-merge-abort",
+      "prompt": "Merge branch feature masuk konflik dan kamu tidak mau lanjut (kembalikan ke state sebelum merge)…",
+      "options": [
+        "git merge --abort",
+        "git reset --hard HEAD~1",
+        "git checkout -- .",
+        "git rebase --abort"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `merge --abort` membatalkan merge yang sedang berjalan (kembali ke commit sebelum merge, file bersih).",
+        "Salah. `reset --hard HEAD~1` juga bisa, tapi `merge --abort` adalah perintah khusus (lebih aman & jelas); reset hard juga membahayakan file untracked yang belum di-stage.",
+        "Salah. `checkout -- .` hanya mengembalikan file TRACKED ke index/HEAD — konflik merge tetap ada.",
+        "Salah. `rebase --abort` untuk rebase, bukan merge."
+      ]
+    },
+    {
+      "id": "devops-git-checkout-b",
+      "prompt": "Mulai kerja fitur baru dari main: buat branch `feature/login` dan pindah ke sana…",
+      "options": [
+        "git checkout -b feature/login",
+        "git branch feature/login (tanpa pindah)",
+        "git checkout feature/login",
+        "git new-branch feature/login"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `checkout -b <nama>` = buat branch + checkout sekaligus (atau `git switch -c` di git baru).",
+        "Salah. `git branch <nama>` membuat branch tapi TIDAK pindah — kamu tetap di main.",
+        "Salah. `checkout feature/login` GAGAL karena branch-nya belum ada.",
+        "Salah. `new-branch` bukan subcommand."
+      ]
+    },
+    {
+      "id": "devops-git-tag",
+      "prompt": "Tandai release v1.4.0 dengan pesan (annotated tag) lalu kirim ke remote…",
+      "options": [
+        "git tag -a v1.4.0 -m 'Release 1.4.0' && git push origin v1.4.0",
+        "git tag v1.4.0 && git push",
+        "git release v1.4.0",
+        "git commit -t v1.4.0"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `-a` = annotated (pesan + author + tanggal); `push origin v1.4.0` mengirim tag-nya.",
+        "Salah. `git push` polos TIDAK mengirim tag (harus `--tags` atau sebut nama tag).",
+        "Salah. `release` bukan subcommand git.",
+        "Salah. `-t` di commit bukan untuk tag."
+      ]
+    },
+    {
+      "id": "devops-git-fetch-pull",
+      "prompt": "Lihat apa yang baru di remote TANPA mengubah branch lokalmu dulu (untuk review sebelum merge)…",
+      "options": [
+        "git fetch",
+        "git pull",
+        "git merge origin/main",
+        "git update-ref origin/main"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `fetch` mengunduh commit baru ke remote-tracking branch (origin/main) — tanpa menyentuh working tree.",
+        "Salah. `pull` = fetch + merge langsung — branch lokalmu berubah.",
+        "Salah. `merge origin/main` menggabungkan (mengubah branch lokal).",
+        "Salah. `update-ref` itu low-level pointer manipulation, bukan cara mengambil update."
+      ]
+    },
+    {
+      "id": "devops-git-reflog",
+      "prompt": "Kamu reset --hard dan commit kerjaanmu 'hilang'. Tempat mencari commit yang 'terhapus' itu…",
+      "options": [
+        "git reflog",
+        "git log",
+        "git status",
+        "git stash list"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `reflog` mencatat SEMUA pergerakan HEAD (termasuk commit yang 'hilang' dari log) — bisa di-recover via `git reset --hard <hash>`. ",
+        "Salah. `git log` hanya menunjukkan history yang TERJANGKAU dari HEAD sekarang (commit yang 'hilang' tidak terlihat).",
+        "Salah. `status` = working tree vs index, bukan riwayat.",
+        "Salah. `stash list` hanya untuk commit yang di-stash (bukan yang di-reset)."
+      ]
+    },
+    {
+      "id": "devops-ci-needs",
+      "prompt": "Di pipeline: job `deploy` hanya boleh jalan kalau `build` DAN `test` sukses. Mekanisme dependensi job…",
+      "options": [
+        "needs: [build, test]",
+        "after: [build, test]",
+        "depends_on: [build, test]",
+        "order: build, test, deploy"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `needs` (GitLab CI) = dependensi eksplisit antar-job; deploy hanya jalan jika semua needs sukses.",
+        "Salah. `after` bukan keyword CI (urutan pipeline di GitLab ditentukan `needs`/stages).",
+        "Salah. `depends_on` itu istilah Docker Compose, bukan CI.",
+        "Salah. `order` bukan keyword CI standar."
+      ]
+    },
+    {
+      "id": "devops-ci-matrix",
+      "prompt": "CI harus build & test aplikasi terhadap Node 18, 20, dan 22 (3 kombinasi) dalam satu definisi job…",
+      "options": [
+        "matrix: { node: [\"18\", \"20\", \"22\"] }",
+        "Tulis 3 job terpisah (build-node18, build-node20, build-node22)",
+        "node_versions: [18, 20, 22]",
+        "for v in 18 20 22; do build; done"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `matrix` memperluas satu definisi job menjadi beberapa instance (DRY, mudah ditambah versi).",
+        "Salah. 3 job manual = duplikasi konfigurasi (rawan drift saat ditambah versi).",
+        "Salah. `node_versions` bukan keyword CI.",
+        "Salah. Loop shell di dalam satu job hanya menjalankan SATU environment CI, bukan paralelisasi matrix."
+      ]
+    },
+    {
+      "id": "devops-ansible-register-when",
+      "prompt": "Kondisional: install nginx HANYA jika file /etc/nginx belum ada (cek dulu, lalu ambil keputusan)…",
+      "options": [
+        "register: out (task stat) + when: out.stat.exists == false",
+        "selalu install (idempotent kan)",
+        "when: nginx is not defined",
+        "Jalankan dua play terpisah"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `register` menyimpan hasil task, `when` mengevaluasi kondisional — pola resmi Ansible untuk tugas kondisional.",
+        "Salah. 'Idempotent kan' — package module memang idempotent, tapi pertanyaannya eksplisit: hanya jika file belum ada (cek dulu).",
+        "Salah. `nginx is not defined` itu test variabel (bukan existence file).",
+        "Salah. Dua play = overhead; register+when sudah cukup di satu play."
+      ]
+    },
+    {
+      "id": "devops-ansible-vault",
+      "prompt": "Password DB ada di inventory. Enkripsi supaya tidak terbaca di file plain (tetap bisa di-decrypt saat run)…",
+      "options": [
+        "ansible-vault encrypt (file/group_vars) — password jadi $ANSIBLE_VAULT",
+        "base64 encode di inventory",
+        "chmod 000 inventory.yml",
+        "Pindahkan ke file .env di app"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `ansible-vault` = enkripsi native (Fernet); saat run, vault password diberikan (CLI/env/var file).",
+        "Salah. base64 itu ENKODING, bukan enkripsi — siapa pun bisa decode.",
+        "Salah. chmod 000 = tidak ada yang bisa baca (termasuk Ansible saat run).",
+        "Salah. .env di app = masalahnya pindah, inventory tetap plain (dan .env juga perlu dikelola)."
+      ]
+    },
+    {
+      "id": "devops-terraform-init",
+      "prompt": "Clone terraform repo & buka di workstation baru. Langkah PERTAMA sebelum plan/apply…",
+      "options": [
+        "terraform init",
+        "terraform plan",
+        "terraform apply",
+        "terraform fmt"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `init` mengunduh provider + menyiapkan backend (state S3/GCS, dll) — prasyarat plan/apply.",
+        "Salah. `plan` butuh provider yang sudah di-init (akan error tanpa init).",
+        "Salah. `apply` juga butuh init.",
+        "Salah. `fmt` = format code, bukan setup."
+      ]
+    },
+    {
+      "id": "devops-nginx-reload",
+      "prompt": "Konfigurasi nginx sudah di-edit. Terapkan TANPA drop koneksi yang sedang jalan…",
+      "options": [
+        "nginx -t && nginx -s reload",
+        "systemctl restart nginx",
+        "nginx -s stop; nginx",
+        "kill -HUP 1"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `nginx -t` validasi dulu, `-s reload` = graceful reload (worker lama selesai handling request, worker baru pakai config baru).",
+        "Salah. `restart` mematikan semua worker — ada jeda (downtime) walau singkat.",
+        "Salah. stop lalu start = downtime jelas (lebih lama dari restart).",
+        "Salah. `kill -HUP 1` (PID 1) = restart container; tidak valid di host biasa."
+      ]
+    },
+    {
+      "id": "devops-nginx-ssl",
+      "prompt": "Buat vhost nginx yang melayani HTTPS (443) dengan sertifikat di /etc/ssl/site.crt…",
+      "options": [
+        "listen 443 ssl; ssl_certificate /etc/ssl/site.crt; ssl_certificate_key /etc/ssl/site.key;",
+        "listen 443; http2 on; ssl on;",
+        "server { https true; cert /etc/ssl/site.crt; }",
+        "ssl_listen 443 certificate /etc/ssl/site.crt;"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `listen 443 ssl` + pasangan `ssl_certificate`/`ssl_certificate_key` — konfigurasi TLS nginx yang benar.",
+        "Salah. `ssl on` bukan directive (di nginx modern, TLS dinyalakan via `listen 443 ssl`); dan certificate-nya tidak di-set.",
+        "Salah. `https true` bukan syntax nginx.",
+        "Salah. `ssl_listen` bukan directive."
+      ]
+    },
+    {
+      "id": "devops-nginx-limit-req",
+      "prompt": "Rate limit: maksimal 10 request/detik per IP client (lewat itu = 503) di nginx…",
+      "options": [
+        "limit_req_zone $binary_remote_addr zone=api:10m rate=10r/s; + limit_req zone=api;",
+        "limit_conn 10;",
+        "throttle 10r/s;",
+        "server { rate_limit 10; }"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `limit_req_zone` (di http block) mendefinisikan zona + rate; `limit_req` (di server/location) menerapkannya — module resmi rate limiting.",
+        "Salah. `limit_conn` membatasi jumlah KONEKSI, bukan rate request.",
+        "Salah. `throttle` bukan directive nginx.",
+        "Salah. `rate_limit` bukan directive."
+      ]
+    },
+    {
+      "id": "devops-openssl-san",
+      "prompt": "Cek Subject Alternative Name (SAN) di sertifikat (hostname apa saja yang tercakup)…",
+      "options": [
+        "openssl x509 -in cert.pem -noout -text | grep -A1 'Alternative Name'",
+        "openssl san -in cert.pem",
+        "cert-info cert.pem --san",
+        "openssl x509 -in cert.pem -noout -subject"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `-text` men-decode seluruh sertifikat (termasuk extension SAN); grep section-nya.",
+        "Salah. `san` bukan subcommand openssl.",
+        "Salah. `cert-info` bukan util standar.",
+        "Salah. `-subject` hanya Common Name/subject — bukan SAN (dan CN saja tidak cukup untuk TLS modern)."
+      ]
+    },
+    {
+      "id": "devops-bash-strict",
+      "prompt": "Preamble untuk skrip shell produksi: gagal cepat saat error, variabel undefined = error, pipeline gagal = error…",
+      "options": [
+        "set -euo pipefail",
+        "set -e",
+        "set -x",
+        "set -v"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `-e` (exit on error) + `-u` (undefined var = error) + `-o pipefail` (pipeline gagal jika salah satu stage gagal) — trio strict mode.",
+        "Salah. `-e` saja: variabel undefined tetap lolos, pipeline tetap bisa 'sukses' walau stage tengah gagal.",
+        "Salah. `-x` = trace (debug), bukan strictness.",
+        "Salah. `-v` = cetak command (verbose), bukan strictness."
+      ]
+    },
+    {
+      "id": "devops-prom-up",
+      "prompt": "Alert Prometheus: server DOWN (target tidak bisa di-scrape) harus memicu alert dalam 1 menit…",
+      "options": [
+        "expr: up == 1, for: 1m (dalam alert rules)",
+        "expr: up == 0, for: 5m",
+        "curl http://target:9090/metrics | grep up",
+        "Jalankan crontab ping tiap 5 menit"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `up == 1` + `for: 1m` = alert aktif setelah 1 menit kondisi terpenuhi (idempotent, terintegrasi Alertmanager).",
+        "Salah. `up == 0` itu kondisi 'bukan up' (semua target yang TIDAK ada) — dan `for: 5m` lebih lambat dari permintaan.",
+        "Salah. Curl manual tidak terintegrasi ke alerting system (dan tidak ada state/alert).",
+        "Salah. Cron ping = monitoring terpisah, bukan alert Prometheus."
+      ]
     }
-  ]
+  ],
+  "examSize": 60
 }
