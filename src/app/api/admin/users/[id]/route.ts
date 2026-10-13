@@ -50,3 +50,19 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   const { rowCount } = await query(`UPDATE users SET ${sets.join(", ")} WHERE id = $${vals.length}`, vals);
   return rowCount === 0 ? NextResponse.json({ error: "not found" }, { status: 404 }) : NextResponse.json({ ok: true });
 }
+
+export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  // Only the superadmin deletes users. FK cascade: quiz_attempts are removed,
+  // doc_pages authorship becomes NULL (anonymous) — see schema.sql.
+  const g = await requireAuth();
+  if ("status" in g) return NextResponse.json({ error: "login required" }, { status: g.status });
+  if (g.session.user.role !== "superadmin") {
+    return NextResponse.json({ error: "hanya superadmin yang bisa menghapus user" }, { status: 403 });
+  }
+  const { id } = await params;
+  if ((await superadminCount()) === 1 && (await fetchRole(id)) === "superadmin") {
+    return NextResponse.json({ error: "superadmin terakhir tidak boleh dihapus" }, { status: 409 });
+  }
+  const { rowCount } = await query("DELETE FROM users WHERE id = $1", [id]);
+  return rowCount === 0 ? NextResponse.json({ error: "not found" }, { status: 404 }) : NextResponse.json({ ok: true });
+}

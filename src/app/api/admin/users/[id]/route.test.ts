@@ -2,7 +2,7 @@
 import { beforeAll, it, expect, vi } from "vitest";
 import { runMigrations } from "../../../../../scripts/migrate";
 import { query } from "../../../../../lib/db";
-import { PATCH } from "./route";
+import { PATCH, DELETE } from "./route";
 import { fakeAdminSession, fakeSuperAdminSession, fakeUserSession } from "../../../../../test/fixtures";
 
 vi.mock("@/lib/auth", () => ({
@@ -71,4 +71,49 @@ it("PATCH: superadmin can deactivate someone else", async () => {
   const res = await patch(fakeSuperAdminSession, fakeUserSession.user.id, { active: false });
   expect(res.status).toBe(200);
   await patch(fakeSuperAdminSession, fakeUserSession.user.id, { active: true });
+});
+
+const del = (session: unknown, id: string) => {
+  globalThis.__TEST_SESSION__ = session;
+  return DELETE(new Request("http://t/api/admin/users/" + id, { method: "DELETE" }), {
+    params: Promise.resolve({ id }),
+  });
+};
+
+it("DELETE: admin is not allowed (403)", async () => {
+  const res = await del(fakeAdminSession, fakeUserSession.user.id);
+  expect(res.status).toBe(403);
+});
+
+it("DELETE: last superadmin cannot be deleted (409)", async () => {
+  const res = await del(fakeSuperAdminSession, superId);
+  expect(res.status).toBe(409);
+  const { rows } = await query("SELECT count(*)::int AS n FROM users WHERE id = $1", [superId]);
+  expect(rows[0].n).toBe(1);
+});
+
+it("DELETE: superadmin deletes a user — attempts cascade, docs become anonymous", async () => {
+  const { rows } = await query(
+    `INSERT INTO users (email, name, role) VALUES ('todelete@test.local', 'To Delete', 'user') RETURNING id`
+  );
+  const uid = rows[0].id as string;
+  await query(`INSERT INTO quiz_attempts (user_id, track, score, total, passed) VALUES ($1, 'dba', 5, 60, false)`, [uid]);
+  await query(`INSERT INTO doc_pages (title, slug, author_id) VALUES ('Doc', 'todelete-doc', $1)`, [uid]);
+
+  const res = await del(fakeSuperAdminSession, uid);
+  expect(res.status).toBe(200);
+
+  const { rows: left } = await query("SELECT count(*)::int AS n FROM users WHERE id = $1", [uid]);
+  expect(left[0].n).toBe(0);
+  const { rows: attempts } = await query("SELECT count(*)::int AS n FROM quiz_attempts WHERE user_id = $1", [uid]);
+  expect(attempts[0].n).toBe(0); // ON DELETE CASCADE
+  const { rows: docs } = await query("SELECT author_id FROM doc_pages WHERE slug = 'todelete-doc'");
+  expect(docs[0].author_id).toBeNull(); // ON DELETE SET NULL
+  // cleanup docs for the shared test DB
+  await query("DELETE FROM doc_pages WHERE slug = 'todelete-doc'");
+});
+
+it("DELETE: unknown id is 404", async () => {
+  const res = await del(fakeSuperAdminSession, "00000000-0000-0000-0000-999999999999");
+  expect(res.status).toBe(404);
 });

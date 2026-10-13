@@ -32,6 +32,19 @@ export function UserManager({ viewerRole }: { viewerRole: Role }) {
     })();
   };
 
+  const deleteUser = (u: AdminUser) => {
+    const ok = window.confirm(
+      `Hapus ${u.email}?\n\n- semua hasil ujian (quiz attempts) mereka ikut terhapus\n- dokumen yang mereka buat tetap ada, tapi jadi tanpa author\n- tindakan ini permanen`
+    );
+    if (!ok) return;
+    void (async () => {
+      const res = await fetch(`/api/admin/users/${u.id}`, { method: "DELETE" });
+      const json = await res.json();
+      if (!res.ok) { setMsg(`delete failed: ${json.error}`); return; }
+      location.reload();
+    })();
+  };
+
   const addUser = (e: React.FormEvent) => {
     e.preventDefault();
     void (async () => {
@@ -48,7 +61,7 @@ export function UserManager({ viewerRole }: { viewerRole: Role }) {
       <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
         <thead>
           <tr style={{ textAlign: "left", borderBottom: "1px solid var(--border)" }}>
-            <th>Email</th><th>Name</th><th>Role</th><th>Active</th>{canManage ? <th>Reset password</th> : null}
+            <th>Email</th><th>Name</th><th>Role</th><th>Active</th>{canManage ? <th>Reset password</th> : null}{canManage ? <th>Delete</th> : null}
           </tr>
         </thead>
         <tbody>
@@ -87,6 +100,17 @@ export function UserManager({ viewerRole }: { viewerRole: Role }) {
                     onClick={() => patch(u.id, { password: newPasswords[u.id] })}
                   >
                     set
+                  </button>
+                </td>
+              ) : null}
+              {canManage ? (
+                <td>
+                  <button
+                    className="btn btn-danger"
+                    style={{ padding: "4px 10px", fontSize: 13 }}
+                    onClick={() => deleteUser(u)}
+                  >
+                    hapus
                   </button>
                 </td>
               ) : null}
