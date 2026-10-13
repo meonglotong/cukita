@@ -45,7 +45,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             // single-tenant (org-only) when AZURE_AD_TENANT is set;
             // without it the provider falls back to the "common" issuer.
             issuer: process.env.AZURE_AD_TENANT
-              ? `https://login.microsoftonline.com/${process.env.AZURE_AD_TENANT}/v2.0/`
+              ? `https://login.microsoftonline.com/${process.env.AZURE_AD_TENANT}/v2.0`
               : undefined,
             // Link the OAuth identity to the local account by email, so an
             // existing Cukita user keeps one session/identity.
