@@ -2,11 +2,15 @@ CREATE TABLE IF NOT EXISTS users (
   id            uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   email         text NOT NULL UNIQUE,
   name          text NOT NULL,
-  password_hash text NOT NULL,
+  password_hash text, -- NULL for OAuth-only users (e.g. Microsoft 365)
   role          text NOT NULL CHECK (role IN ('superadmin', 'admin', 'user')),
   active        boolean NOT NULL DEFAULT true,
   created_at    timestamptz NOT NULL DEFAULT now()
 );
+
+-- Idempotent migration for pre-existing databases (CREATE TABLE above is
+-- IF NOT EXISTS, so the nullable change must be applied explicitly).
+ALTER TABLE users ALTER COLUMN password_hash DROP NOT NULL;
 
 CREATE TABLE IF NOT EXISTS doc_pages (
   id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),

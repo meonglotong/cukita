@@ -1,8 +1,12 @@
 // src/lib/auth.ts
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import AzureAD from "next-auth/providers/microsoft-entra-id";
 
 export type Role = "superadmin" | "admin" | "user";
+
+// True when the Microsoft Entra ID provider is configured (env present).
+export const oauthEnabled = Boolean(process.env.AZURE_AD_ID && process.env.AZURE_AD_SECRET);
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   session: { strategy: "jwt" },
@@ -31,11 +35,41 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         return { id: user.id, email: user.email, name: user.name, role: user.role as Role };
       },
     }),
+    // Microsoft 365 login. Only active when the tenant is configured via
+    // env (dev/test boxes without it keep the credentials-only setup).
+    ...(process.env.AZURE_AD_ID && process.env.AZURE_AD_SECRET
+      ? [
+          AzureAD({
+            clientId: process.env.AZURE_AD_ID,
+            clientSecret: process.env.AZURE_AD_SECRET,
+            // single-tenant (org-only) when AZURE_AD_TENANT is set;
+            // without it the provider falls back to the "common" issuer.
+            issuer: process.env.AZURE_AD_TENANT
+              ? `https://login.microsoftonline.com/${process.env.AZURE_AD_TENANT}/v2.0/`
+              : undefined,
+            // Link the OAuth identity to the local account by email, so an
+            // existing Cukita user keeps one session/identity.
+            allowDangerousEmailAccountLinking: true,
+          }),
+        ]
+      : []),
   ],
   callbacks: {
-    jwt({ token, user }) {
+    async jwt({ token, user }) {
       if (user) {
-        token.role = (user as { role: Role }).role;
+        if (user.role) {
+          // credentials provider: role already resolved in authorize()
+          token.role = user.role;
+        } else {
+          // OAuth provider: map to the local account (auto-provision if new)
+          const { resolveOrProvisionOauthUser } = await import("./auth/oauth");
+          const local = await resolveOrProvisionOauthUser({ email: user.email, name: user.name });
+          if (local) {
+            token.sub = local.id; // session.id / session.user.id = local user
+            token.role = local.role;
+            token.name = local.name;
+          }
+        }
       }
       return token;
     },

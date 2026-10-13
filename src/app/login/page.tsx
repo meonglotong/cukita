@@ -1,5 +1,7 @@
 // src/app/login/page.tsx
 import { login } from "./actions";
+import { oauthEnabled } from "@/lib/auth";
+import { MicrosoftLoginButton } from "./microsoft-button";
 
 export default async function LoginPage({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
   const { error } = await searchParams;
@@ -16,6 +18,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
         <input name="email" type="email" placeholder="email" required autoComplete="email" />
         <input name="password" type="password" placeholder="password" required autoComplete="current-password" />
         <button type="submit" className="btn btn-primary" style={{ width: "100%" }}>Masuk</button>
+        {oauthEnabled ? <MicrosoftLoginButton /> : null}
       </form>
     </main>
   );

@@ -67,6 +67,10 @@ input, select, textarea { font-family: inherit; font-size: 14px; color: var(--fg
 .btn-primary:hover { background: var(--accent-hover); }
 .btn-danger { color: var(--danger); }
 .btn-danger:hover { background: rgba(217, 48, 37, 0.08); }
+.btn-ms { border: 1px solid var(--border); background: var(--bg); color: var(--fg); }
+.btn-ms:hover { background: var(--surface); }
+.login-divider { display: flex; align-items: center; gap: 10px; margin: 14px 0; color: var(--muted); font-size: 12px; }
+.login-divider::before, .login-divider::after { content: ""; flex: 1; height: 1px; background: var(--border); }
 
 /* ---- form fields ---- */
 .field { display: grid; gap: 6px; }
