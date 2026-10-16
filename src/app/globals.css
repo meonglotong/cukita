@@ -22,6 +22,10 @@
   --bg-dot: rgba(26, 28, 31, 0.055);
   --login-glow-a: rgba(26, 115, 232, 0.07);
   --login-glow-b: rgba(14, 116, 144, 0.06);
+  --accent-on: #ffffff;       /* teks di atas surface accent */
+  --ok: #188038;
+  --danger-soft: rgba(217, 48, 37, 0.08);
+  --focus-ring: rgba(26, 115, 232, 0.12);
 }
 
 /* Dark theme — Google dark palette, same token contract */
@@ -43,9 +47,11 @@
   --bg-dot: rgba(255, 255, 255, 0.05);
   --login-glow-a: rgba(138, 180, 248, 0.09);
   --login-glow-b: rgba(103, 232, 249, 0.05);
+  --accent-on: #202124;       /* accent dark = biru terang → teks gelap */
+  --ok: #34a853;
+  --danger-soft: rgba(242, 139, 130, 0.14);
+  --focus-ring: rgba(138, 180, 248, 0.25);
 }
-:root[data-theme="dark"] .btn-primary { color: #202124; }
-:root[data-theme="dark"] .btn-primary:hover { color: #000; }
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -55,6 +61,10 @@ a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 button { font-family: inherit; }
 input, select, textarea { font-family: inherit; font-size: 14px; color: var(--fg); }
+/* form fields ikut tema (browser default = kotak putih, teriak di dark mode) */
+input:not([type="checkbox"]):not([type="radio"]):not([type="button"]):not([type="submit"]),
+select, textarea { background: var(--bg); }
+input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); }
 
 /* ---- buttons (pill, Material) ---- */
 .btn {
@@ -62,11 +72,11 @@ input, select, textarea { font-family: inherit; font-size: 14px; color: var(--fg
   border: 1px solid transparent; background: none; cursor: pointer;
   font-size: 14px; font-weight: 500; color: var(--accent);
 }
-.btn:hover { background: rgba(26, 115, 232, 0.06); }
-.btn-primary { background: var(--accent); color: #fff; }
+.btn:hover { background: var(--accent-soft); }
+.btn-primary { background: var(--accent); color: var(--accent-on); }
 .btn-primary:hover { background: var(--accent-hover); }
 .btn-danger { color: var(--danger); }
-.btn-danger:hover { background: rgba(217, 48, 37, 0.08); }
+.btn-danger:hover { background: var(--danger-soft); }
 .btn-ms { border: 1px solid var(--border); background: var(--bg); color: var(--fg); }
 .btn-ms:hover { background: var(--surface); }
 .login-divider { display: flex; align-items: center; gap: 10px; margin: 14px 0; color: var(--muted); font-size: 12px; }
@@ -79,7 +89,7 @@ input, select, textarea { font-family: inherit; font-size: 14px; color: var(--fg
   padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg);
 }
 .field input:focus, .field select:focus, .field textarea:focus {
-  outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.12);
+  outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
 /* ---- table (admin) ---- */
@@ -321,7 +331,7 @@ input, select, textarea { font-family: inherit; font-size: 14px; color: var(--fg
 .login-card h1 { margin: 0; font-size: 22px; color: var(--fg); text-align: center; }
 .login-card .sub { margin: -6px 0 0; text-align: center; font-size: 13px; color: var(--muted); }
 .login-card input { padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius); }
-.login-card input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.12); }
+.login-card input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--focus-ring); }
 
 /* ---- markdown typography ---- */
 .markdown-body { font-size: 15.5px; line-height: 1.7; color: var(--body); }
@@ -402,12 +412,12 @@ input, select, textarea { font-family: inherit; font-size: 14px; color: var(--fg
 .quiz-option:hover { border-color: var(--accent); }
 .quiz-option.selected { border-color: var(--accent); background: var(--accent-soft); color: var(--fg); }
 .quiz-option-letter { flex: 0 0 auto; width: 26px; height: 26px; display: grid; place-items: center; border-radius: 50%; background: var(--surface); border: 1px solid var(--border); font-size: 12.5px; font-weight: 700; color: var(--muted); }
-.quiz-option.selected .quiz-option-letter { background: var(--accent); border-color: var(--accent); color: #fff; }
+.quiz-option.selected .quiz-option-letter { background: var(--accent); border-color: var(--accent); color: var(--accent-on); }
 .quiz-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .quiz-nav-right { display: flex; gap: 10px; align-items: center; }
 .quiz-palette { display: flex; flex-wrap: wrap; gap: 6px; max-width: 420px; }
 .quiz-palette-btn { width: 30px; height: 30px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg); color: var(--muted); font-size: 12px; cursor: pointer; }
-.quiz-palette-btn.answered { background: var(--accent); border-color: var(--accent); color: #fff; }
+.quiz-palette-btn.answered { background: var(--accent); border-color: var(--accent); color: var(--accent-on); }
 .quiz-palette-btn.current { outline: 2px solid var(--fg); outline-offset: 1px; }
 
 /* results */
@@ -445,6 +455,6 @@ input, select, textarea { font-family: inherit; font-size: 14px; color: var(--fg
 .tb-fill { height: 100%; border-radius: 5px; background: var(--accent); }
 .tb-row.weak .tb-fill { background: var(--danger); }
 .tb-row.weak .tb-topic { color: var(--danger); }
-.tb-row.good .tb-fill { background: #188038; }
+.tb-row.good .tb-fill { background: var(--ok); }
 .tb-score { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .tb-hint { margin: 12px 0 0; font-size: 12px; color: var(--muted); }
