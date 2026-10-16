@@ -4,7 +4,7 @@
   "description": "Soal praktis gaya JNCIA-Junos: CLI & workflow konfigurasi (commit/rollback), switching L2 (VLAN/LACP/STP), routing (static/OSPF/BGP), firewall filter, NAT/VPN, dan monitoring Junos.",
   "durationSec": 3600,
   "passingPercent": 80,
-  "examSize": 60,
+  "examSize": 40,
   "questions": [
     {
       "id": "net-cli-configure",

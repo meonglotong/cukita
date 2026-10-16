@@ -14,9 +14,9 @@ it("every track has sane meta", () => {
     expect(t.durationSec).toBeGreaterThan(0);
     expect(t.passingPercent).toBeGreaterThanOrEqual(0);
     expect(t.passingPercent).toBeLessThanOrEqual(100);
-    // Contract: each track ships a 100-question pool; the exam draws 60 randomly.
+    // Contract: each track ships a 100-question pool; the exam draws 40 randomly.
     expect(t.questions.length).toBeGreaterThanOrEqual(100);
-    expect(t.examSize).toBe(60);
+    expect(t.examSize).toBe(40);
     expect(t.examSize).toBeLessThanOrEqual(t.questions.length);
     expect(t.durationSec).toBeGreaterThanOrEqual(t.examSize * 30); // >=30s per question
   }
