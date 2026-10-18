@@ -1,0 +1,1810 @@
+{
+  "slug": "python",
+  "title": "Python — Core & Practical",
+  "description": "Simulasi ujian Python: dasar bahasa, data structures, functions & scope, OOP, exception handling, modules & packaging, file I/O, generator & iterator, decorator & context manager, sampai testing & pitfall kualitas kode. 40 soal acak dari bank 100.",
+  "durationSec": 3600,
+  "passingPercent": 80,
+  "examSize": 40,
+  "questions": [
+    {
+      "id": "py-basics-type",
+      "topic": "python-basics",
+      "prompt": "Hasil dari `print(type(3.0))` adalah…",
+      "options": [
+        "`<class 'float'>`",
+        "`<class 'int'>`",
+        "`<class 'str'>`",
+        "`<class 'number'>`"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `3.0` adalah literal float, jadi `type()` mengembalikan `<class 'float'>`.",
+        "Salah. `int` untuk bilangan bulat tanpa desimal, misalnya `3`.",
+        "Salah. `str` untuk string, misalnya `\"3.0\"`.",
+        "Salah. Tidak ada tipe built-in bernama `number` di Python."
+      ]
+    },
+    {
+      "id": "py-basics-floordiv",
+      "topic": "python-basics",
+      "prompt": "Berapa hasil dari `10 // 3`?",
+      "options": [
+        "0.3333333333333333",
+        "3",
+        "3.3333333333333335",
+        "4"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. `10 % 3` (sisa bagi) yang menghasilkan 1; ini 3.",
+        "Benar. `//` itu floor division — membuang desimal ke bawah, hasilnya int 3.",
+        "Salah. Itu hasil dari `/` (true division).",
+        "Salah. `10 // 3` tidak dibulatkan ke atas; floor-nya 3."
+      ]
+    },
+    {
+      "id": "py-basics-modulo",
+      "topic": "python-basics",
+      "prompt": "Berapa hasil dari `7 % 3`?",
+      "options": [
+        "2.33",
+        "3",
+        "1",
+        "2"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Modulo dari dua int menghasilkan int, bukan float.",
+        "Salah. 3 adalah pembagi, bukan sisa.",
+        "Benar. `%` adalah operasi modulo (sisa bagi): 7 = 2×3 + 1.",
+        "Salah. 2 adalah hasil floor division `7 // 3`, bukan sisa bagi."
+      ]
+    },
+    {
+      "id": "py-basics-strconcat",
+      "topic": "python-basics",
+      "prompt": "Apa output dari `print(\"2\" + \"3\")`?",
+      "options": [
+        "5",
+        "Error: tipe tidak kompatibel",
+        "2 3",
+        "23"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. `5` hanya kalau operannya int (`2 + 3`). String tidak di-convert otomatis (Python strongly typed).",
+        "Salah. `str + str` itu sah, tidak error.",
+        "Salah. Tidak ada spasi yang ditambahkan otomatis.",
+        "Benar. Operan `+` di sini string, jadi terjadi concatenation: `\"23\"`."
+      ]
+    },
+    {
+      "id": "py-basics-bool-empty",
+      "topic": "python-basics",
+      "prompt": "Apa hasil dari `bool([])`?",
+      "options": [
+        "False",
+        "True",
+        "Error",
+        "None"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. List kosong adalah falsy — `bool([])` menghasilkan `False`.",
+        "Salah. Object kosong (list, dict, string, set) semuanya falsy.",
+        "Salah. `bool()` pada object biasa tidak pernah error.",
+        "Salah. `bool()` selalu mengembalikan bool, bukan `None`."
+      ]
+    },
+    {
+      "id": "py-basics-strmul",
+      "topic": "python-basics",
+      "prompt": "Apa output dari `print(\"py\" * 3)`?",
+      "options": [
+        "Error: string tidak bisa dikali",
+        "pypypy",
+        "py3",
+        "py py py"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. `str * int` sah di Python.",
+        "Benar. `*` pada string = repetisi: `\"py\"` diulang 3 kali.",
+        "Salah. `*` tidak melakukan stringifikasi angka; hasilnya string `\"pypypy\"`.",
+        "Salah. Tidak ada spasi — repetisi persis."
+      ]
+    },
+    {
+      "id": "py-basics-eq-is",
+      "topic": "python-basics",
+      "prompt": "Diketahui `a = [1, 2]` dan `b = [1, 2]`. Hasil dari `a == b` adalah…",
+      "options": [
+        "Error",
+        "Tidak ditentukan",
+        "True",
+        "False"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Perbandingan list sah.",
+        "Salah. Hasilnya deterministik: True.",
+        "Benar. `==` membandingkan nilai — dua list dengan isi sama hasilnya True. (`a is b` yang False karena object berbeda.)",
+        "Salah. Isi keduanya identik, jadi `==` True."
+      ]
+    },
+    {
+      "id": "py-basics-intconv",
+      "topic": "python-basics",
+      "prompt": "Apa hasil dari `int(\"42\") + 1`?",
+      "options": [
+        "421",
+        "\"43\"",
+        "Error: tidak bisa menjumlahkan str dan int",
+        "43"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. `421` itu hasil concatenation `\"42\" + \"1\"`, bukan konversi.",
+        "Salah. Hasil aritmetika int adalah int, bukan string.",
+        "Salah. Konversi dulu, baru dijumlah — sah.",
+        "Benar. `int(\"42\")` mengonversi string ke 42, lalu `+ 1` = 43."
+      ]
+    },
+    {
+      "id": "py-basics-fstring",
+      "topic": "python-basics",
+      "prompt": "Diketahui `x = 5`. Apa output dari `print(f\"{x*2}\")`?",
+      "options": [
+        "10",
+        "{x*2}",
+        "52",
+        "Error: ekspresi aritmetika tidak boleh di f-string"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. F-string mengevaluasi ekspresi Python di dalam `{}`: `5*2` = 10.",
+        "Salah. F-string mengevaluasi `{}` sebagai ekspresi, tidak mencetak mentah.",
+        "Salah. `\"52\"` itu kalau string concatenation `str(5)+\"2\"`; di sini ekspresi dikali.",
+        "Salah. Ekspresi aritmetika diperbolehkan di dalam f-string."
+      ]
+    },
+    {
+      "id": "py-basics-pow",
+      "topic": "python-basics",
+      "prompt": "Apa hasil dari `print(2 ** 3)`?",
+      "options": [
+        "23",
+        "8",
+        "6",
+        "9"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. `23` adalah concatenation `\"2\"+\"3\"`.",
+        "Benar. `**` adalah eksponen: 2 pangkat 3 = 8.",
+        "Salah. `6` adalah `2 * 3`.",
+        "Salah. `9` adalah `3 ** 2`."
+      ]
+    },
+    {
+      "id": "py-ds-set-len",
+      "topic": "data-structures",
+      "prompt": "Apa hasil dari `len({1, 2, 2, 3})`?",
+      "options": [
+        "2",
+        "Error: set tidak punya length",
+        "3",
+        "4"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Ada 3 elemen unik, bukan 2.",
+        "Salah. Set adalah sequence yang punya `len()`.",
+        "Benar. Set mengabaikan duplikat — elemennya {1, 2, 3}, panjangnya 3.",
+        "Salah. Duplikat `2` tidak dihitung dua kali."
+      ]
+    },
+    {
+      "id": "py-ds-comp",
+      "topic": "data-structures",
+      "prompt": "Apa output dari `print([x**2 for x in range(4)])`?",
+      "options": [
+        "[1, 4, 9, 16]",
+        "[0, 1, 2, 3]",
+        "Error: `**` tidak valid di comprehension",
+        "[0, 1, 4, 9]"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. `range(4)` berhenti di 3, bukan 4 — 16 tidak muncul.",
+        "Salah. Itu `range(4)` tanpa transformasi `x**2`.",
+        "Salah. Ekspresi apa pun (termasuk `**`) sah di comprehension.",
+        "Benar. `range(4)` = 0..3, masing-masing di-kuadratkan."
+      ]
+    },
+    {
+      "id": "py-ds-get",
+      "topic": "data-structures",
+      "prompt": "Diketahui `d = {\"a\": 1}`. Apa hasil dari `d.get(\"b\", 99)`?",
+      "options": [
+        "99",
+        "None",
+        "KeyError",
+        "1"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `dict.get(key, default)` mengembalikan default saat key tidak ada — 99.",
+        "Salah. `None` hanya default-nya kalau argumen kedua tidak diberikan.",
+        "Salah. `.get()` sengaja tidak melempar `KeyError` — beda dengan `d[\"b\"]`.",
+        "Salah. `1` adalah nilai key `\"a\"`, bukan `\"b\"`."
+      ]
+    },
+    {
+      "id": "py-ds-unpack",
+      "topic": "data-structures",
+      "prompt": "Cara Pythonic untuk menukar dua variabel adalah…",
+      "options": [
+        "`swap(a, b)`",
+        "`a, b = b, a`",
+        "`t = a; a = b; b = t`",
+        "`a = b; b = a`"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Fungsi `swap()` tidak ada di built-in Python.",
+        "Benar. Tuple unpacking `a, b = b, a` menukar nilai dalam satu baris — idiom Python.",
+        "Salah. Bekerja, tapi bukan gaya Pythonic; tuple unpacking lebih idiomatik.",
+        "Salah. Hasilnya `a` dan `b` sama-sama berisi nilai lama `b` — nilai `a` hilang."
+      ]
+    },
+    {
+      "id": "py-ds-negindex",
+      "topic": "data-structures",
+      "prompt": "Diketahui `lst = [10, 20, 30, 40]`. Apa hasil dari `lst[-1]`?",
+      "options": [
+        "Error: index -1 tidak valid",
+        "None",
+        "40",
+        "10"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Index negatif adalah fitur resmi Python.",
+        "Salah. Indexing list yang valid mengembalikan elemennya, bukan `None`.",
+        "Benar. Index negatif menghitung dari belakang: `-1` = elemen terakhir = 40.",
+        "Salah. `10` adalah `lst[0]` / `lst[-4]`."
+      ]
+    },
+    {
+      "id": "py-ds-del",
+      "topic": "data-structures",
+      "prompt": "Diketahui `lst = [1, 2, 3, 4]`. Setelah `del lst[1]`, isi list-nya…",
+      "options": [
+        "[2, 3, 4]",
+        "[1, 2, 3]",
+        "Tidak berubah, `del` butuh `lst.remove(1)`",
+        "[1, 3, 4]"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. `lst.remove(1)` (hapus nilai 1) yang menghasilkan `[2, 3, 4]`.",
+        "Salah. Elemen index 2 (nilai 3) yang hilang di sini, bukan index 1.",
+        "Salah. `del` pada index valid menghapus elemen langsung.",
+        "Benar. `del lst[1]` menghapus elemen di index 1 (nilai 2)."
+      ]
+    },
+    {
+      "id": "py-ds-addkey",
+      "topic": "data-structures",
+      "prompt": "Diketahui `d = {}`. Setelah `d[\"baru\"] = 7`, apa isi `d`?",
+      "options": [
+        "{\"baru\": 7}",
+        "{}",
+        "KeyError",
+        "[7]"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Assignment ke key yang belum ada menambah key-value baru ke dict.",
+        "Salah. Dict-nya bertambah satu entri.",
+        "Salah. `KeyError` hanya untuk ACCESS (`d[\"x\"]`) saat key tidak ada, bukan assignment.",
+        "Salah. `d` tetap dict, bukan list."
+      ]
+    },
+    {
+      "id": "py-ds-dictcomp",
+      "topic": "data-structures",
+      "prompt": "Apa output dari `print({k: v for k, v in [(\"a\", 1), (\"b\", 2)]})`?",
+      "options": [
+        "{\"a\": 1, \"b\": 2, None}",
+        "{\"a\": 1, \"b\": 2}",
+        "[('a', 1), ('b', 2)]",
+        "Error: comprehension dict tidak valid"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Tidak ada `None` yang ditambahkan.",
+        "Benar. Dict comprehension dengan unpacking pasangan menghasilkan dict `{\"a\": 1, \"b\": 2}`.",
+        "Salah. Itu bentuk iterable inputnya, bukan hasil dict comprehension.",
+        "Salah. `{k: v for ...}` adalah syntax resmi Python 3."
+      ]
+    },
+    {
+      "id": "py-ds-sorted-set",
+      "topic": "data-structures",
+      "prompt": "Diketahui `lst = [3, 1, 3, 2, 1]`. Apa hasil dari `sorted(set(lst))`?",
+      "options": [
+        "[1, 1, 2, 3, 3]",
+        "Error",
+        "[1, 2, 3]",
+        "[3, 2, 1]"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Duplikat sudah dihapus oleh `set()`.",
+        "Salah. `set` dan `sorted` pada list int sah.",
+        "Benar. `set` membuang duplikat → {1,2,3}, `sorted` mengurutkan naik → [1, 2, 3].",
+        "Salah. `sorted` default-nya ascending, bukan descending (itu `reverse=True`)."
+      ]
+    },
+    {
+      "id": "py-ds-alias",
+      "topic": "data-structures",
+      "prompt": "Diketahui `a = [[0, 0, 0]]` dan `b = a`. Setelah `b[0][0] = 9`, apa isi `a[0][0]`?",
+      "options": [
+        "0",
+        "a tidak terpengaruh karena `b` copy",
+        "Error",
+        "9"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. `a[0][0]` ikut berubah karena sama object (bukan copy).",
+        "Salah. Assignment `=` pada object compound = alias, bukan deep copy.",
+        "Salah. Indexing-nya valid, tidak ada error.",
+        "Benar. `b = a` membuat alias — keduanya menunjuk list yang sama di memori, jadi mutasi lewat `b` terlihat di `a`."
+      ]
+    },
+    {
+      "id": "py-fn-default",
+      "topic": "functions",
+      "prompt": "Diketahui `def f(a, b=2): return a + b`. Hasil `f(3)` adalah…",
+      "options": [
+        "5",
+        "3",
+        "Error: b tidak diberikan",
+        "2"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `b` punya default 2, jadi `f(3)` = `3 + 2` = 5.",
+        "Salah. Default `b` tetap dipakai saat tidak diberikan.",
+        "Salah. Parameter dengan default bersifat opsional.",
+        "Salah. Hasilnya `a + b`, bukan `b` saja."
+      ]
+    },
+    {
+      "id": "py-fn-args",
+      "topic": "functions",
+      "prompt": "Diketahui `def f(*args): return len(args)`. Hasil `f(1, 2, 3)` adalah…",
+      "options": [
+        "Error: *args butuh kurung",
+        "3",
+        "6",
+        "(1, 2, 3)"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. `*args` adalah syntax valid untuk variadic parameters.",
+        "Benar. `*args` mengumpulkan semua positional argument menjadi tuple `(1, 2, 3)`; panjangnya 3.",
+        "Salah. `6` adalah `sum(args)`, bukan `len`.",
+        "Salah. Fungsi mengembalikan `len(args)` (int), bukan tuple-nya."
+      ]
+    },
+    {
+      "id": "py-fn-kwargs",
+      "topic": "functions",
+      "prompt": "Diketahui `def f(**kw): return kw[\"x\"]`. Hasil `f(x=10, y=20)` adalah…",
+      "options": [
+        "{'x': 10, 'y': 20}",
+        "KeyError: 'x'",
+        "10",
+        "20"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Yang dikembalikan hanya nilai `kw[\"x\"]`, bukan dict-nya.",
+        "Salah. Key `\"x\"` memang diberikan saat pemanggilan.",
+        "Benar. `**kw` mengumpulkan keyword arguments menjadi dict `{'x': 10, 'y': 20}`; `kw[\"x\"]` = 10.",
+        "Salah. `kw[\"x\"]` mengakses key `x`, bukan `y`."
+      ]
+    },
+    {
+      "id": "py-fn-mutdefault",
+      "topic": "functions",
+      "prompt": "Diketahui:\n```python\ndef f(x, acc=[]):\n    acc.append(x)\n    return acc\nprint(f(1))\nprint(f(2))\n```\nOutputnya…",
+      "options": [
+        "[1]\\n[2]",
+        "[1, 2]\\n[1, 2]",
+        "Error: default tidak boleh mutable",
+        "[1]\\n[1, 2]"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. `acc` tidak di-reset per pemanggilan — itu jebakan klasik mutable default.",
+        "Salah. Pemanggilan pertama baru `[1]`, bukan `[1, 2]`.",
+        "Salah. Python mengizinkan, walau diperingatkan linter karena jebakan ini.",
+        "Benar. Default mutable dievaluasi SEKALI saat def — kedua pemanggilan memakai list yang sama, jadi dia ter-accumulate."
+      ]
+    },
+    {
+      "id": "py-fn-closure",
+      "topic": "functions",
+      "prompt": "Diketahui:\n```python\ndef counter():\n    n = 0\n    def inc():\n        nonlocal n\n        n += 1\n        return n\n    return inc\nc = counter()\nprint(c(), c())\n```\nOutputnya…",
+      "options": [
+        "1 2",
+        "0 0",
+        "1 1",
+        "Error: n tidak terdefinisi di inc"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Closure `inc` memegang `n` dari scope luar; `nonlocal` membolehkannya mutasi — dipanggil dua kali: 1 lalu 2.",
+        "Salah. `n += 1` berjalan sebelum return, jadi bukan 0.",
+        "Salah. `n` bertambah tiap panggil (nonlocal), bukan reset.",
+        "Salah. `n` ada di enclosing scope dan diakses via `nonlocal`."
+      ]
+    },
+    {
+      "id": "py-fn-lambda",
+      "topic": "functions",
+      "prompt": "Apa hasil dari `sorted([3, 1, 2], key=lambda x: -x)`?",
+      "options": [
+        "Error: lambda tidak boleh di key",
+        "[3, 2, 1]",
+        "[1, 2, 3]",
+        "[-1, -2, -3]"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Lambda adalah callable yang sah untuk `key`.",
+        "Benar. `key=lambda x: -x` membalik urutan — sorting descending: [3, 2, 1].",
+        "Salah. Itu ascending; dengan key negatif urutannya terbalik.",
+        "Salah. Nilai key hanya untuk perbandingan; yang dikembalikan `sorted` elemen aslinya."
+      ]
+    },
+    {
+      "id": "py-fn-none",
+      "topic": "functions",
+      "prompt": "Diketahui `def f(): pass`. Hasil `f()` adalah…",
+      "options": [
+        "Empty function",
+        "Error: tidak ada return",
+        "None",
+        "0"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Hasil pemanggilan adalah object `None`, bukan descriptor-nya.",
+        "Salah. Fungsi tanpa return sah — menghasilkan `None`.",
+        "Benar. Fungsi tanpa `return` (atau `return` telanjang) selalu mengembalikan `None`.",
+        "Salah. Python tidak mengembalikan 0 untuk fungsi kosong."
+      ]
+    },
+    {
+      "id": "py-fn-scope",
+      "topic": "functions",
+      "prompt": "Diketahui:\n```python\nx = 10\ndef f():\n    print(x)\n    x = 5\nf()\n```\nHasilnya…",
+      "options": [
+        "10",
+        "5",
+        "Error: SyntaxError di def",
+        "UnboundLocalError"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. `x` tidak terbaca dari global karena ada assignment lokal (bukan `global x`).",
+        "Salah. `print` tidak sempat tercapai; error terjadi lebih dulu.",
+        "Salah. Syntax-nya valid — barulah error saat runtime.",
+        "Benar. Karena `x` di-assign di dalam `f`, Python menganggap `x` lokal di seluruh fungsi — `print(x)` sebelum assignment = `UnboundLocalError`."
+      ]
+    },
+    {
+      "id": "py-fn-nonlocal",
+      "topic": "functions",
+      "prompt": "Perbedaan `global x` dan `nonlocal x` di dalam fungsi adalah…",
+      "options": [
+        "`global` menunjuk variabel module-level; `nonlocal` menunjuk variabel di enclosing function",
+        "`global` untuk int, `nonlocal` untuk string",
+        "Tidak ada perbedaan",
+        "`nonlocal` hanya untuk class method"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `global` mengikat ke namespace modul; `nonlocal` mengikat ke scope function enclosing (closure).",
+        "Salah. Keduanya tidak dibedakan per tipe data.",
+        "Salah. Scope yang dituju berbeda.",
+        "Salah. `nonlocal` untuk nested function, bukan khusus class method."
+      ]
+    },
+    {
+      "id": "py-fn-posonly",
+      "topic": "functions",
+      "prompt": "Diketahui `def f(a, /, b): return a + b`. Pemanggilan yang VALID adalah…",
+      "options": [
+        "f(a=1)",
+        "f(1, 2)",
+        "f(a=1, b=2)",
+        "f(1, 2, 3)"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. `a` wajib positional (tidak bisa keyword) dan `b` tidak diberikan — dua-duanya error.",
+        "Benar. `a` positional-only (sebelum `/`), `b` positional-or-keyword — `f(1, 2)` sah.",
+        "Salah. `a` berada sebelum `/` sehingga TIDAK BOLEH diberikan sebagai keyword — TypeError.",
+        "Salah. Hanya ada 2 parameter; argumen ketiga tidak punya tempat."
+      ]
+    },
+    {
+      "id": "py-oop-init",
+      "topic": "oop",
+      "prompt": "Metode yang dipanggil otomatis saat instance class dibuat adalah…",
+      "options": [
+        "`init(self)`",
+        "`__setup__(self)`",
+        "`__init__(self)`",
+        "`__new__(self)`"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Tanpa dunder, `init` hanya method biasa.",
+        "Salah. `__setup__` bukan dunder Python.",
+        "Benar. `__init__` adalah initializer — dipanggil setelah object dibuat untuk setup state.",
+        "Salah. `__new__` memang membuat object, tapi `__init__` yang standard untuk initialization; pertanyaan soal 'dipanggil saat instance dibuat (di-setup)' → `__init__`."
+      ]
+    },
+    {
+      "id": "py-oop-self",
+      "topic": "oop",
+      "prompt": "Peran `self` di parameter pertama method instance adalah…",
+      "options": [
+        "Referensi ke class-nya (seperti cls)",
+        "Variabel global khusus method",
+        "Keyword Python yang tidak boleh diganti nama",
+        "Referensi ke instance yang memanggil method"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Referensi ke class itu `cls` di `@classmethod`.",
+        "Salah. `self` scope-nya per-instance, bukan global.",
+        "Salah. `self` itu nama parameter biasa (boleh diganti `this`, mis.) — hanya konvensi yang wajib dipatuhi.",
+        "Benar. `self` adalah instance yang aktif; lewat `self` method mengakses state object itu."
+      ]
+    },
+    {
+      "id": "py-oop-super",
+      "topic": "oop",
+      "prompt": "Diketahui:\n```python\nclass A:\n    def __init__(self):\n        self.a = 1\nclass B(A):\n    def __init__(self):\n        super().__init__()\n        self.b = 2\nb = B()\n```\nHasil `b.a` adalah…",
+      "options": [
+        "1",
+        "2",
+        "AttributeError",
+        "None"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `super().__init__()` menjalankan `A.__init__` yang set `self.a = 1`.",
+        "Salah. `2` adalah `b.b`.",
+        "Salah. `a` sudah di-set oleh parent.",
+        "Salah. `__init__` parent jelas-jelas menset `self.a`."
+      ]
+    },
+    {
+      "id": "py-oop-property",
+      "topic": "oop",
+      "prompt": "Dekurator `@property` pada method class digunakan untuk…",
+      "options": [
+        "Men-speed-up akses attribute",
+        "Mengakses method seperti attribute (tanpa tanda kurung) + kontrol read-only/validasi",
+        "Membuat method static",
+        "Mengubah method jadi classmethod"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. `@property` soal perilaku akses, bukan performance.",
+        "Benar. `@property` mengekspose getter (dan setter/ deleter) sehingga `obj.x` memanggil method-nya — idiom untuk computed/validated attributes.",
+        "Salah. Itu `@staticmethod`.",
+        "Salah. Itu `@classmethod`."
+      ]
+    },
+    {
+      "id": "py-oop-str",
+      "topic": "oop",
+      "prompt": "Perbedaan `__str__` dan `__repr__` adalah…",
+      "options": [
+        "`__repr__` lebih cepat",
+        "`__str__` wajib di semua class",
+        "`__str__` untuk pembacaan manusia (str/print); `__repr__` untuk unambiguous/debug (repr)",
+        "Tidak ada perbedaan"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Tidak ada jaminan speed.",
+        "Salah. Keduanya opsional; default dari `object` tersedia.",
+        "Benar. `print(obj)` pakai `__str__` (fallback `__repr__`); `repr(obj)` dan REPL pakai `__repr__` — seharusnya bisa merekonstruksi object.",
+        "Salah. Keduanya punya kontrak berbeda."
+      ]
+    },
+    {
+      "id": "py-oop-dataclass",
+      "topic": "oop",
+      "prompt": "Keuntungan `@dataclass` dibanding menulis `__init__` manual adalah…",
+      "options": [
+        "Dataclass lebih cepat dari class biasa",
+        "Dataclass tidak bisa di-inherit",
+        "Dataclass hanya untuk immutable",
+        "Auto-generate `__init__`, `__repr__`, `__eq__` dari field deklarasi — boilerplate hilang"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Performa-nya sebanding; keuntungannya productivity.",
+        "Salah. Dataclass bisa di-inherit biasa.",
+        "Salah. Immutability opsional (`frozen=True`).",
+        "Benar. `@dataclass` men-generate dunder standar dari field — code jauh lebih ringkas."
+      ]
+    },
+    {
+      "id": "py-oop-mro",
+      "topic": "oop",
+      "prompt": "Diketahui `class A`, `class B(A)`, `class C(B)`. Urutan MRO `C.__mro__` adalah…",
+      "options": [
+        "C → B → A → object",
+        "C → A → B → object",
+        "object → A → B → C",
+        "C → B → object → A"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Method Resolution Order selalu dari subclass ke superclass: C, B, A, object.",
+        "Salah. B adalah parent langsung C — harus sebelum A.",
+        "Salah. Urutan terbalik.",
+        "Salah. `object` selalu paling akhir."
+      ]
+    },
+    {
+      "id": "py-oop-classattr",
+      "topic": "oop",
+      "prompt": "Diketahui:\n```python\nclass Counter:\n    count = 0\n    def __init__(self):\n        Counter.count += 1\nc1 = Counter(); c2 = Counter()\n```\nHasil `Counter.count` adalah…",
+      "options": [
+        "AttributeError",
+        "2",
+        "0",
+        "1"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Class attribute sah diakses via nama class.",
+        "Benar. `count` adalah class attribute (dipisah per class, bukan per instance) — dua instance menambahkannya jadi 2.",
+        "Salah. Setiap `__init__` menambahkannya.",
+        "Salah. Ada 2 pemanggilan `__init__`."
+      ]
+    },
+    {
+      "id": "py-oop-isinstance",
+      "topic": "oop",
+      "prompt": "Fungsi `isinstance(obj, SomeClass)` adalah…",
+      "options": [
+        "Membuat instance baru",
+        "Mengubah tipe obj",
+        "Memeriksa apakah obj adalah instance SomeClass ATAU subclass-nya",
+        "Memeriksa apakah type(obj) persis SomeClass"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. `isinstance` hanya predicate, tidak membuat apa pun.",
+        "Salah. Object Python bersifat immutable secara tipe.",
+        "Benar. `isinstance` menghormati inheritance — subclass juga True. (Untuk eksak: `type(obj) is SomeClass`.)",
+        "Salah. Perbandingan tipe eksak itu `type(obj) is SomeClass`."
+      ]
+    },
+    {
+      "id": "py-oop-abc",
+      "topic": "oop",
+      "prompt": "Keuntungan `abc.ABC` + `@abstractmethod` adalah…",
+      "options": [
+        "Membuat method jadi faster",
+        "Mengizinkan class tanpa instance",
+        "Menggantikan inheritance",
+        "Memaksa subclass implementasi method tertentu — desain kontrak API"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Tidak ada efek performa.",
+        "Salah. Kebalikannya: abstract MENCEGAH instance sebelum kontrak terpenuhi.",
+        "Salah. ABC adalah mekanisme inheritance yang lebih ketat, bukan pengganti.",
+        "Benar. Class abstract dengan method abstract tidak bisa di-instantiate sampai subclass mengimplementasikan kontraknya."
+      ]
+    },
+    {
+      "id": "py-exc-else",
+      "topic": "exceptions",
+      "prompt": "Dalam blok `try/except/else`, blok `else` dijalankan…",
+      "options": [
+        "Hanya jika tidak ada exception di try",
+        "Selalu, setelah try",
+        "Hanya jika ada exception",
+        "Tidak pernah"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `else` = jalur sukses: dieksekusi hanya saat try bersih dari exception.",
+        "Salah. Kalau ada exception yang ditangkap, alur masuk `except`, bukan `else`.",
+        "Salah. Kebalikannya — `else` justru untuk TANPA exception.",
+        "Salah. `else` dijalankan normal kalau tidak ada exception."
+      ]
+    },
+    {
+      "id": "py-exc-finally",
+      "topic": "exceptions",
+      "prompt": "Blok `finally` pada try/except…",
+      "options": [
+        "Tidak pernah dieksekusi",
+        "Selalu dieksekusi, ada atau tidak ada exception (termasuk saat return)",
+        "Hanya saat ada exception",
+        "Hanya saat program crash"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Justru `finally` yang paling pasti jalan.",
+        "Benar. `finally` = blok pembersihan yang pasti jalan — cocok untuk closing resource.",
+        "Salah. `except` yang khusus exception; `finally` selalu.",
+        "Salah. `finally` jalan juga saat normal."
+      ]
+    },
+    {
+      "id": "py-exc-custom",
+      "topic": "exceptions",
+      "prompt": "Cara yang benar membuat custom exception adalah…",
+      "options": [
+        "MyError = Exception(\"msg\")",
+        "raise class MyError",
+        "class MyError(Exception): pass",
+        "def MyError(): pass"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Itu membuat instance, bukan tipe yang bisa di-`raise`/`except` ulang secara semantik.",
+        "Salah. `raise` butuh instance; deklarasi class bukan statement raise.",
+        "Benar. Custom exception = subclass `Exception`; instance-nya yang di-`raise`.",
+        "Salah. Function bukan exception type."
+      ]
+    },
+    {
+      "id": "py-exc-multi",
+      "topic": "exceptions",
+      "prompt": "Blok `except (ValueError, KeyError):` akan menangkap…",
+      "options": [
+        "Hanya jika keduanya terjadi bersamaan",
+        "Hanya ValueError",
+        "Tidak ada (syntax error)",
+        "Kedua tipe ValueError ATAU KeyError"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Satu blok except menangani SATU exception yang terjadi; tuple = daftar tipe yang diterima.",
+        "Salah. `KeyError` juga ditangkap.",
+        "Salah. Syntax tuple exception sah.",
+        "Benar. Tuple di `except` menangkap exception dari salah satu tipe yang terdaftar."
+      ]
+    },
+    {
+      "id": "py-exc-chain",
+      "topic": "exceptions",
+      "prompt": "Statement `raise MyError(\"baru\") from e` di dalam `except` akan…",
+      "options": [
+        "Membuat exception chaining — `MyError` menyimpan `__cause__ = e`",
+        "Mengganti class exception e",
+        "Menekan error asli agar tidak tercatat",
+        "Syntax error"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `from e` secara eksplisit menautkan cause — traceback menunjukkan 'The above exception was caused by…'.",
+        "Salah. Exception asli `e` tetap tersimpan sebagai `__cause__`, bukan diganti.",
+        "Salah. Justru `from` membuat rantai cause TERCATAT dengan jelas.",
+        "Salah. `raise X from e` adalah syntax Python 3 resmi."
+      ]
+    },
+    {
+      "id": "py-exc-with",
+      "topic": "exceptions",
+      "prompt": "Keuntungan `with open(f) as fh:` dibanding `open` biasa adalah…",
+      "options": [
+        "File di-lock untuk proses lain",
+        "File otomatis di-close saat keluar blok, termasuk saat ada exception",
+        "File dibaca lebih cepat",
+        "File dibuka dalam mode binary"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. `with` tidak melakukan file locking OS.",
+        "Benar. Context manager memanggil `__exit__` (→ close) saat blok selesai — exception atau tidak.",
+        "Salah. Tidak ada efek speed; soal keandalan resource cleanup.",
+        "Salah. Mode tetap ditentukan argumen `open`."
+      ]
+    },
+    {
+      "id": "py-exc-bare",
+      "topic": "exceptions",
+      "prompt": "Bare `except:` (tanpa nama tipe) itu buruk praktik karena…",
+      "options": [
+        "Hanya menangkap SyntaxError",
+        "Syntax error di Python 3",
+        "Menangkap SEMUA exception termasuk KeyboardInterrupt/SystemExit — bug jadi tersembunyi",
+        "Tidak boleh ada body"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Bare except menangkap jauh lebih banyak dari SyntaxError.",
+        "Salah. Syntax-nya valid (walau linter memperingatkan).",
+        "Benar. Tangkap spesifik (`except (IOError, ValueError):`) supaya sinyal penting (Ctrl-C, shutdown) tidak ditelan.",
+        "Salah. Body-nya bebas; masalahnya cakupan tangkapan."
+      ]
+    },
+    {
+      "id": "py-exc-else2",
+      "topic": "exceptions",
+      "prompt": "Diketahui:\n```python\ntry:\n    x = 1 / 1\nexcept ZeroDivisionError:\n    print(\"A\")\nelse:\n    print(\"B\")\nfinally:\n    print(\"C\")\n```\nOutputnya…",
+      "options": [
+        "A\\nC",
+        "A\\nB\\nC",
+        "C saja",
+        "B\\nC"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. `1/1` tidak error — `except` dilewati.",
+        "Salah. `except` dan `else` saling eksklusif per eksekusi.",
+        "Salah. `else` juga jalan karena try sukses.",
+        "Benar. Tidak ada exception → skip except, jalankan `else` (B), lalu `finally` (C)."
+      ]
+    },
+    {
+      "id": "py-exc-raise",
+      "topic": "exceptions",
+      "prompt": "Di dalam handler `except ValueError as e:`, statement `raise` (tanpa argumen) akan…",
+      "options": [
+        "Me-raise ulang exception `e` yang sedang ditangani (preserving traceback)",
+        "Membuat exception baru tanpa tipe",
+        "Menghentikan program langsung",
+        "Syntax error"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Bare `raise` re-raise exception aktif — idiom untuk wrap handler yang gagal total.",
+        "Salah. Tipe dan message `e` tetap utuh.",
+        "Salah. Tetap exception normal — bisa ditangkap caller.",
+        "Salah. Bare `raise` di dalam handler adalah syntax sah."
+      ]
+    },
+    {
+      "id": "py-exc-finally-return",
+      "topic": "exceptions",
+      "prompt": "Diketahui:\n```python\ndef f():\n    try:\n        return 1\n    finally:\n        print(\"bye\")\nprint(f())\n```\nOutputnya…",
+      "options": [
+        "Return value hilang menjadi None",
+        "bye\\n1",
+        "1\\nbye",
+        "bye"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. `finally` tidak menghapus return value (walaupun `return` di finally yang bisa).",
+        "Benar. `finally` dieksekusi SEBELUM return benar-benar terjadi — print dulu, lalu return 1 dikirim.",
+        "Salah. Urutannya terbalik: `finally` selalu sebelum function benar-benar return.",
+        "Salah. Return value tetap 1 dan tercetak."
+      ]
+    },
+    {
+      "id": "py-mod-main",
+      "topic": "modules-packages",
+      "prompt": "Blok `if __name__ == \"__main__\":` dijalankan…",
+      "options": [
+        "Hanya saat ada error",
+        "Hanya di Python 2",
+        "Hanya saat script dieksekusi langsung, bukan saat di-import",
+        "Selalu, termasuk saat di-import"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Tidak ada hubungannya dengan error.",
+        "Salah. Fitur ini ada di Python 2 dan 3.",
+        "Benar. Saat di-import, `__name__` modul = nama modulnya; saat dijalankan langsung = `\"__main__\"`. Ini pola entry-point.",
+        "Salah. Saat di-import blok ini dilewati — itulah tujuannya."
+      ]
+    },
+    {
+      "id": "py-mod-import",
+      "topic": "modules-packages",
+      "prompt": "Perbedaan `import os` dan `from os import path` adalah…",
+      "options": [
+        "Tidak ada perbedaan",
+        "`from ... import` selalu lebih lambat",
+        "`import os` tidak bisa dipakai di fungsi",
+        "Yang pertama memakai `os.path`; yang kedua langsung `path`"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Nama yang tersedia di namespace berbeda.",
+        "Salah. Keduanya dieksekusi sekali (cached); speed sebanding.",
+        "Salah. Module-level import sah dipakai di seluruh file.",
+        "Benar. `import os` → akses via `os.path`; `from os import path` → nama `path` langsung tersedia."
+      ]
+    },
+    {
+      "id": "py-mod-req",
+      "topic": "modules-packages",
+      "prompt": "Perintah untuk install semua dependensi dari file `requirements.txt` adalah…",
+      "options": [
+        "pip install -r requirements.txt",
+        "pip install requirements.txt",
+        "pip -r requirements.txt install",
+        "python install requirements.txt"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Flag `-r` = requirements file — pip membaca daftar paket baris demi baris.",
+        "Salah. Tanpa `-r`, pip mengira `requirements.txt` adalah nama paket.",
+        "Salah. Urutan flag salah.",
+        "Salah. `pip` adalah CLI-nya, bukan `python install`."
+      ]
+    },
+    {
+      "id": "py-mod-venv",
+      "topic": "modules-packages",
+      "prompt": "Peran virtualenv (`python -m venv .venv`) adalah…",
+      "options": [
+        "Kompres package",
+        "Isolasi dependensi per-proyek di folder lokal — tidak mencemari Python global",
+        "Mempercepat eksekusi kode",
+        "Mengganti interpreter Python"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Tidak ada proses kompresi.",
+        "Benar. venv membuat environment terisolasi (site-packages sendiri) — proyek A dan B bisa punya versi paket berbeda.",
+        "Salah. venv soal isolasi, bukan performance.",
+        "Salah. Interpreter yang sama, hanya environment-nya yang berbeda."
+      ]
+    },
+    {
+      "id": "py-mod-syspath",
+      "topic": "modules-packages",
+      "prompt": "List tempat Python mencari modul saat `import` adalah…",
+      "options": [
+        "import.cache",
+        "module.paths",
+        "sys.path",
+        "os.environ"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Tidak ada attribute `import.cache` (caching modul di `sys.modules`).",
+        "Salah. Tidak ada `module.paths` di stdlib.",
+        "Benar. `sys.path` berisi direktori pencarian (script dir, site-packages, dll) — bisa di-inspect/diubah.",
+        "Salah. `os.environ` itu environment variables OS."
+      ]
+    },
+    {
+      "id": "py-mod-init",
+      "topic": "modules-packages",
+      "prompt": "Peran `__init__.py` di folder package (Python 3) adalah…",
+      "options": [
+        "Wajib berisi `import *`",
+        "File konfigurasi pip",
+        "Wajib ada di semua project Python",
+        "Menandai folder sebagai package (dan bisa berisi code saat import)"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. `import *` opsional dan bukan isinya.",
+        "Salah. Tidak ada hubungannya dengan pip.",
+        "Salah. Hanya untuk folder yang dijadikan package.",
+        "Benar. `__init__.py` menandai package + hook saat package di-import. (Python 3 punya namespace packages tanpa file ini, tapi file ini tetap standard.)"
+      ]
+    },
+    {
+      "id": "py-mod-math",
+      "topic": "modules-packages",
+      "prompt": "Diketahui `import math`. Cara benar mengakses konstanta pi adalah…",
+      "options": [
+        "math.pi",
+        "pi",
+        "Math.pi",
+        "math[\"pi\"]"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Anggota module diakses dengan dot notation: `math.pi`.",
+        "Salah. `pi` tidak di-import ke namespace global (kecuali `from math import pi`).",
+        "Salah. Module-nya lowercase `math`.",
+        "Salah. Module bukan dict."
+      ]
+    },
+    {
+      "id": "py-mod-cache",
+      "topic": "modules-packages",
+      "prompt": "Saat `import modul_x` dipanggil dua kali dalam satu program, kode `modul_x`…",
+      "options": [
+        "Hanya dieksekusi saat ada error",
+        "Dieksekusi sekali; hasil cached di `sys.modules`",
+        "Dieksekusi dua kali",
+        "Tidak dieksekusi sama sekali"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Eksekusi terjadi pada import pertama, selalu.",
+        "Benar. Import pertama menjalankan modul dan menyimpannya di `sys.modules`; import selanjutnya mengambil dari cache.",
+        "Salah. Caching-nya persis untuk menghindari eksekusi ulang.",
+        "Salah. Tetap dijalankan sekali."
+      ]
+    },
+    {
+      "id": "py-mod-freeze",
+      "topic": "modules-packages",
+      "prompt": "Perintah untuk menghasilkan daftar paket terinstall (buat requirements.txt) adalah…",
+      "options": [
+        "pip dump",
+        "python -m packages",
+        "pip freeze",
+        "pip list --freeze"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Tidak ada subcommand `dump`.",
+        "Salah. Modul `packages` tidak ada di stdlib.",
+        "Benar. `pip freeze` mencetak `pkg==versi` per baris — standard untuk mengunci dependensi.",
+        "Salah. `pip list` ada, tapi flag `--freeze` bukan milik-nya."
+      ]
+    },
+    {
+      "id": "py-mod-env",
+      "topic": "modules-packages",
+      "prompt": "Cara membaca environment variable `DB_HOST` dari Python adalah…",
+      "options": [
+        "env.DB_HOST",
+        "getenv.DB_HOST",
+        "os.env[\"DB_HOST\"]",
+        "os.environ[\"DB_HOST\"]"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Tidak ada modul global bernama `env`.",
+        "Salah. `getenv` adalah fungsi `os.getenv`, bukan module.",
+        "Salah. Namanya `os.environ`, bukan `os.env`.",
+        "Benar. `os.environ` adalah mapping ke env vars (atau `os.getenv(\"DB_HOST\", default)`)."
+      ]
+    },
+    {
+      "id": "py-io-wmode",
+      "topic": "file-io",
+      "prompt": "Efek membuka file dengan `open(\"data.txt\", \"w\")` saat file sudah berisi data adalah…",
+      "options": [
+        "Isi lama di-truncate (dikosongkan) sebelum ditulis",
+        "Menyambung di akhir file",
+        "Error: file sudah ada",
+        "Isi lama dipertahankan"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Mode `w` = write — file dibuat/dikosongkan total. Untuk menyambung: mode `a`.",
+        "Salah. Itu mode `a` (append).",
+        "Salah. File yang ada dengan senang hati ditimpa.",
+        "Salah. Justru dihapus total."
+      ]
+    },
+    {
+      "id": "py-io-amode",
+      "topic": "file-io",
+      "prompt": "Mode `\"a\"` pada `open()` artinya…",
+      "options": [
+        "Baca lalu tulis",
+        "Append — tulis di akhir, buat file jika belum ada",
+        "ASCII-only",
+        "Atomic write"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. `a` hanya tulis (append), tidak baca.",
+        "Benar. `a` = append: pointer ke akhir file; file non-existing dibuat otomatis.",
+        "Salah. Encoding ditentukan parameter `encoding`, bukan mode.",
+        "Salah. Python tidak menjamin atomicity dari mode `a`."
+      ]
+    },
+    {
+      "id": "py-io-with",
+      "topic": "file-io",
+      "prompt": "Keuntungan `with open(\"f.txt\") as fh: ...` adalah…",
+      "options": [
+        "File di-encrypt otomatis",
+        "Bisa membuka 2 file sekaligus",
+        "File otomatis di-close saat keluar blok, exception atau tidak",
+        "File dibaca dua kali lebih cepat"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Tidak ada magic encryption.",
+        "Salah. `with open(f1) as a, open(f2) as b:` memang bisa — tapi bukan alasan utama; jawaban soal: auto-close.",
+        "Benar. Context manager memastikan `fh.close()` dipanggil via `__exit__` — tidak ada file handle yang bocor.",
+        "Salah. Soal resource safety, bukan speed."
+      ]
+    },
+    {
+      "id": "py-io-json",
+      "topic": "file-io",
+      "prompt": "Perbedaan `json.load(f)` dan `json.loads(s)` adalah…",
+      "options": [
+        "`loads` lebih cepat",
+        "Tidak ada perbedaan",
+        "`load` hanya untuk list",
+        "`load` membaca dari file object; `loads` meng-parse string"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Keduanya parse JSON; perbedaan sumber datanya.",
+        "Salah. Sumber datanya beda — file vs string.",
+        "Salah. Keduanya parse object JSON apa pun (dict/list).",
+        "Benar. Konvensi stdlib: `load` = dari stream/file, `loads` = dari string (s = 'string')."
+      ]
+    },
+    {
+      "id": "py-io-csv",
+      "topic": "file-io",
+      "prompt": "Keuntungan modul `csv` dibanding parse manual `line.split(\",\")` adalah…",
+      "options": [
+        "Menangani quote, newline di dalam field, delimiter custom — sesuai RFC 4180",
+        "Lebih cepat selalu",
+        "Mengganti CSV jadi JSON",
+        "Hanya untuk file kecil"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Field CSV bisa berisi koma/kutipan/baris baru — `csv` module menanganinya dengan benar; `split` mentah akan salah.",
+        "Salah. `csv` Python kadang justru lebih lambat dari split; keunggulannya kebenaran parsing.",
+        "Salah. Format tetap CSV; konversi manual via dict.",
+        "Salah. Justru untuk file besar — bisa di-iterate baris demi baris."
+      ]
+    },
+    {
+      "id": "py-io-pathlib",
+      "topic": "file-io",
+      "prompt": "Diketahui `from pathlib import Path`. Ekspresi `Path(\"a/b\") / \"c.txt\"` menghasilkan…",
+      "options": [
+        "Error: Path tidak bisa di-operator /",
+        "Path(\"a/b/c.txt\")",
+        "Path(\"a/b/c.txt/\")",
+        "String \"a/b/c.txt\""
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. `/` adalah operator resmi Path.",
+        "Benar. Operator `/` menggabungkan path components — gaya pathlib yang lebih enak dibanding `os.path.join`.",
+        "Salah. Tidak ada trailing slash.",
+        "Salah. Hasilnya object `Path`, bukan str (walau `str()`-nya `\"a/b/c.txt\"`)."
+      ]
+    },
+    {
+      "id": "py-io-binary",
+      "topic": "file-io",
+      "prompt": "Mode `\"rb\"` pada `open()` membaca file sebagai…",
+      "options": [
+        "List of str",
+        "JSON",
+        "Byte sequence (bytes)",
+        "Teks dengan encoding UTF-8"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. `read()` binary mengembalikan satu `bytes`, bukan list.",
+        "Salah. Binary tidak tahu format konten; JSON butuh `json` module.",
+        "Benar. `b` = binary: mengembalikan `bytes` — wajib untuk gambar, PDF, dll. Teks: mode `r` + `encoding`.",
+        "Salah. Encoding hanya relevan mode teks."
+      ]
+    },
+    {
+      "id": "py-io-readlines",
+      "topic": "file-io",
+      "prompt": "Perbedaan `f.read()` dan `f.readlines()` adalah…",
+      "options": [
+        "Tidak ada perbedaan",
+        "`readlines()` lebih hemat memori selalu",
+        "`read()` hanya untuk binary",
+        "`read()` = seluruh isi jadi satu string; `readlines()` = list string per baris"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Bentuk return-nya beda.",
+        "Salah. `readlines()` memuat SEMUA baris ke memori — tidak selalu hemat.",
+        "Salah. `read()` untuk teks maupun binary.",
+        "Benar. `read()` satu blob; `readlines()` memecah per baris (termasuk `\\n`). Untuk file besar, iterasi langsung `for line in f` paling hemat."
+      ]
+    },
+    {
+      "id": "py-io-exists",
+      "topic": "file-io",
+      "prompt": "Diketahui `from pathlib import Path`. Cara benar memeriksa keberadaan file `data.txt` adalah…",
+      "options": [
+        "Path(\"data.txt\").exists()",
+        "os.exists(\"data.txt\")",
+        "if data.txt:",
+        "open(\"data.txt\") tanpa except"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `Path.exists()` adalah API pathlib — mengembalikan bool, tidak melempar exception.",
+        "Salah. Tidak ada fungsi `os.exists`; yang ada `os.path.exists` (legacy) — `os.exists` NameError/AttributeError.",
+        "Salah. `if data.txt:` memeriksa truthiness variabel, bukan file di disk.",
+        "Salah. `open` tanpa except melempar `FileNotFoundError` saat file tidak ada — itu EAFP, bukan memeriksa."
+      ]
+    },
+    {
+      "id": "py-io-encoding",
+      "topic": "file-io",
+      "prompt": "Mengapa sebaiknya selalu memberi `encoding=\"utf-8\"` saat `open()` teks? (Python 3)",
+      "options": [
+        "Wajib untuk file besar",
+        "Default-nya bergantung locale OS — bisa beda antar mesin; eksplisit = deterministik",
+        "UTF-8 lebih cepat dari encoding lain",
+        "Tanpa encoding file jadi binary"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Ukuran file tidak relevan.",
+        "Benar. Default `open()` pakai `locale.getpreferredencoding()` — di Windows legacy bisa cp1252, di Linux UTF-8. Eksplisit menghindari bug 'works on my machine'.",
+        "Salah. Kecepatan bukan faktor penentu.",
+        "Salah. File tetap teks; encoding hanya menentukan interpretasi byte."
+      ]
+    },
+    {
+      "id": "py-gen-yield",
+      "topic": "generators-iterators",
+      "prompt": "Fungsi yang memakai `yield` disebut generator; sifatnya yang utama adalah…",
+      "options": [
+        "Hanya bisa menghasilkan angka",
+        "Tidak bisa di-iterate",
+        "Lazy — nilai dihasilkann satu per satu saat di-iterate, state dijaga di antara yield",
+        "Semua nilai dihitung sekaligus di awal"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Bisa yield object apa pun.",
+        "Salah. Generator adalah iterator — `next()` / `for` jalan.",
+        "Benar. Generator = lazy iterator: memori O(1) per nilai, eksekusi berlanjut dari yield terakhir.",
+        "Salah. Justru sebaliknya — itu list comprehension."
+      ]
+    },
+    {
+      "id": "py-gen-next",
+      "topic": "generators-iterators",
+      "prompt": "Diketahui `g = (x*2 for x in range(3))`. Hasil `next(g)` pertama adalah…",
+      "options": [
+        "2",
+        "4",
+        "StopIteration",
+        "0"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. `2` adalah hasil `next(g)` kedua (x=1).",
+        "Salah. `4` adalah yang ketiga.",
+        "Salah. Generator masih punya nilai — `StopIteration` saat habis.",
+        "Benar. Nilai pertama generator: `x=0` → `0*2 = 0`."
+      ]
+    },
+    {
+      "id": "py-gen-stopiter",
+      "topic": "generators-iterators",
+      "prompt": "Exception yang dilempar `next()` saat iterator sudah habis adalah…",
+      "options": [
+        "StopIteration",
+        "IndexError",
+        "StopError",
+        "EmptyIterator"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Kontrak iterator: `next()` melempar `StopIteration` saat habis — `for` menangkapnya diam-diam.",
+        "Salah. `IndexError` untuk sequence indexing.",
+        "Salah. Tidak ada `StopError` di stdlib.",
+        "Salah. Namanya `StopIteration`."
+      ]
+    },
+    {
+      "id": "py-gen-range",
+      "topic": "generators-iterators",
+      "prompt": "`range(1_000_000)` lebih hemat memori dibanding `list(range(1_000_000))` karena…",
+      "options": [
+        "range di-cache OS",
+        "range object menyimpan hanya start/stop/step, nilai dihitung saat diakses",
+        "range tidak menyimpan apa-apa",
+        "list tidak bisa berisi angka"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Tidak ada magic OS di sini.",
+        "Benar. `range` adalah sequence lazy (PEP 3141) — O(1) memori; `list(...)` materialisasi sejuta int.",
+        "Salah. Menyimpan parameter-nya, bukan 'tidak menyimpan apa-apa'.",
+        "Salah. List int adalah hal paling umum."
+      ]
+    },
+    {
+      "id": "py-gen-chain",
+      "topic": "generators-iterators",
+      "prompt": "Fungsi `itertools.chain(a, b, c)` adalah…",
+      "options": [
+        "Menggabungkan jadi set",
+        "Memilih satu iterable secara acak",
+        "Menghubungkan beberapa iterable jadi satu iterasi berurutan (tanpa membuat list baru)",
+        "Mengambil nilai terkecil dari tiga iterable"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Duplikat tetap dipertahankan; bukan set.",
+        "Salah. Urutannya deterministik: a lalu b lalu c.",
+        "Benar. `chain([1,2],[3])` → iterasi 1,2,3 secara lazy — pengganti `a + b + c` tanpa alokasi list.",
+        "Salah. Itu lebih ke `min` per elemen."
+      ]
+    },
+    {
+      "id": "py-gen-sumgen",
+      "topic": "generators-iterators",
+      "prompt": "Apa hasil dari `sum(x*x for x in range(4))`?",
+      "options": [
+        "10",
+        "[0,1,4,9]",
+        "Error: sum butuh list",
+        "14"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. 10 adalah `sum(range(4))` tanpa kuadrat.",
+        "Salah. Itu list comprehension; `sum` mengembalikan int.",
+        "Salah. `sum` menerima iterable apa pun, termasuk generator.",
+        "Benar. 0²+1²+2²+3² = 0+1+4+9 = 14 — generator expression langsung masuk `sum` tanpa list sementara."
+      ]
+    },
+    {
+      "id": "py-gen-once",
+      "topic": "generators-iterators",
+      "prompt": "Generator expression SUDAH di-iterate (habis). Jika di-iterate ulang, hasilnya…",
+      "options": [
+        "Kosong (exhausted) — generator single-use",
+        "Hasil sama seperti pertama",
+        "Error: cannot reuse",
+        "Membuat generator baru otomatis"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Generator tidak menyimpan nilai yang sudah di-yield — setelah habis, iterasi ulang langsung selesai. (List comprehension yang bisa diulang.)",
+        "Salah. Tidak ada replay.",
+        "Salah. Tidak ada error — cuma kosong.",
+        "Salah. Object generator yang sama tetap exhausted."
+      ]
+    },
+    {
+      "id": "py-gen-iter",
+      "topic": "generators-iterators",
+      "prompt": "Builtn `iter([1, 2, 3])` mengembalikan…",
+      "options": [
+        "Integer 1",
+        "Iterator untuk list itu — `next()`-nya menghasilkan 1, 2, 3",
+        "Salinan list",
+        "Tuple"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. `next(iter([1,2,3]))` yang menghasilkan 1.",
+        "Benar. `iter(seq)` menghasilkan list_iterator; protokol iterator = `__iter__` + `__next__`.",
+        "Salah. Bukan copy data — hanya wrapper iterasi.",
+        "Salah. Bukan tuple."
+      ]
+    },
+    {
+      "id": "py-gen-enumerate",
+      "topic": "generators-iterators",
+      "prompt": "Output dari `list(enumerate([\"a\", \"b\"]))` adalah…",
+      "options": [
+        "[0, 1]",
+        "\"a\", \"b\"",
+        "[(0, 'a'), (1, 'b')]",
+        "[('a', 0), ('b', 1)]"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Item-nya ikut, bukan cuma index.",
+        "Salah. Bentuknya list of tuples.",
+        "Benar. `enumerate` menghasilkan pasangan (index, item) mulai dari 0 — idiom untuk loop berindex.",
+        "Salah. Index-nya di depan, bukan belakang."
+      ]
+    },
+    {
+      "id": "py-gen-filter",
+      "topic": "generators-iterators",
+      "prompt": "Cara Pythonic membuat list angka genap dari `nums` adalah…",
+      "options": [
+        "filter(x % 2 == 0, nums)",
+        "[x for x in nums % 2]",
+        "map(lambda x: x % 2, nums)",
+        "[x for x in nums if x % 2 == 0]"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. `filter` butuh predicate function: `filter(lambda x: x % 2 == 0, nums)`.",
+        "Salah. Syntax-nya salah — `if`-nya hilang, `x % 2` tidak valid di posisi itu.",
+        "Salah. `map` itu transform, bukan filter — hasilnya sisa bagi, bukan elemen genap.",
+        "Benar. List comprehension dengan `if` — paling readable untuk filter sederhana."
+      ]
+    },
+    {
+      "id": "py-dec-wrap",
+      "topic": "decorators-contextlib",
+      "prompt": "Dekurator `@mydec` di atas `def f():` secara teknis setara dengan…",
+      "options": [
+        "f = mydec(f)",
+        "mydec(f)",
+        "f(mydec)",
+        "def f = mydec"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Decorator adalah sugar: `@mydec` = `f = mydec(f)` — function dibungkus dan nama-nya di-rebind.",
+        "Salah. Tanpa assignment ke `f`, nama function asli tetap menunjuk function lama.",
+        "Salah. Arah pemanggilannya terbalik.",
+        "Salah. Bukan syntax def yang valid."
+      ]
+    },
+    {
+      "id": "py-dec-static",
+      "topic": "decorators-contextlib",
+      "prompt": "Peran `@staticmethod` adalah…",
+      "options": [
+        "Method abstract",
+        "Method tanpa akses `self`/`cls` — murni utility yang terikat namespace class",
+        "Method yang hanya bisa dipanggil dari class",
+        "Method yang di-cache"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Abstract = `abc.abstractmethod`.",
+        "Benar. `@staticmethod` untuk helper yang kebetulan berhubungan dengan class — tidak menerima instance/class pertama.",
+        "Salah. Bisa dipanggil dari instance juga (`obj.m()`).",
+        "Salah. Tidak ada caching otomatis (itu `lru_cache`)."
+      ]
+    },
+    {
+      "id": "py-dec-class",
+      "topic": "decorators-contextlib",
+      "prompt": "Peran `@classmethod` (parameter pertama `cls`) adalah…",
+      "options": [
+        "Method tanpa parameter",
+        "Method yang hanya jalan sekali",
+        "Method yang menerima CLASS sebagai argumen pertama — sering dipakai factory method",
+        "Method per-instance"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Minimal ada `cls`.",
+        "Salah. Bisa dipanggil berkali-kali.",
+        "Benar. `cls` = class pemanggil — mendukung factory (`Person.from_json(...)`) yang tetap menghormati inheritance.",
+        "Salah. `self` = instance; `cls` = class."
+      ]
+    },
+    {
+      "id": "py-dec-wraps",
+      "topic": "decorators-contextlib",
+      "prompt": "Mengapa dekorator sebaiknya memakai `functools.wraps(func)`? (lanjutan)",
+      "options": [
+        "Mempercepat wrapper",
+        "Membuat wrapper thread-safe",
+        "Wajib secara sintaks",
+        "Menyalin metadata `__name__`, `__doc__`, dll agar function asli tidak 'hilang' di balik wrapper"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Soal metadata, bukan speed.",
+        "Salah. Tidak ada hubungannya dengan threading.",
+        "Salah. Opsional secara syntax — tapi wajib secara praktik.",
+        "Benar. Tanpa `wraps`, `f.__name__` jadi nama wrapper (mis. `wrapper`), `__doc__` hilang — debugging dan docstring rusak."
+      ]
+    },
+    {
+      "id": "py-dec-factory",
+      "topic": "decorators-contextlib",
+      "prompt": "Dekorator DENGAN argumen (mis. `@repeat(3)`) secara teknis berbentuk…",
+      "options": [
+        "Factory: `repeat(3)` mengembalikan dekorator yang membungkus function",
+        "`repeat` langsung menerima function",
+        "Class decorator",
+        "Tidak mungkin di Python"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Tiga level: `repeat(3)` → decorator → diaplikasikan ke function. Parameter decorator butuh satu tingkat nesting ekstra.",
+        "Salah. `repeat(3)` menghasilkan decorator dulu; function-nya baru masuk di level berikutnya.",
+        "Salah. `repeat(3)` dipakai di function, bukan class (walau bisa juga).",
+        "Salah. Dekorator berargumen sangat umum (mis. `@app.route(\"/x\")`)."
+      ]
+    },
+    {
+      "id": "py-dec-ctxmgr",
+      "topic": "decorators-contextlib",
+      "prompt": "Deklarasi `@contextlib.contextmanager` + `yield` di generator membuat…",
+      "options": [
+        "Iterator biasa",
+        "Context manager — `__enter__` = nilai yield, `__exit__` = code setelah yield",
+        "Decorator untuk method",
+        "Property"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Meskipun berupa generator, kontraknya context manager.",
+        "Benar. Code sebelum `yield` = setup/`__enter__`; setelah `yield` = teardown/`__exit__` — context manager tanpa class.",
+        "Salah. Dipakai di `with`, bukan di atas function.",
+        "Salah. Itu `@property`."
+      ]
+    },
+    {
+      "id": "py-dec-enter",
+      "topic": "decorators-contextlib",
+      "prompt": "Dua dunder yang WAJIB diimplementasikan context manager berbasis class adalah…",
+      "options": [
+        "`__open__` dan `__close__`",
+        "`__start__` dan `__stop__`",
+        "`__enter__` dan `__exit__`",
+        "`__init__` dan `__del__`"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Nama-nama itu bukan dunder context manager.",
+        "Salah. Bukan protocol resmi.",
+        "Benar. `with X() as v:` memanggil `X().__enter__()` → `v`, lalu `__exit__(exc_type, ...)` saat keluar.",
+        "Salah. `__del__` bukan bagian protokol with."
+      ]
+    },
+    {
+      "id": "py-dec-lrucache",
+      "topic": "decorators-contextlib",
+      "prompt": "Fungsi `@functools.lru_cache(maxsize=128)` adalah…",
+      "options": [
+        "Membatasi ukuran file",
+        "Menjaga function thread-safe",
+        "Mengubah function jadi generator",
+        "Memoization: cache hasil function berdasarkan argumen — panggilan berulang dengan argumen sama langsung mengembalikan cache"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. `maxsize` = jumlah entri cache, bukan file.",
+        "Salah. Thread-safety `lru_cache` terbatas; bukan tujuan utamanya.",
+        "Salah. Return value-nya tetap return value function.",
+        "Benar. Untuk function murni yang mahal, `lru_cache` mengubah O(n) berulang menjadi O(1) per argunik unik — classic speedup."
+      ]
+    },
+    {
+      "id": "py-dec-timeit",
+      "topic": "decorators-contextlib",
+      "prompt": "Modul `timeit` dari stdlib dipakai untuk…",
+      "options": [
+        "Benchmarking — mengukur waktu eksekusi snippet kode secara statistik (banyak run, best-of)",
+        "Menghentikan kode yang lambat",
+        "Profil memory",
+        "Sleep thread"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `timeit.timeit(stmt, number=N)` menjalankan snippet N kali dan melaporkan total — alat perbandingan algoritma yang lebih andal dari `time.time()` sekali jalan.",
+        "Salah. Tidak ada intervensi runtime.",
+        "Salah. Profil memory = `tracemalloc`/`memray`.",
+        "Salah. Itu `time.sleep`."
+      ]
+    },
+    {
+      "id": "py-dec-partial",
+      "topic": "decorators-contextlib",
+      "prompt": "Fungsi `functools.partial(f, 10)` menghasilkan…",
+      "options": [
+        "Error jika f butuh argumen lain",
+        "Callable baru = f dengan argumen 10 sudah terikat di depan",
+        "Hasil eksekusi f(10)",
+        "Kopien function f"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Argumen sisanya boleh diberikan saat memanggil callable baru.",
+        "Benar. `partial` = currying praktis: `p = partial(pow, 2)` lalu `p(3)` → 9. Argumen terikat, sisanya tinggal diisi.",
+        "Salah. `f` belum dieksekusi — baru callable yang siap dipanggil.",
+        "Salah. Bukan copy; wrapper dengan argumen terikat."
+      ]
+    },
+    {
+      "id": "py-test-pytest",
+      "topic": "testing-quality",
+      "prompt": "Di pytest, fungsi dengan prefix `test_` di file `test_*.py` akan…",
+      "options": [
+        "Wajib punya docstring",
+        "Hanya jalan jika dipanggil manual",
+        "Dikoleksi dan dijalankan otomatis sebagai test case",
+        "Diabaikan oleh pytest"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Docstring opsional.",
+        "Salah. Otomatis via `pytest` di terminal.",
+        "Benar. Discovery pytest = pola nama file + fungsi `test_*` — tanpa decorator apa pun, `pytest` cukup.",
+        "Salah. Justru itu pola default discovery."
+      ]
+    },
+    {
+      "id": "py-test-raises",
+      "topic": "testing-quality",
+      "prompt": "Cara pytest memeriksa bahwa kode MELEMPAR exception tertentu adalah…",
+      "options": [
+        "assert raises(ValueError)",
+        "expect(ValueError).toRaise()",
+        "pytest.check_raise(ValueError)",
+        "with pytest.raises(ValueError): ..."
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Bukan syntax pytest.",
+        "Salah. Itu gaya Jasmine/JS.",
+        "Salah. Tidak ada API `check_raise`.",
+        "Benar. `pytest.raises` adalah context manager — test lulus jika exception itu muncul di dalam blok."
+      ]
+    },
+    {
+      "id": "py-test-mock",
+      "topic": "testing-quality",
+      "prompt": "Peran `unittest.mock.patch(\"modul.Foo\")` dalam test adalah…",
+      "options": [
+        "Mengganti atribut `Foo` di `modul` dengan Mock selama test — isolasi dependensi (DB, HTTP, waktu)",
+        "Menghapus class Foo dari memori",
+        "Meng-speed-up seluruh suite",
+        "Mengganti hanya di production"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. `patch` menukar target dengan mock (context manager/decorator) — test jadi unit: tidak menyentuh API/DB asli.",
+        "Salah. Setelah test, patch dilepas — object asli kembali.",
+        "Salah. Efeknya pada code path yang di-mock, bukan suite keseluruhan.",
+        "Salah. `patch` hanya aktif selama test berjalan."
+      ]
+    },
+    {
+      "id": "py-test-mypy",
+      "topic": "testing-quality",
+      "prompt": "Fungsi `mypy` (static type checker) adalah…",
+      "options": [
+        "Formatter code",
+        "Memeriksa konsistensi type hint TANPA menjalankan kode — menangkap bug tipe di waktu development",
+        "Compiler Python jadi binary",
+        "Profil performa runtime"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Formatter = `black`/`ruff format`.",
+        "Benar. `mypy app/` menganalisis annotation — mis. fungsi mengembalikan int tapi dipanggil sebagai method str akan ter-flag.",
+        "Salah. Python tetap interpreted; mypy tidak menghasilkan binary.",
+        "Salah. Tidak ada eksekusi → bukan profiling."
+      ]
+    },
+    {
+      "id": "py-test-assert",
+      "topic": "testing-quality",
+      "prompt": "Di test pytest, `assert result == 42` lebih disukai dibanding `unittest.TestCase` karena…",
+      "options": [
+        "assert lebih cepat selalu",
+        "TestCase tidak bisa assert",
+        "pytest melakukan introspeksi assert — saat gagal menampilkan nilai tiap sub-ekspresi (assert rewriting)",
+        "assert dihapus saat production"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Perbedaannya kualitas pesan error, bukan speed.",
+        "Salah. TestCase punya `self.assertEqual` — hanya gaya berbeda.",
+        "Benar. Pytest 'mere-write' statement assert sehingga error message-nya detail (mis. `assert 40 == 42` dengan breakdown) — tanpa boilerplate.",
+        "Salah. `assert` tanpa `PYTHONOPTIMIZE` tetap ada di runtime; pytest menggunakannya di test."
+      ]
+    },
+    {
+      "id": "py-test-param",
+      "topic": "testing-quality",
+      "prompt": "Keuntungan `@pytest.mark.parametrize` adalah…",
+      "options": [
+        "Membuat test paralel otomatis",
+        "Mengurangi jumlah test yang dijalankan",
+        "Hanya untuk test database",
+        "Satu test function dijalankan N kali dengan dataset berbeda — tanpa duplikasi kode test"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Paralel itu `pytest-xdist`; parametrize soal variasi input.",
+        "Salah. Justru menambah jumlah eksekusi (per parameter).",
+        "Salah. Berguna untuk SEMUA test yang butuh variasi input.",
+        "Benar. `@parametrize(\"x,exp\", [(1,2),(2,4)])` = satu definisi, banyak kasus — report per kasus tetap terpisah."
+      ]
+    },
+    {
+      "id": "py-test-trap",
+      "topic": "testing-quality",
+      "prompt": "Diketahui:\n```python\ndef f(a, b=[]):\n    b.append(a)\n    return b\nprint(f(1))\nprint(f(2))\n```\nOutputnya…",
+      "options": [
+        "[1]\\n[1, 2]",
+        "[1]\\n[2]",
+        "[1, 2]\\n[1, 2]",
+        "TypeError"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Default `[]` dibuat sekali saat def — kedua panggil share list yang sama (mutable default trap).",
+        "Salah. State `b` persist antar pemanggilan.",
+        "Salah. Panggilan pertama hanya `[1]`.",
+        "Salah. Code-nya valid Python — hanya jebakan state."
+      ]
+    },
+    {
+      "id": "py-test-truthy",
+      "topic": "testing-quality",
+      "prompt": "Kelompok nilai yang SEMUANYA FALSY di Python adalah…",
+      "options": [
+        "[0], (0,)",
+        "0, \"\", [], {}, None",
+        "0, None, \"0\"",
+        "0.0, [0]"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. `[0]` dan `(0,)` keduanya non-kosong — TRUTHY.",
+        "Benar. Falsy: `None`, `False`, angka 0 (int/float), container kosong (str/list/dict/set/tuple). Jebakan klasik: `\"0\"` (string berisi nol) itu TRUTHY!",
+        "Salah. `\"0\"` itu string non-kosong — TRUTHY.",
+        "Salah. `[0]` berisi satu elemen — TRUTHY (yang falsy list kosong `[]`)."
+      ]
+    },
+    {
+      "id": "py-test-intern",
+      "topic": "testing-quality",
+      "prompt": "Diketahui `a = \"abc\"; b = \"abc\"`. Hasil `a is b` biasanya `True` karena…",
+      "options": [
+        "Variabel selalu menyalin object",
+        "Tidak ada hubungannya dengan CPython",
+        "String interned — CPython menyimpan string literal identik di pool yang sama",
+        "`is` selalu sama dengan `==` untuk semua tipe"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. `a = b` = alias (menunjuk object sama), bukan salinan.",
+        "Salah. Perilaku intern adalah detail implementasi CPython.",
+        "Benar. CPython meng-intern literal string (dan beberapa angka kecil) — dua literal identik berbagi object. Tapi JANGAN pakai `is` untuk bandingkan string secara umum: `==` untuk nilai, `is` untuk identitas (`None`!).",
+        "Salah. Untuk list: `a == b` bisa True sementara `a is b` False."
+      ]
+    },
+    {
+      "id": "py-test-boolint",
+      "topic": "testing-quality",
+      "prompt": "Apa hasil dari `print(1 == True, 0 == False)`?",
+      "options": [
+        "False False",
+        "True False",
+        "Error: int tidak bisa dibandingkan bool",
+        "True True"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Persis karena bool adalah subclass int.",
+        "Salah. Keduanya True.",
+        "Salah. Perbandingan int-bool sah di Python.",
+        "Benar. Di Python, `bool` adalah SUBCLASS `int` — `True` adalah 1, `False` adalah 0. Konsekuensinya `1 == True` True (sebab itu linter meng-flag perbandingan int-bool)."
+      ]
+    }
+  ]
+}
