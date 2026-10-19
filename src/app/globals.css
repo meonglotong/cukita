@@ -116,7 +116,41 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); }
 .topbar .brand .logo-dark { display: none; mix-blend-mode: screen; }
 :root[data-theme="dark"] .topbar .brand .logo-light { display: none; }
 :root[data-theme="dark"] .topbar .brand .logo-dark { display: block; }
-.topbar .userchip { margin-left: auto; display: flex; align-items: center; gap: 14px; font-size: 14px; color: var(--fg); white-space: nowrap; }
+/* ---- user menu (dropdown ala Grafana, biar tidak numpuk di topbar) ---- */
+.usermenu { position: relative; margin-left: auto; flex-shrink: 0; }
+.usermenu-btn {
+  display: flex; align-items: center; gap: 8px; cursor: pointer;
+  border: 1px solid var(--border); background: var(--surface);
+  border-radius: 999px; padding: 4px 12px 4px 4px;
+  color: var(--fg); font-size: 14px; font-family: inherit;
+}
+.usermenu-btn:hover, .usermenu-btn.open { border-color: var(--accent); }
+.usermenu-avatar {
+  width: 28px; height: 28px; border-radius: 999px; flex-shrink: 0;
+  background: var(--accent); color: var(--accent-on);
+  display: grid; place-items: center; font-size: 13px; font-weight: 700;
+}
+.usermenu-avatar.lg { width: 40px; height: 40px; font-size: 17px; }
+.usermenu-name { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.usermenu-chev { color: var(--muted); font-size: 11px; line-height: 1; }
+.usermenu-drop {
+  position: absolute; top: calc(100% + 8px); right: 0; width: 240px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18); padding: 8px; z-index: 20;
+}
+.usermenu-head { display: flex; align-items: center; gap: 10px; padding: 8px 10px; }
+.usermenu-head-text { display: grid; line-height: 1.25; min-width: 0; }
+.usermenu-head-text strong { font-size: 14px; font-weight: 600; color: var(--fg); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.usermenu-head-text small { font-size: 12px; color: var(--muted); }
+.usermenu-sep { height: 1px; background: var(--border); margin: 6px 4px; }
+.usermenu-item {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  padding: 9px 10px; border: none; border-radius: 8px; background: none;
+  color: var(--fg); font-size: 14px; font-family: inherit; cursor: pointer; text-align: left;
+}
+.usermenu-item:hover { background: var(--accent-soft); text-decoration: none; }
+.usermenu-item:disabled { opacity: 0.6; cursor: default; }
+.usermenu-item svg { flex-shrink: 0; color: var(--muted); }
 .theme-toggle {
   width: 36px; height: 36px; border-radius: 999px; flex-shrink: 0;
   border: 1px solid var(--border); background: var(--surface);
@@ -126,7 +160,7 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); }
 .theme-toggle:hover { border-color: var(--accent); }
 .topbar .brand { text-decoration: none; }
 .topbar .brand:hover { text-decoration: none; }
-.acct-link { font-size: 13px; color: var(--muted); }
+
 .searchbox { flex: 1; max-width: 480px; }
 .searchbox input {
   width: 100%; padding: 9px 16px; border: 1px solid var(--border);

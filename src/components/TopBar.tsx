@@ -2,6 +2,7 @@
 import { auth, signOut } from "@/lib/auth";
 import { SearchBox } from "./SearchBox";
 import { ThemeToggle } from "./ThemeToggle";
+import { UserMenu } from "./UserMenu";
 
 export async function TopBar() {
   const session = await auth();
@@ -16,16 +17,15 @@ export async function TopBar() {
       <a className="topbar-nav" href="/test">Skill Test</a>
       <SearchBox />
       <ThemeToggle />
-      <div className="userchip">
-        {canManageUsers ? (
-          <a href="/admin/users">Admin</a>
-        ) : null}
-        <a href="/account" className="acct-link">Ganti password</a>
-        <span>{session?.user.name}</span>
-        <form action={async () => { "use server"; await signOut({ redirectTo: "/login" }); }}>
-          <button className="btn" type="submit">Logout</button>
-        </form>
-      </div>
+      <UserMenu
+        name={session?.user.name ?? "User"}
+        role={session?.user.role ?? "user"}
+        canManageUsers={canManageUsers}
+        onSignOut={async () => {
+          "use server";
+          await signOut({ redirectTo: "/login" });
+        }}
+      />
     </header>
   );
 }
