@@ -48,7 +48,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
               ? `https://login.microsoftonline.com/${process.env.AZURE_AD_TENANT}/v2.0`
               : undefined,
             // Link the OAuth identity to the local account by email, so an
-            // existing Cukita user keeps one session/identity.
+            // existing Gnosis user keeps one session/identity.
             allowDangerousEmailAccountLinking: true,
           }),
         ]

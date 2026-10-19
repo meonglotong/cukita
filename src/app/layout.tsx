@@ -3,14 +3,14 @@ import "./globals.css";
 import { ThemeSync } from "@/components/ThemeSync";
 
 export const metadata: Metadata = {
-  title: "CUKITA",
+  title: "Gnosis",
   description:
-    "CUKITA — Catatan Untuk Kita. Knowledge base tim: panduan, runbook, dan dokumentasi operasional numpuk di satu tempat.",
+    "Gnosis — Knowledge base tim: panduan, runbook, dan dokumentasi operasional numpuk di satu tempat.",
 };
 
 // Applies the stored (or system) theme before first paint so there is no
 // flash of the wrong theme. Mirrors resolveInitialTheme in src/lib/theme.ts.
-const themePrePaint = `(function(){try{var s=localStorage.getItem("cukita-theme");var t=(s==="light"||s==="dark")?s:(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.dataset.theme=t;}catch(e){}})();`;
+const themePrePaint = `(function(){try{var s=localStorage.getItem("gnosis-theme");var t=(s==="light"||s==="dark")?s:(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.dataset.theme=t;}catch(e){}})();`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

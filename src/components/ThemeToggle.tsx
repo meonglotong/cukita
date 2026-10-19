@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { currentTheme, toggleTheme, type Theme } from "@/lib/theme";
 
-// Light/dark switch for CUKITA. The pre-paint script in layout.tsx has
+// Light/dark switch for Gnosis. The pre-paint script in layout.tsx has
 // already applied the stored/system theme to the document before this
 // renders, so there is no flash; the button mirrors and flips it.
 //

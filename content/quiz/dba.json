@@ -151,12 +151,12 @@
     },
     {
       "id": "dba-pgdump-custom",
-      "prompt": "Buat backup database `cukita` dalam format custom (kompres, bisa restore paralel, bisa pilih objek). Command yang benar…",
+      "prompt": "Buat backup database `gnosis` dalam format custom (kompres, bisa restore paralel, bisa pilih objek). Command yang benar…",
       "options": [
-        "pg_dump -Fc -U app -d cukita > cukita.dump",
-        "pg_dump -F c app cukita",
-        "pg_dump cukita --custom > cukita.sql",
-        "pg_dumpall -Fc cukita"
+        "pg_dump -Fc -U app -d gnosis > gnosis.dump",
+        "pg_dump -F c app gnosis",
+        "pg_dump gnosis --custom > gnosis.sql",
+        "pg_dumpall -Fc gnosis"
       ],
       "correctIndex": 0,
       "explanations": [
@@ -169,12 +169,12 @@
     },
     {
       "id": "dba-pgrestore-parallel",
-      "prompt": "Restore file cukita.dump (custom format) ke database cukita_restore dengan 4 proses paralel. Command yang benar…",
+      "prompt": "Restore file gnosis.dump (custom format) ke database gnosis_restore dengan 4 proses paralel. Command yang benar…",
       "options": [
-        "pg_restore -d cukita_restore cukita.dump | xargs -P4",
-        "pg_restore -d cukita_restore -j 4 cukita.dump",
-        "pg_restore --parallel 4 cukita.dump -d cukita_restore",
-        "psql -d cukita_restore < cukita.dump"
+        "pg_restore -d gnosis_restore gnosis.dump | xargs -P4",
+        "pg_restore -d gnosis_restore -j 4 gnosis.dump",
+        "pg_restore --parallel 4 gnosis.dump -d gnosis_restore",
+        "psql -d gnosis_restore < gnosis.dump"
       ],
       "correctIndex": 1,
       "explanations": [
@@ -334,8 +334,8 @@
       "prompt": "Untuk logical replication, sisi PUBLISHER membuat objek yang memilih table mana yang direplikasi. Statement yang benar…",
       "options": [
         "CREATE REPLICATION pub1 TABLE orders;",
-        "PUBLISH DATABASE cukita TABLE orders;",
-        "ALTER DATABASE cukita REPLICA IDENTITY FULL;",
+        "PUBLISH DATABASE gnosis TABLE orders;",
+        "ALTER DATABASE gnosis REPLICA IDENTITY FULL;",
         "CREATE PUBLICATION pub1 FOR TABLE orders;"
       ],
       "correctIndex": 3,
@@ -498,25 +498,25 @@
         "echo \"work_mem = '64MB'\" >> postgresql.conf lalu restart",
         "ALTER SYSTEM SET work_mem = '64MB'; SELECT pg_reload_conf();",
         "SET work_mem = '64MB';",
-        "ALTER DATABASE cukita SET work_mem = '64MB';"
+        "ALTER DATABASE gnosis SET work_mem = '64MB';"
       ],
       "correctIndex": 1,
       "explanations": [
         "Salah. Bisa jalan, tapi edit manual + restart bukan cara yang diminta dan rawan typo/overwrite.",
         "Benar. `ALTER SYSTEM` menuliskan ke postgresql.auto.conf; `pg_reload_conf()` menerapkannya tanpa restart.",
         "Salah. `SET` hanya berlaku untuk sesi psql yang sedang berjalan.",
-        "Salah. `ALTER DATABASE ... SET` hanya untuk database cukita, bukan seluruh server."
+        "Salah. `ALTER DATABASE ... SET` hanya untuk database gnosis, bukan seluruh server."
       ],
       "topic": "operations"
     },
     {
       "id": "dba-dump-table-only",
-      "prompt": "Backup HANYA table orders dari database cukita (bukan seluruh database)…",
+      "prompt": "Backup HANYA table orders dari database gnosis (bukan seluruh database)…",
       "options": [
-        "pg_dump -T orders -d cukita > orders.sql",
+        "pg_dump -T orders -d gnosis > orders.sql",
         "pg_dumpall -t orders",
-        "pg_dump cukita orders",
-        "pg_dump -t orders -d cukita > orders.sql"
+        "pg_dump gnosis orders",
+        "pg_dump -t orders -d gnosis > orders.sql"
       ],
       "correctIndex": 3,
       "explanations": [
@@ -531,10 +531,10 @@
       "id": "dba-dump-schema-only",
       "prompt": "Ekspor hanya STRUKTUR (DDL) database — tanpa datanya — untuk setup environment staging…",
       "options": [
-        "pg_dump --schema-only -d cukita > cukita.sql",
-        "pg_dump --data-only -d cukita > cukita.sql",
-        "pg_dump --clean -d cukita > cukita.sql",
-        "pg_dump --if-exists -d cukita > cukita.sql"
+        "pg_dump --schema-only -d gnosis > gnosis.sql",
+        "pg_dump --data-only -d gnosis > gnosis.sql",
+        "pg_dump --clean -d gnosis > gnosis.sql",
+        "pg_dump --if-exists -d gnosis > gnosis.sql"
       ],
       "correctIndex": 0,
       "explanations": [
@@ -547,12 +547,12 @@
     },
     {
       "id": "dba-restore-list",
-      "prompt": "Sebelum restore, lihat isinya apa saja di file cukita.dump (format custom)…",
+      "prompt": "Sebelum restore, lihat isinya apa saja di file gnosis.dump (format custom)…",
       "options": [
-        "pg_restore --list cukita.dump",
-        "cat cukita.dump",
-        "pg_dump --list cukita.dump",
-        "zcat cukita.dump | less"
+        "pg_restore --list gnosis.dump",
+        "cat gnosis.dump",
+        "pg_dump --list gnosis.dump",
+        "zcat gnosis.dump | less"
       ],
       "correctIndex": 0,
       "explanations": [
@@ -568,7 +568,7 @@
       "prompt": "Ambil base backup PostgreSQL untuk replikasi/DR (konsisten, termasuk WAL yang diperlukan)…",
       "options": [
         "pg_basebackup -D /backup/base -X stream -c fast",
-        "pg_dump -Fc -d cukita > /backup/base.dump",
+        "pg_dump -Fc -d gnosis > /backup/base.dump",
         "rsync -a /var/lib/postgresql/data/ /backup/base/",
         "tar czf base.tgz /var/lib/postgresql/data"
       ],

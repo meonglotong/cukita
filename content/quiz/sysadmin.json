@@ -331,12 +331,12 @@
     },
     {
       "id": "sys-admin-borg-list",
-      "prompt": "Repo Borg di /backup/cukita berisi banyak archive. Untuk melihat daftar SEMUA archive beserta tanggalnya…",
+      "prompt": "Repo Borg di /backup/gnosis berisi banyak archive. Untuk melihat daftar SEMUA archive beserta tanggalnya…",
       "options": [
-        "borg show /backup/cukita",
-        "borg list /backup/cukita",
-        "borg ls /backup/cukita",
-        "borg info /backup/cukita"
+        "borg show /backup/gnosis",
+        "borg list /backup/gnosis",
+        "borg ls /backup/gnosis",
+        "borg info /backup/gnosis"
       ],
       "correctIndex": 1,
       "explanations": [

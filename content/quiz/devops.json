@@ -639,7 +639,7 @@
       "id": "devops-kubectl-exec",
       "prompt": "Jalankan `psql` sekali di dalam pod api-1 (container utama) untuk cek data…",
       "options": [
-        "kubectl exec api-1 -- psql -U app -d cukita",
+        "kubectl exec api-1 -- psql -U app -d gnosis",
         "kubectl exec psql api-1",
         "kubectl run psql --rm -it --image=postgres -- psql -h api-1",
         "kubectl port-forward api-1 5432"
@@ -817,7 +817,7 @@
     },
     {
       "id": "devops-k8s-ingress",
-      "prompt": "Route domain api.cukita.id → service api (path /) dan web.cukita.id → service web, di cluster yang sama…",
+      "prompt": "Route domain api.gnosis.id → service api (path /) dan web.gnosis.id → service web, di cluster yang sama…",
       "options": [
         "Ingress dengan 2 host rules",
         "Dua LoadBalancer service terpisah",
@@ -1033,7 +1033,7 @@
     },
     {
       "id": "devops-dns-a-cname",
-      "prompt": "Domain utama (apex) cukita.id harus menunjuk ke server 172.31.252.197. Record yang PALING AMAN di level apex…",
+      "prompt": "Domain utama (apex) gnosis.id harus menunjuk ke server 172.31.252.197. Record yang PALING AMAN di level apex…",
       "options": [
         "MX record ke 172.31.252.197",
         "A record (ip: 172.31.252.197)",

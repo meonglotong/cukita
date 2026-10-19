@@ -22,8 +22,8 @@ it("applyTheme sets the html data-theme and persists it", () => {
   delete (document.documentElement.dataset as Record<string, string>)["theme"];
   applyTheme("dark");
   expect(document.documentElement.dataset.theme).toBe("dark");
-  expect(localStorage.getItem("cukita-theme")).toBe("dark");
+  expect(localStorage.getItem("gnosis-theme")).toBe("dark");
   applyTheme("light");
   expect(document.documentElement.dataset.theme).toBe("light");
-  expect(localStorage.getItem("cukita-theme")).toBe("light");
+  expect(localStorage.getItem("gnosis-theme")).toBe("light");
 });

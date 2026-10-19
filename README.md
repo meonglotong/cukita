@@ -1,4 +1,4 @@
-# CUKITA — Catatan Untuk Kita
+# Gnosis — Knowledge Base Tim
 
 Knowledge base internal tim: semua dokumentasi (panduan, runbook, catatan meeting) numpuk di satu tempat, bisa dicari, dan bisa diedit siapa saja yang login.
 

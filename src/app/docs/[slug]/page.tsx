@@ -1,6 +1,6 @@
 // src/app/docs/[slug]/page.tsx
 // The page is the editor when the viewer may edit it (author or admin);
-// everyone else gets a read-only rendered view (CUKITA: cuma yang bikin
+// everyone else gets a read-only rendered view (Gnosis: cuma yang bikin
 // yang boleh ngedit).
 import { notFound } from "next/navigation";
 import { auth } from "@/lib/auth";

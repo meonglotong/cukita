@@ -1,4 +1,4 @@
-/* CUKITA — design system, gaya Google Cloud Documentation */
+/* Gnosis — design system, gaya Google Cloud Documentation */
 :root {
   --bg: #ffffff;
   --fg: #202124;
@@ -109,20 +109,13 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); }
   background: var(--bg); border-bottom: 1px solid var(--border);
 }
 .topbar .brand { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 700; color: var(--fg); letter-spacing: -0.01em; white-space: nowrap; }
-.topbar .brand .logo {
-  width: 30px; height: 30px; border-radius: 8px; position: relative; overflow: hidden;
-  background: linear-gradient(135deg, #3b82f6 0%, var(--accent) 45%, #0e7490 100%);
-  color: #fff; display: grid; place-items: center;
-  font-size: 12px; font-weight: 800; letter-spacing: -0.02em;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
-}
-/* folded page corner — a quiet nod to "knowledge pages" */
-.topbar .brand .logo::after {
-  content: ""; position: absolute; top: 0; right: 0;
-  width: 0; height: 0;
-  border-top: 9px solid rgba(255, 255, 255, 0.4);
-  border-left: 9px solid transparent;
-}
+/* brand logo: merah di light mode, putih di dark mode. Background bawaan
+   gambar dibuang via blend mode — multiply buang putih, screen buang hitam. */
+.topbar .brand .logo { width: 32px; height: 32px; display: block; flex-shrink: 0; }
+.topbar .brand .logo-light { mix-blend-mode: multiply; }
+.topbar .brand .logo-dark { display: none; mix-blend-mode: screen; }
+:root[data-theme="dark"] .topbar .brand .logo-light { display: none; }
+:root[data-theme="dark"] .topbar .brand .logo-dark { display: block; }
 .topbar .userchip { margin-left: auto; display: flex; align-items: center; gap: 14px; font-size: 14px; color: var(--fg); white-space: nowrap; }
 .theme-toggle {
   width: 36px; height: 36px; border-radius: 999px; flex-shrink: 0;
@@ -328,6 +321,11 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); }
   border-radius: 12px; padding: 32px; display: grid; gap: 14px;
   box-shadow: 0 1px 3px rgba(60, 64, 67, 0.08);
 }
+.login-card .login-logo { display: block; width: 72px; height: 72px; margin: 0 auto 10px; }
+.login-card .login-logo-light { mix-blend-mode: multiply; }
+.login-card .login-logo-dark { display: none; mix-blend-mode: screen; }
+:root[data-theme="dark"] .login-card .login-logo-light { display: none; }
+:root[data-theme="dark"] .login-card .login-logo-dark { display: block; }
 .login-card h1 { margin: 0; font-size: 22px; color: var(--fg); text-align: center; }
 .login-card .sub { margin: -6px 0 0; text-align: center; font-size: 13px; color: var(--muted); }
 .login-card input { padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius); }

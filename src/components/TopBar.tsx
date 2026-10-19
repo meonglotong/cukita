@@ -8,7 +8,11 @@ export async function TopBar() {
   const canManageUsers = session?.user.role === "admin" || session?.user.role === "superadmin";
   return (
     <header className="topbar">
-      <a className="brand" href="/docs"><span className="logo">CK</span>CUKITA</a>
+      <a className="brand" href="/docs">
+        <img className="logo logo-light" src="/logos/gnosis-light.png" alt="" width={32} height={32} />
+        <img className="logo logo-dark" src="/logos/gnosis-dark.png" alt="" width={32} height={32} />
+        Gnosis
+      </a>
       <a className="topbar-nav" href="/test">Skill Test</a>
       <SearchBox />
       <ThemeToggle />

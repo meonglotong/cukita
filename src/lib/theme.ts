@@ -1,10 +1,10 @@
 // src/lib/theme.ts
-// Light/dark theme, CUKITA. Stored choice wins; system preference is the
+// Light/dark theme, Gnosis. Stored choice wins; system preference is the
 // fallback. The pre-paint script in layout.tsx uses the same resolution so
 // there is no flash of the wrong theme.
 export type Theme = "light" | "dark";
 
-const STORAGE_KEY = "cukita-theme";
+const STORAGE_KEY = "gnosis-theme";
 
 export function resolveInitialTheme(stored: string | null, system: Theme): Theme {
   if (stored === "light" || stored === "dark") return stored;

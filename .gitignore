@@ -7,7 +7,7 @@ node_modules/
 *.tsbuildinfo
 next-env.d.ts
 
-# scratch / non-cukita artifacts
+# scratch / non-gnosis artifacts
 .tmp-
 .tmp-
 /docs/superpowers/
