@@ -23,6 +23,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,300..800&display=swap"
           rel="stylesheet"
         />
+        {/* Orbitron: font wordmark Gnosis — dekat dengan font logo (geometris/futuristik) */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&display=swap"
+          rel="stylesheet"
+        />
       </head>
       <body>
         <ThemeSync />
