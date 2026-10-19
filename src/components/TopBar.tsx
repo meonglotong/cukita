@@ -9,8 +9,8 @@ export async function TopBar() {
   return (
     <header className="topbar">
       <a className="brand" href="/docs">
-        <img className="logo logo-light" src="/logos/gnosis-light.png" alt="" width={32} height={32} />
-        <img className="logo logo-dark" src="/logos/gnosis-dark.png" alt="" width={32} height={32} />
+        <img className="logo logo-light" src="/logos/gnosis-light.png" alt="" width={38} height={38} />
+        <img className="logo logo-dark" src="/logos/gnosis-dark.png" alt="" width={38} height={38} />
         Gnosis
       </a>
       <a className="topbar-nav" href="/test">Skill Test</a>
