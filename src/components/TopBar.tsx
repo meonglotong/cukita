@@ -14,7 +14,15 @@ export async function TopBar() {
         <img className="logo logo-dark" src="/logos/gnosis-dark.png" alt="" width={38} height={38} />
         Gnosis
       </a>
-      <a className="topbar-nav" href="/test">Skill Test</a>
+      <a className="topbar-nav" href="/test">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" />
+          <circle cx="12" cy="12" r="4.5" />
+          <circle cx="12" cy="12" r="0.5" fill="currentColor" />
+        </svg>
+        Skill Test
+      </a>
       <SearchBox />
       <ThemeToggle />
       <UserMenu

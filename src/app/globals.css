@@ -396,8 +396,14 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); }
 .callout-danger { background: var(--callout-danger); border-left-color: var(--callout-danger-b); }
 
 /* ---- skill test (CBT) ---- */
-.topbar-nav { font-size: 14px; font-weight: 500; color: var(--fg); padding: 6px 10px; border-radius: 6px; }
-.topbar-nav:hover { background: var(--accent-soft); color: var(--accent); }
+.topbar-nav {
+  display: inline-flex; align-items: center; gap: 7px;
+  height: 40px; padding: 0 16px; border-radius: 999px;
+  font-size: 14px; font-weight: 500; color: var(--fg);
+  border: 1px solid var(--border); background: var(--surface);
+}
+.topbar-nav:hover { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); text-decoration: none; }
+.topbar-nav svg { flex-shrink: 0; }
 
 .test-main { padding: 32px 40px 80px; max-width: 1200px; margin: 0 auto; }
 .test-title { font-size: 30px; font-weight: 700; letter-spacing: -0.01em; color: var(--fg); margin: 16px 0 8px; }
