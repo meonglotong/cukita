@@ -355,13 +355,12 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); }
   border-radius: 12px; padding: 32px; display: grid; gap: 14px;
   box-shadow: 0 1px 3px rgba(60, 64, 67, 0.08);
 }
-.login-card .login-logo { display: block; width: 72px; height: 72px; margin: 0 auto 10px; }
+.login-card .login-logo { display: block; width: 210px; height: auto; margin: 4px auto 14px; }
 .login-card .login-logo-light { mix-blend-mode: multiply; }
 .login-card .login-logo-dark { display: none; mix-blend-mode: screen; }
 :root[data-theme="dark"] .login-card .login-logo-light { display: none; }
 :root[data-theme="dark"] .login-card .login-logo-dark { display: block; }
-.login-card h1 { margin: 0; font-size: 22px; color: var(--fg); text-align: center; }
-.login-card .sub { margin: -6px 0 0; text-align: center; font-size: 13px; color: var(--muted); }
+
 .login-card input { padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius); }
 .login-card input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--focus-ring); }
 
