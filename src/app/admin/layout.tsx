@@ -10,7 +10,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   return (
     <div className="docs-shell">
       <TopBar />
-      <main className="docs-main" style={{ maxWidth: 900 }}>
+      <main className="docs-main" style={{ maxWidth: 1160 }}>
         <nav style={{ display: "flex", gap: 16, marginBottom: 24 }}>
           <Link href="/admin/users">Users</Link>
         </nav>

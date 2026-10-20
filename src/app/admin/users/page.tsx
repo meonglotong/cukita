@@ -13,7 +13,8 @@ export default async function AdminUsersPage() {
   }
   return (
     <section>
-      <h1 style={{ fontSize: 22, marginBottom: 16 }}>Users</h1>
+      <h1 className="page-title">Users</h1>
+      <p className="page-sub">Kelola akun tim: role, status aktif, dan password.</p>
       <UserManager viewerRole={session.user.role} />
     </section>
   );

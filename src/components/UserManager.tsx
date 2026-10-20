@@ -57,78 +57,93 @@ export function UserManager({ viewerRole }: { viewerRole: Role }) {
 
   return (
     <div>
-      {msg ? <p style={{ color: "var(--muted)", marginBottom: 8 }}>{msg}</p> : null}
-      <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
-        <thead>
-          <tr style={{ textAlign: "left", borderBottom: "1px solid var(--border)" }}>
-            <th>Email</th><th>Name</th><th>Role</th><th>Active</th>{canManage ? <th>Reset password</th> : null}{canManage ? <th>Delete</th> : null}
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((u) => (
-            <tr key={u.id} style={{ borderBottom: "1px solid var(--border)" }}>
-              <td>{u.email}</td>
-              <td>{u.name}</td>
-              <td>
-                {canManage ? (
-                  <select value={u.role} onChange={(e) => patch(u.id, { role: e.target.value })}>
-                    <option value="user">user</option>
-                    <option value="admin">admin</option>
-                    <option value="superadmin">superadmin</option>
-                  </select>
-                ) : (
-                  u.role
-                )}
-              </td>
-              <td>
-                {canManage ? (
-                  <input type="checkbox" checked={u.active} onChange={(e) => patch(u.id, { active: e.target.checked })} />
-                ) : (
-                  u.active ? "yes" : "no"
-                )}
-              </td>
-              {canManage ? (
-                <td style={{ display: "flex", gap: 6 }}>
-                  <input
-                    type="password"
-                    placeholder="new password"
-                    value={newPasswords[u.id] ?? ""}
-                    onChange={(e) => setNewPasswords({ ...newPasswords, [u.id]: e.target.value })}
-                  />
-                  <button
-                    disabled={!newPasswords[u.id]}
-                    onClick={() => patch(u.id, { password: newPasswords[u.id] })}
-                  >
-                    set
-                  </button>
-                </td>
-              ) : null}
-              {canManage ? (
-                <td>
-                  <button
-                    className="btn btn-danger"
-                    style={{ padding: "4px 10px", fontSize: 13 }}
-                    onClick={() => deleteUser(u)}
-                  >
-                    hapus
-                  </button>
-                </td>
-              ) : null}
+      {msg ? <p className="admin-msg">{msg}</p> : null}
+      <div className="admin-card">
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>Email</th><th>Nama</th><th>Role</th><th>Aktif</th>{canManage ? <th>Reset password</th> : null}{canManage ? <th>Aksi</th> : null}
             </tr>
-          ))}
-        </tbody>
-      </table>
-      <form onSubmit={addUser} style={{ display: "flex", gap: 8, marginTop: 24, flexWrap: "wrap", alignItems: "center" }}>
-        <span style={{ fontWeight: 600 }}>Add user:</span>
-        <input placeholder="email" value={add.email} onChange={(e) => setAdd({ ...add, email: e.target.value })} />
-        <input placeholder="name" value={add.name} onChange={(e) => setAdd({ ...add, name: e.target.value })} />
-        <input type="password" placeholder="password (min 8)" value={add.password} onChange={(e) => setAdd({ ...add, password: e.target.value })} />
-        <select value={add.role} onChange={(e) => setAdd({ ...add, role: e.target.value as Role })}>
-          <option value="user">user</option>
-          <option value="admin">admin</option>
-          {canManage ? <option value="superadmin">superadmin</option> : null}
-        </select>
-        <button>add</button>
+          </thead>
+          <tbody>
+            {users.map((u) => (
+              <tr key={u.id}>
+                <td>{u.email}</td>
+                <td>{u.name}</td>
+                <td>
+                  {canManage ? (
+                    <select className="admin-select" value={u.role} onChange={(e) => patch(u.id, { role: e.target.value })}>
+                      <option value="user">user</option>
+                      <option value="admin">admin</option>
+                      <option value="superadmin">superadmin</option>
+                    </select>
+                  ) : (
+                    <span className={`role-badge ${u.role}`}>{u.role}</span>
+                  )}
+                </td>
+                <td>
+                  {canManage ? (
+                    <input className="admin-check" type="checkbox" checked={u.active} onChange={(e) => patch(u.id, { active: e.target.checked })} />
+                  ) : (
+                    u.active ? "ya" : "tidak"
+                  )}
+                </td>
+                {canManage ? (
+                  <td>
+                    <div className="admin-pw">
+                      <input
+                        type="password"
+                        placeholder="password baru"
+                        value={newPasswords[u.id] ?? ""}
+                        onChange={(e) => setNewPasswords({ ...newPasswords, [u.id]: e.target.value })}
+                      />
+                      <button
+                        className="btn btn-primary btn-sm"
+                        disabled={!newPasswords[u.id]}
+                        onClick={() => patch(u.id, { password: newPasswords[u.id] })}
+                      >
+                        Set
+                      </button>
+                    </div>
+                  </td>
+                ) : null}
+                {canManage ? (
+                  <td>
+                    <button className="btn btn-danger btn-sm" onClick={() => deleteUser(u)}>
+                      Hapus
+                    </button>
+                  </td>
+                ) : null}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <form className="admin-add" onSubmit={addUser}>
+        <h2>Tambah pengguna</h2>
+        <div className="admin-add-grid">
+          <div className="field">
+            <label>Email</label>
+            <input type="email" required placeholder="nama@fds.co.id" value={add.email} onChange={(e) => setAdd({ ...add, email: e.target.value })} />
+          </div>
+          <div className="field">
+            <label>Nama</label>
+            <input required value={add.name} onChange={(e) => setAdd({ ...add, name: e.target.value })} />
+          </div>
+          <div className="field">
+            <label>Password (min 8)</label>
+            <input type="password" required minLength={8} value={add.password} onChange={(e) => setAdd({ ...add, password: e.target.value })} />
+          </div>
+          <div className="field">
+            <label>Role</label>
+            <select value={add.role} onChange={(e) => setAdd({ ...add, role: e.target.value as Role })}>
+              <option value="user">user</option>
+              <option value="admin">admin</option>
+              {canManage ? <option value="superadmin">superadmin</option> : null}
+            </select>
+          </div>
+          <button type="submit" className="btn btn-primary">Tambah</button>
+        </div>
       </form>
     </div>
   );
