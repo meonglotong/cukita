@@ -1,0 +1,1810 @@
+{
+  "slug": "itil",
+  "title": "ITIL — Foundation v5",
+  "description": "Simulasi ujian ITIL Foundation (PeopleCert v5): guiding principles, empat dimensi, konsep layanan, product & service lifecycle, ITIL Value System, value stream, dan continual improvement.",
+  "durationSec": 3600,
+  "passingPercent": 80,
+  "examSize": 40,
+  "questions": [
+    {
+      "id": "itil-principles-tujuh-nama",
+      "prompt": "Berapa jumlah guiding principles yang didefinisikan ITIL dan manakah yang BUKAN termasuk di antaranya?",
+      "options": [
+        "Tujuh; 'Optimize and automate' termasuk di dalamnya — daftar lengkap: focus on value, start where you are, progress iteratively with feedback, collaborate and promote visibility, think and work holistically, keep it simple and practical, optimize and automate",
+        "Enam; 'Optimize and automate' bukan prinsip ITIL",
+        "Delapan; termasuk prinsip tambahan 'Manage risk aggressively'",
+        "Lima; hanya prinsip yang berfokus pada value yang dihitung"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. ITIL mendefinisikan tepat tujuh guiding principles, dan 'Optimize and automate' adalah yang terakhir dari ketujuhnya.",
+        "Salah. Jumlahnya tujuh, bukan enam — 'Optimize and automate' ada di dalamnya.",
+        "Salah. Tidak ada prinsip kedelapan; riske dikelola melalui prinsip lain dan praktik risk management.",
+        "Salah. Jumlahnya tujuh, bukan lima."
+      ],
+      "topic": "principles"
+    },
+    {
+      "id": "itil-principles-focus-value-def",
+      "prompt": "Prinsip 'Focus on value' mensyaratkan apa?",
+      "options": [
+        "Hanya tim proyek inovasi yang perlu fokus pada value, bukan aktivitas operasional harian",
+        "Value ditentukan sepenuhnya oleh penyedia layanan berdasarkan biaya produksi",
+        "Value cukup diukur sekali di awal hubungan layanan, tidak perlu dikumpulkan terus-menerus",
+        "Semua aktivitas organisasi harus terhubung, langsung atau tidak langsung, ke value bagi organisasi, pelanggan, dan pemangku kepentingan lain"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Pembentukan value bukan hanya tugas tim proyek; semua orang dalam organisasi harus memaksimalkan value yang mereka ciptakan.",
+        "Salah. Value didefinisikan oleh kebutuhan consumer sendiri, bersifat subjektif, dan dipengaruhi pengalaman — bukan oleh biaya produksi penyedia.",
+        "Salah. Feedback tentang value harus dikumpulkan secara berkelanjutan, bukan hanya di awal hubungan layanan.",
+        "Benar. Prinsip ini menegaskan bahwa setiap aktivitas — termasuk operasional harian — harus bisa ditautkan ke value bagi organisasi, customer, dan stakeholder lainnya."
+      ],
+      "topic": "principles"
+    },
+    {
+      "id": "itil-principles-focus-value-consumer",
+      "prompt": "Menurut prinsip 'Focus on value', nilai (value) bagi service consumer bersifat seperti apa?",
+      "options": [
+        "Selalu berbentuk finansial, misalnya penghematan biaya",
+        "Ditentukan penyedia berdasarkan biaya sumber daya yang dialokasikan",
+        "Subjektif, didefinisikan kebutuhan consumer, berubah seiring waktu, dan dipengaruhi pengalaman layanan",
+        "Objektif dan tetap sepanjang umur layanan, karena tercantum dalam kontrak"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Value bisa berbentuk produktivitas, penurunan dampak negatif, peluang pasar baru, posisi kompetitif — tidak selalu finansial.",
+        "Salah. Value dipersepsikan consumer, bukan dihitung dari sisi biaya penyedia.",
+        "Benar. Buku ITIL eksplisit: value didefinisikan kebutuhan consumer, dicapai melalui dukungan outcomes serta optimalisasi biaya dan risiko, bersifat subjektif dan dipengaruhi service experience, serta berubah seiring waktu dan kondisi.",
+        "Salah. Value justru tidak tetap — dia berubah seiring waktu dan keadaan, dan dipersepsikan consumer."
+      ],
+      "topic": "principles"
+    },
+    {
+      "id": "itil-principles-start-where-you-are",
+      "prompt": "Situasi mana yang paling mencerminkan penerapan prinsip 'Start where you are'?",
+      "options": [
+        "Tim menunda evaluasi kondisi saat ini sampai proyek selesai",
+        "Sebelum merombak cara kerja, tim mengukur dan mengamati langsung kondisi produk, praktik, dan proses yang sudah ada untuk menentukan apa yang bisa dilanjukan",
+        "Tim langsung membuang semua proses lama dan membangun sistem baru dari nol karena dianggap lebih bersih",
+        "Tim menyalin praktik vendor lain tanpa menilai kondisi internal"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Menunda evaluasi kondisi saat ini membuat dasar pengambilan keputusan tidak akurat; prinsip ini justru meminta assessment awal yang objektif.",
+        "Benar. Prinsip ini melarang memulai ulang tanpa mempertimbangkan apa yang sudah tersedia — kondisi saat ini harus diukur/diamati langsung (bukan hanya laporan) untuk menentukan apa yang bisa dipakai ulang, diubah, atau dibangun.",
+        "Salah. Membuang semua yang lama dan membangun dari nol justru impuls yang menurut ITIL jarang perlu dan sering menyia-nyiakan capability, kompetensi, dan tools yang bernilai.",
+        "Salah. Menyalin praktik orang lain tanpa menilai kondisi internal melanggar inti 'start where you are' — keputusan harus berbasis kondisi nyata sendiri."
+      ],
+      "topic": "principles"
+    },
+    {
+      "id": "itil-principles-goodharts-law",
+      "prompt": "Seorang agent service desk tahu durasi teleponnya diukur sebagai metrik kinerja, lalu ia mulai menelepon secepat mungkin alih-alih memastikan masalah user terpecahkan. Fenomena ini disebut…",
+      "options": [
+        "Goodhart's Law — ketika sebuah measure dijadikan target, dia berhenti menjadi measure yang baik",
+        "Conway's Law — desain produk mencerminkan struktur komunikasi organisasi",
+        "The build trap — fitur terus bertambah hingga produk rumit",
+        "Analysis paralysis — terlalu banyak analisis sehingga tidak ada yang dikerjakan"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Contoh persis ini dipakai di buku ITIL: orang kreatif memenuhi metrik yang diukurnya, jadi metrik harus bermakna dan terkait langsung dengan outcome yang diinginkan.",
+        "Salah. Conway's Law soal hubungan struktur organisasi dan arsitektur produk, bukan distorsi metrik.",
+        "Salah. The build trap adalah menjebak dalam menambah fitur tanpa fokus value — tidak berkaitan dengan distorsi pengukuran.",
+        "Salah. Analysis paralysis adalah macetnya progres karena terlalu banyak analisis — bukan perilaku mengejar metrik."
+      ],
+      "topic": "principles"
+    },
+    {
+      "id": "itil-principles-start-where-measure",
+      "prompt": "Tentang pengukuran saat menerapkan 'Start where you are', hal mana yang benar menurut ITIL?",
+      "options": [
+        "Semua keputusan harus berbasis data metrik; observasi langsung tidak diperlukan",
+        "Laporan manajemen selalu lebih akurat daripada observasi langsung",
+        "Metrik performa individu tidak boleh pernah diukur karena pasti bias",
+        "Pengukuran harus mendukung — bukan menggantikan — apa yang diamati; over-reliance pada data bisa memperkenalkan bias"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Observasi langsung sering lebih jernih daripada laporan — bahkan orang yang tidak terlibat bisa menemukan hal yang terlewat pihak dalam.",
+        "Salah. Buku justru mengingatkan sering ada kesenjangan antara laporan dan kenyataan karena sulitnya mengukur akurat atau bias data.",
+        "Salah. Metrik individu boleh diukur, asal bermakna dan terkait outcome — yang perlu diwaspadai adalah efekGoodhart ketika metrik dijadikan target.",
+        "Benar. ITIL menekankan pengukuran mendukung observasi; ketergantungan berlebihan pada data analitik dan laporan bisa memperkenalkan bias dan risiko pada keputusan."
+      ],
+      "topic": "principles"
+    },
+    {
+      "id": "itil-principles-iterative-feedback",
+      "prompt": "Prinsip 'Progress iteratively with feedback' menekankan apa tentang iterasi?",
+      "options": [
+        "Feedback cukup dikumpulkan sekali di akhir proyek",
+        "Iterasi kecil berarti boleh tidak lengkap dan terburu-buru",
+        "Setiap iterasi harus manageable dan terkelola, mengembalikan hasil nyata tepat waktu, dengan feedback di sebelum/selama/setelah iterasi",
+        "Iterasi harus menyelesaikan seluruh masalah sekaligus agar tidak bolak-balik"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Feedback harus dicari dan digunakan secara konsisten di semua level dan seluruh tahap — bukan sekali di akhir.",
+        "Salah. Cepat tidak berarti tidak lengkap — setiap iterasi sebaiknya mengikuti konsep MVP: learning tervalidasi maksimal dengan upaya minimal, tapi tetap elemen suksesnya lengkap.",
+        "Benar. Iterasi (sekuensial atau simultan) harus manageable dan terkelola dengan feedback loops di sepanjang alur, supaya fokus dan tepat walau kondisi berubah.",
+        "Salah. Pendekatan besar sekaligus bertentangan dengan semangat iteratif; model improvement ITIL justru memecah kerja jadi potongan-potongan yang tercapai inkremental."
+      ],
+      "topic": "principles"
+    },
+    {
+      "id": "itil-principles-mvp-def",
+      "prompt": "Dalam konteks 'Progress iteratively with feedback', apa definisi Minimum Viable Product (MVP)?",
+      "options": [
+        "Versi produk tanpa fitur apa pun untuk menguji ketersediaan anggaran",
+        "Versi produk yang memungkinkan jumlah learning tervalidasi sebesar-besarnya dengan upaya sekecil-kecilnya",
+        "Produk paling minimum yang bisa dibuat dalam satu sprint apapun",
+        "Prototipe internal yang tidak pernah ditunjukkan ke user"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. MVP tetap harus memiliki elemen-elemen yang diperlukan untuk sukses, bukan sekadar kerongkong.",
+        "Benar. MVP didefinisikan tepat demikian di buku ITIL — versi akhir yang memberi validasi belajar maksimal dengan usaha minimal.",
+        "Salah. MVP tidak didefinisikan oleh batas sprint, tapi oleh kemampuan memvalidasi pembelajaran dengan upaya terkecil.",
+        "Salah. MVP justru harus diuji ke stakeholder untuk memvalidasi learning; prototipe internal tertutup tidak memenuhi tujuannya."
+      ],
+      "topic": "principles"
+    },
+    {
+      "id": "itil-principles-collaborate-visibility",
+      "prompt": "Prinsip 'Collaborate and promote visibility' — hal mana yang BUKAN sarannya?",
+      "options": [
+        "Menunggu konsensus penuh semua pihak sebelum melanjutkan inisiatif",
+        "Menghindari kerja terisolasi ('silo activity') karena kolaborasi lebih baik daripada kerja sendiri-sendiri",
+        "Memilih cara dan pesan komunikasi yang sesuai dengan masing-masing audiens",
+        "Membuat kerja terlihat lewat dashboard, Kanban board, dan tools visual lainnya"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar — ini yang BUKAN sarannya: kolaborasi tidak berarti konsensus; buku eksplisit menyebut tidak perlu (dan tidak bijak) menunggu semua orang setuju sebelum melangkah, karena bisa berujung tidak melakukan apa pun.",
+        "Salah — ini saran yang benar: kolaborasi dan kerjasama lebih baik daripada kerja terisolasi yang sering disebut silo activity.",
+        "Salah — ini saran yang benar: memilih metode dan pesan yang tepat untuk tiap audiens krusial untuk sukses.",
+        "Salah — ini saran yang benar: visibilitas kerja (dashboard, Kanban, tools visual) mencegah kesan 'bukan prioritas' dan memperbaiki keputusan."
+      ],
+      "topic": "principles"
+    },
+    {
+      "id": "itil-principles-collaborate-trust",
+      "prompt": "Kolaborasi yang menghasilkan pencapaian nyata menurut ITIL mensyaratkan apa?",
+      "options": [
+        "Hierarki yang tegas agar tahu siapa yang memberi perintah",
+        "Kesepakatan tertulis yang menandatangani setiap keputusan",
+        "Pemisahan informasi antar tim untuk menjaga kerahasiaan",
+        "Informasi, pemahaman, dan kepercayaan — hasil kerja dibuat terlihat, agenda tersembunyi dihindari, informasi dibagikan selebar mungkin"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Hierarki bukan prasyarat kolaborasi; justru struktur yang kaku bisa menjadi penyebab silo.",
+        "Salah. Tidak perlu tanda tangan untuk setiap keputusan — yang dibutuhkan adalah transparansi dan kepercayaan.",
+        "Salah. Menyembunyikan informasi antar tim adalah kebalikan dari prinsip promote visibility.",
+        "Benar. Buku menyebut kolaborasi yang nyata butuh informasi, understanding, dan trust; kerja dan hasilnya harus divisualkan dan informasi dibagikan sedapat mungkin."
+      ],
+      "topic": "principles"
+    },
+    {
+      "id": "itil-principles-holistically",
+      "prompt": "Prinsip 'Think and work holistically' — hal mana yang termasuk penerapannya dalam ITIL Value System?",
+      "options": [
+        "Mengabaikan supplier eksternal karena di luar kendali organisasi",
+        "Mempercepat satu proses tanpa melihat dampaknya ke proses lain",
+        "Memantau dan menganalisis faktor PESTLE yang memengaruhi organisasi, memahami posisi organisasi di supply chain, dan mempertimbangkan keempat dimensi",
+        "Fokus pada satu department agar efisien dan tidak tumpang tindih"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Supplier adalah bagian dari ekosistem value; holistic berarti justru memahami ketergantungan pada mereka.",
+        "Salah. Pada sistem kompleks, perubahan satu elemen berdampak ke elemen lain — itu harus diidentifikasi dan ditangani, bukan diabaikan.",
+        "Benar. Pendekatan holistik di ITIL VS termasuk: mempertimbangkan keempat dimensi, memahami keseluruhan lifecycle, memahami posisi di supply chain, memahami dampak ke consumer, dan memantau faktor PESTLE.",
+        "Salah. Fokus satu department adalah silo — kebalikan dari berpikir holistik."
+      ],
+      "topic": "principles"
+    },
+    {
+      "id": "itil-principles-simple-practical",
+      "prompt": "Menurut 'Keep it simple and practical', apa yang harus dilakukan bila suatu langkah proses tidak menambah value atau outcome yang berguna?",
+      "options": [
+        "Pindahkan ke tim lain agar tidak memperlambat tim ini",
+        "Hilangkan langkah tersebut",
+        "Tetap pertahankan untuk jaga-jaga, biarpun tidak ada yang tahu gunanya",
+        "Tambahkan pengesahan berlapis supaya lebih aman"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Memindahkan langkah ke tim lain tidak menghilangkan waste; dia hanya menggeser beban.",
+        "Benar. Inti prinsipnya: minимalkan jumlah langkah; jika proses, produk, layanan, tindakan, atau metrik gagal menambah value/hasil yang berguna, eliminasi.",
+        "Salah. Menahan langkah yang tidak menambah value adalah over-complication — justru bertentangan dengan prinsip.",
+        "Salah. Lapisan pengesahan tambahan menambah kompleksitas tanpa value — contoh klasik over-engineering."
+      ],
+      "topic": "principles"
+    },
+    {
+      "id": "itil-principles-simple-build-trap",
+      "prompt": "Apa itu 'the build trap' yang diwaspadai prinsip 'Keep it simple and practical'?",
+      "options": [
+        "Kondisi fitur terus bertambah dan produk semakin rumit karena tim membangun semua yang dimintakan tanpa fokus value",
+        "Kondisi build server lambat sehingga rilis tertunda",
+        "Kebiasaan menunda build ke malam hari",
+        "Ketergantungan pada vendor build tool tertentu"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Buku menyebut agar tim mengidentifikasi fitur yang memaksimalkan value dan mendeprioritaskan/membuang sisanya — jika tidak, tim terjebak 'build trap' di mana produk makin rumit.",
+        "Salah. Kecepatan build server adalah masalah infrastruktur CI/CD, bukan trap yang dimaksud prinsip ini.",
+        "Salah. Jadwal build bukan inti build trap.",
+        "Salah. Vendor lock-in tooling bukan definisi build trap."
+      ],
+      "topic": "principles"
+    },
+    {
+      "id": "itil-principles-optimize-before-automate",
+      "prompt": "Prinsip 'Optimize and automate' mensyaratkan urutan apa?",
+      "options": [
+        "Langkah pertama adalah otomasi, lalu baru dioptimasi jika lambat",
+        "Otomasi dan optimasi harus dilakukan paralel tanpa prioritas",
+        "Cukup otomasi saja — optimasi hanya untuk organisasi besar",
+        "Aktivitas/praktik dioptimalkan terlebih dahulu sedapat mungkin, barus kemudian diotomasi"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Urutannya terbalik — otomasi dulu justru mengunci proses yang belum efisien.",
+        "Salah. Paralel tanpa urutan membuat otomasi berisiko mengunci langkah yang seharusnya dihapus saat optimasi.",
+        "Salah. Prinsip ini berlaku untuk semua organisasi, bukan hanya yang besar.",
+        "Benar. Otomasi sesuatu yang kompleks atau suboptimal sulit menghasilkan outcome yang diinginkan; peta workflow dulu, streamline (optimasi), baru otomasi."
+      ],
+      "topic": "principles"
+    },
+    {
+      "id": "itil-principles-optimize-def",
+      "prompt": "Definisi 'optimization' menurut ITIL adalah…",
+      "options": [
+        "Menghapus semua proses manual dari organisasi",
+        "Mengganti semua alat kerja dengan teknologi terbaru",
+        "Membuat sesuatu seefektif, seefisien, dan sesedih yang dibutuhkan, dalam batas constraint (finansial, compliance, waktu, sumber daya)",
+        "Membuat sesuatu secepat dan semurah mungkin tanpa batas"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Menghapus semua proses manual adalah otomasi total — bukan definisi optimasi.",
+        "Salah. Teknologi terbaru bukan tujuan; yang penting efektif, efisien, dan sesuai kebutuhan.",
+        "Benar. Definisi persis di buku: 'as effective, efficient, and useful as it needs to be' — dan penting menetapkan batas optimasi karena organisasi hidup dalam constraint.",
+        "Salah. 'Secepat semurah mungkin tanpa batas' mengabaikan constraint dan useful-ness; optimasi selalu dalam batas."
+      ],
+      "topic": "principles"
+    },
+    {
+      "id": "itil-principles-automate-purpose",
+      "prompt": "Menurut ITIL, 'automation for automation's sake' berisiko bagaimana?",
+      "options": [
+        "Membuat semua proses menjadi transparan",
+        "Meningkatkan biaya, memperkenalkan risiko signifikan, dan mengurangi ketangguhan organisasi",
+        "Mengurangi biaya operasional secara otomatis di kuartal pertama",
+        "Menjamin kualitas output karena mesin tidak pernah lelah"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Otomasi tidak serta-merta membuat proses transparan; visibilitas tetap harus didesain.",
+        "Benar. Buku eksplisit: otomasi demi otomasi bisa menaikkan biaya, menambah risiko besar, dan menurunkan resilience organisasi.",
+        "Salah. Penghematan biaya bukan otomatis; otomasi tanpa analisis justru sering menambah biaya.",
+        "Salah. Konsistensi mesin tidak menjamin kualitas — kualitas AI/otomasi bergantung kualitas input data dan workflow."
+      ],
+      "topic": "principles"
+    },
+    {
+      "id": "itil-principles-gp-situasi",
+      "prompt": "Mengapa organisasi perlu guiding principles menurut ITIL?",
+      "options": [
+        "Karena mustahil membuat aturan definitif untuk semua keadaan; prinsip memungkinkan pengambilan keputusan saat tidak ada panduan detail dan situasi tak terduga",
+        "Agar karyawan tidak perlu berpikir lagi saat bekerja",
+        "Karena aturan detail lebih mahal daripada prinsip",
+        "Untuk memenuhi persyaratan audit regulasi internasional"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Di dunia yang terus berubah, aturan definitif untuk semua kasus mustahil; guiding principles menjaga semua anggota dan keputusan tetap selaras nilai organisasi, bahkan di situasi tidak pasti.",
+        "Salah. Prinsip justru membekali cara berpikir, bukan menghapusnya.",
+        "Salah. Alasan utamanya adalah adaptasi terhadap ketidakpastian, bukan biaya aturan.",
+        "Salah. Prinsip ITIL bukan persyaratan audit; dia rekomendasi yang boleh diadaptasi ke nilai organisasi."
+      ],
+      "topic": "principles"
+    },
+    {
+      "id": "itil-principles-gp-sifat",
+      "prompt": "Karakteristik ITIL Guiding Principles yang benar adalah…",
+      "options": [
+        "Aturan wajib yang harus diikuti persis tanpa adaptasi",
+        "Berlaku hanya untuk organisasi industri teknologi",
+        "Hanya relevan saat transformasi digital besar-besaran",
+        "Rekomendasi yang membimbing di semua keadaan, tidak peduli perubahan tujuan, strategi, jenis kerja, atau struktur manajemen"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Prinsip boleh diadaptasi ke nilai/prinsip organisasi yang sudah ada — bukan aturan kaku.",
+        "Salah. Prinsip berlaku untuk semua jenis organisasi, industri, dan aktivitas.",
+        "Salah. Prinsip berlaku kapan saja — operasional harian maupun inisiatif perbaikan — bukan hanya saat transformasi.",
+        "Benar. Definisi di buku: 'recommendations that can guide an organization in all circumstances, regardless of changes in its goals, strategies, type of work, or management structure' — dan bisa diadopsi utuh atau disesuaikan."
+      ],
+      "topic": "principles"
+    },
+    {
+      "id": "itil-dimensions-empat-nama",
+      "prompt": "Empat dimensi manajemen produk dan layanan ITIL adalah…",
+      "options": [
+        "Strategi, taktik, operasi, dan perbaikan",
+        "People, planet, profit, dan partnership",
+        "Organizations and people, value streams and processes, information and technology, partners and suppliers",
+        "Proses, teknologi, vendor, dan anggaran"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Itu tingkatan manajemen umum, bukan dimensi ITIL.",
+        "Salah. 'People, planet, profit' adalah kerangka ESG, bukan dimensi ITIL.",
+        "Benar. Keempat dimensi itu persis: organizations and people; value streams and processes; information and technology; partners and suppliers.",
+        "Salah. 'Anggaran' bukan dimensi; keuangan dikelola dalam praktik, bukan dimensi."
+      ],
+      "topic": "dimensions"
+    },
+    {
+      "id": "itil-dimensions-culture-def",
+      "prompt": "Definisi 'culture' dalam dimensi Organizations and people adalah…",
+      "options": [
+        "Struktur organisasi dan bagan hierarki",
+        "Kumpulan nilai yang dimiliki bersama sekelompok orang, yang terungkap melalui perilaku, ide, keyakinan, dan praktik mereka",
+        "Aturan tertulis di handbook karyawan",
+        "Logo, warna, dan identitas visual perusahaan"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Struktur organisasi adalah elemen terpisah dalam dimensi yang sama, bukan definisi culture.",
+        "Benar. Definisi persis di buku — culture hidup di perilaku dan keyakinan bersama, bukan dokumen.",
+        "Salah. Handbook adalah artifacts; culture terbentuk dari bagaimana organisasi menjalankan kerjanya.",
+        "Salah. Identitas visual adalah branding, bukan culture."
+      ],
+      "topic": "dimensions"
+    },
+    {
+      "id": "itil-dimensions-safety-culture",
+      "prompt": "Dalam 'safety culture', perilaku apa yang dianjurkan organisasi?",
+      "options": [
+        "Berani mengungkapkan keraguan dan meminta bantuan, memperlakukan kegagalan sebagai kesempatan belajar tanpa menyalahkan",
+        "Menyembunyikan kesalahan kecil agar reputasi tetap terjaga",
+        "Melaporkan hanya masalah yang sudah pasti besar",
+        "Menunggu instruksi atasan sebelum menyampaikan risiko"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Safety culture: orang merasa dipercaya dan bernilai, sehingga lebih berani menyinggung risiko. ITIL mendorong: act on safety, exhibit vulnerability, foster feedback, kindness, dan realistic about failure (no blame).",
+        "Salah. Menyembunyikan kesalahan menghambat deteksi dini risiko — kebalikan dari safety culture.",
+        "Salah. Dalam safety culture, risiko disuarakan sedini mungkin, tidak hanya yang 'pasti besar'.",
+        "Salah. Menunggu instruksi menghambat voice of people yang menjadi inti safety culture."
+      ],
+      "topic": "dimensions"
+    },
+    {
+      "id": "itil-dimensions-conways-law",
+      "prompt": "Conway's Law menyatakan…",
+      "options": [
+        "Semakin besar organisasi, semakin cepat proses pengembangan",
+        "Arsitektur produk selalu mengikuti standar industri",
+        "Jumlah developer menentukan kualitas produk",
+        "Organisasi yang merancang sistem terkendala menghasilkan desain yang meniru struktur komunikasi organisasinya"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Conway's Law justru mengisyaratkan kecepatan discovery/design/build dibatasi jumlah dan kompleksitas komunikasi antar tim.",
+        "Salah. Arsitektur produk cenderung mencerminkan struktur organisasi sendiri, bukan standar industri.",
+        "Salah. Hukum ini tidak bicara jumlah developer vs kualitas.",
+        "Benar. Hukum Melvin Conway (1967) dirujuk ITIL: desain produk digital sering mencerminkan cara tim diorganisasi dan berkomunikasi."
+      ],
+      "topic": "dimensions"
+    },
+    {
+      "id": "itil-dimensions-reverse-conway",
+      "prompt": "Pendekatan 'reverse Conway' adalah…",
+      "options": [
+        "Memindahkan semua keputusan ke satu komite pusat",
+        "Mempekerjakan konsultan untuk mendesain ulang organisasi",
+        "Merancang struktur tim untuk memungkinkan arsitektur produk yang dituju — misalnya tim kecil multi-disiplin yang memegang lifecycle penuh",
+        "Mengikuti arsitektur produk yang lama dengan struktur tim baru"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Sentralisasi semua keputusan justru memperlambat alur kerja yang ingin dicapai.",
+        "Salah. Ini pendekatan desain internal, bukan layanan konsultan.",
+        "Benar. Reverse Conway: struktur tim didesain mengikuti target arsitektur produk — banyak organisasi memakai struktur product-based dengan tim kecil (≤10 orang) multi-disiplin yang bertanggung jawab penuh atas lifecycle produk.",
+        "Salah. Reverse Conway adalah menyesuaikan organisasi ke arsitektur yang diinginkan, bukan sebaliknya."
+      ],
+      "topic": "dimensions"
+    },
+    {
+      "id": "itil-dimensions-ai-governance",
+      "prompt": "Menurut dimensi Organizations and people, organisasi yang mengadopsi AI harus…",
+      "options": [
+        "Menggunakan AI hanya untuk tugas administratif",
+        "Menyeimbangkan kecepatan adopsi AI dengan governance yang efektif",
+        "Mengganti semua keputusan manusia dengan AI untuk objektivitas penuh",
+        "Menunda adopsi AI sampai semua risikonya diketahui"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. AI relevan melampaui administrasi: analisis data, deteksi insiden, prediksi performa, dan banyak lagi.",
+        "Benar. Buku menekankan: AI diadopsi untuk pengambilan keputusan penting (mis. rekrutmen) sering tanpa kehati-hatian dan kontrol; organisasi harus menyeimbangkan kecepatan adopsi dengan governance efektif.",
+        "Salah. Manusia tetap unggul di kreativitas, empati, dan pemahaman kontekstual; AI melengkapinya, bukan menggantikan semua.",
+        "Salah. Menunda total juga bukan sarannya — yang diminta keseimbangan dengan governance."
+      ],
+      "topic": "dimensions"
+    },
+    {
+      "id": "itil-dimensions-ai-kekuatan",
+      "prompt": "Area di mana AI paling membantu menurut bagian Organizations, People and AI adalah…",
+      "options": [
+        "Pemrosesan informasi, pengenalan pola, dan mengurangi bias kognitif",
+        "Menggantikan empati dan hubungan antar manusia",
+        "Membuat keputusan strategis perusahaan sendirian",
+        "Menghilangkan kebutuhan pelatihan karyawan"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Buku merinci tiga kekuatan AI: pemrosesan data masif, pattern recognition (demand forecasting, deteksi insiden, prediksi performa), dan reduksi bias kognitif pada keputusan.",
+        "Salah. Empati dan hubungan manusia justru area keunggulan manusia; AI melengkapinya.",
+        "Salah. AI mendukung keputusan strategis dengan insight, bukan mengambil alih sendirian.",
+        "Salah. Karyawan tetap perlu kompetensi; AI membebaskan waktu mereka untuk aktivitas strategis dan manusia."
+      ],
+      "topic": "dimensions"
+    },
+    {
+      "id": "itil-dimensions-partners-suppliers",
+      "prompt": "Dimensi 'Partners and suppliers' relevan karena…",
+      "options": [
+        "Semua kebutuhan organisasi bisa dipenuhi internal sehingga supplier tidak penting",
+        "Supplier hanya menentukan harga, bukan value",
+        "Hubungan dengan supplier cukup diatur kontrak standar saja",
+        "Layanan modern dibangun dari kombinasi banyak penyedia; integrasi yang buruk antar penyedia bisa merusak value yang dirasakan consumer"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Buku justru menggambarkan organisasi sebagai provider sekaligus consumer dalam banyak hubungan layanan.",
+        "Salah. Supplier memengaruhi kualitas, risiko, dan kesinambungan — tidak hanya harga.",
+        "Salah. Tingkat formalitas hubungan (basic/cooperative/collaborative) harus disesuaikan, bukan semua kontrak standar.",
+        "Benar. Value consumer sering bergantung pada konsumsi banyak layanan dari banyak penyedia yang minim koordinasi; service integrator (mis. operator paket wisata) dipakai untuk mengurangi risiko integrasi yang buruk."
+      ],
+      "topic": "dimensions"
+    },
+    {
+      "id": "itil-dimensions-info-technology",
+      "prompt": "Dalam dimensi 'Information and technology', data, informasi, dan pengetahuan berperan untuk…",
+      "options": [
+        "Menjadi pengganti komunikasi langsung antar tim",
+        "Dijaga kerahasiaannya dari semua pemangku kepentingan",
+        "Mendukung pengambilan keputusan, memahami persepsi stakeholder, menilai performa, dan menyoroti risiko",
+        "Hanya untuk membuat laporan bulanan"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Informasi melengkapi, bukan menggantikan, komunikasi dan kolaborasi.",
+        "Salah. Prinsip 'collaborate and promote visibility' justru mendorong pembagikan informasi selebar mungkin.",
+        "Benar. Analitik data meningkatkan pemahaman persepsi stakeholder, menilai performa dan produktivitas tim/produk/layanan, menyoroti risiko hubungan supplier, dan mendukung keputusan strategis.",
+        "Salah. Nilai data/informasi jauh melampaui pelaporan rutin."
+      ],
+      "topic": "dimensions"
+    },
+    {
+      "id": "itil-dimensions-dimensi-integrasi",
+      "prompt": "Mengapa keempat dimensi harus ditangani secara terintegrasi?",
+      "options": [
+        "Karena partner eksternal lebih penting dari internal",
+        "Efektivitas organisasi tidak bisa dijamin struktur formal saja; budaya, kompetensi, value stream, teknologi, dan partner harus saling mendukung",
+        "Karena setiap dimensi punya satu pemilik dan tidak boleh tumpang tindih",
+        "Karena teknologi paling penting, dimensi lain mengikuti"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Internal dan eksternal sama pentingnya dalam ekosistem value.",
+        "Benar. Buku membuka bab dimensi dengan: struktur dan wewenang formal saja tidak menjamin efektivitas — diperlukan budaya yang mendukung, kapasitas & kompetensi, plus value stream, teknologi, dan hubungan partner yang selaras strategi.",
+        "Salah. Keras ber-tim dalam dimensi justru menciptakan silo.",
+        "Salah. Tidak ada dimensi yang paling penting; semuanya saling terkait."
+      ],
+      "topic": "dimensions"
+    },
+    {
+      "id": "itil-service-value-def",
+      "prompt": "Definisi 'value' dalam ITIL adalah…",
+      "options": [
+        "Perceived benefits, usefulness, dan importance dari sesuatu",
+        "Total keuntungan finansial yang dihasilkan sebuah produk",
+        "Kualitas teknis sebuah layanan",
+        "Harga yang dibayarkan consumer untuk sebuah layanan"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Definisi persis di buku: value is the perceived benefits, usefulness, and importance of something.",
+        "Salah. Value tidak harus finansial dan tidak hanya milik organisasi — dia dipersepsikan consumer.",
+        "Salah. Kualitas teknis hanya satu aspek; value mencakup manfaat, kegunaan, dan pentingnya sesuatu bagi consumer.",
+        "Salah. Harga adalah komponen cost, bukan definisi value."
+      ],
+      "topic": "service"
+    },
+    {
+      "id": "itil-service-service-def",
+      "prompt": "Definisi 'service' dalam ITIL adalah…",
+      "options": [
+        "Produk digital yang dijual melalui aplikasi",
+        "Segala aktivitas yang menghasilkan pendapatan",
+        "Kontrak antara dua perusahaan",
+        "Means of enabling value co-creation dengan memfasilitasi outcomes yang consumer ingin capai, tanpa consumer harus mengelola cost dan risiko tertentu"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Service tidak harus digital, dan bukan selalu 'dijual' — definisinya berpusat pada outcome dan cost/risk.",
+        "Salah. Tidak semua aktivitas berpendapatan adalah service dalam arti ITIL.",
+        "Salah. Kontrak adalah dokumen hubungan; service adalah sarana value co-creation.",
+        "Benar. Definisi inti ITIL: service memfasilitasi outcome yang diinginkan consumer sambil mengambil alih sebagian cost dan risiko yang terkait."
+      ],
+      "topic": "service"
+    },
+    {
+      "id": "itil-service-output-vs-outcome",
+      "prompt": "Fotografer pernikahan menghasilkan album foto (output). Outcome-nya adalah…",
+      "options": [
+        "Bayaran lunas yang diterima fotografer",
+        "Cetak album dengan kertas premium",
+        "Pelestarian memori dan kemampuan pasangan serta keluarga mengenang momen dengan mudah",
+        "Berkas PDF berisi 500 foto tersusun rapi"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Pembayaran adalah transaksi, bukan outcome yang dinikmati consumer.",
+        "Salah. Kertas premium adalah spesifikasi output, bukan outcome.",
+        "Benar. Contoh persis di buku: output = album; outcome = pelestarian memori yang bisa dikenang — outcome adalah result bagi stakeholder yang di-enable oleh satu atau lebih output.",
+        "Salah. Berkas foto adalah output (deliverable), bukan result bagi stakeholder."
+      ],
+      "topic": "service"
+    },
+    {
+      "id": "itil-service-outcome-def",
+      "prompt": "Perbedaan 'output' dan 'outcome' menurut ITIL adalah…",
+      "options": [
+        "Output bersifat subjektif; outcome bersifat objektif",
+        "Output adalah deliverable (tangible/intangible) dari aktivitas; outcome adalah result bagi stakeholder yang di-enable oleh satu atau lebih output",
+        "Output adalah hasil akhir; outcome adalah dokumen pendukung",
+        "Output dibuat consumer; outcome dibuat provider"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Keduanya bisa objektif atau subjektif; pembedanya adalah deliverable vs result-stakeholder.",
+        "Benar. Definisi presisi di buku — output deliverable aktivitas; outcome result stakeholder yang di-enable oleh output.",
+        "Salah. Terbalik: outcome yang berorientasi hasil akhir bagi stakeholder, output yang berorientasi deliverable.",
+        "Salah. Output dihasilkan provider; outcome dinikmati/dicapai consumer (sering bersama provider)."
+      ],
+      "topic": "service"
+    },
+    {
+      "id": "itil-service-cost-dua-jenis",
+      "prompt": "Dari perspektif service consumer, biaya (cost) dalam hubungan layanan terdiri dari…",
+      "options": [
+        "Biaya yang dikurangi/dihilangkan oleh layanan, dan biaya yang diposisikan/dibebankan oleh layanan (termasuk harga yang dibayar)",
+        "Hanya harga yang ditagih provider",
+        "Biaya provider untuk membangun infrastruktur",
+        "Biaya pelatihan staff provider"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Buku: consumer mempertimbangkan dua jenis biaya — yang dihilangkan layanan (staff, teknologi, resource yang tidak perlu mereka kelola) dan yang dibebankan (harga + biaya konsumsi lain seperti training, utilisasi resource).",
+        "Salah. Hanya melihat harga tagihan mengabaikan biaya konsumsi lain dan nilai penghematan yang diberikan layanan.",
+        "Salah. Biaya infrastruktur provider adalah sisi provider, bukan perspektif consumer.",
+        "Salah. Biaya pelatihan staff provider adalah sisi provider; yang relevan bagi consumer adalah biayanya sendiri (termasuk training untuk memakai layanan)."
+      ],
+      "topic": "service"
+    },
+    {
+      "id": "itil-service-risk-dua-jenis",
+      "prompt": "Mirip cost, risiko (risk) bagi service consumer terbagi menjadi…",
+      "options": [
+        "Hanya risiko teknis dari kegagalan hardware",
+        "Risiko finansial dan risiko hukum saja",
+        "Risiko internal dan risiko eksternal provider",
+        "Risiko yang dikurangi/dihilangkan layanan (bagian value proposition) dan risiko yang dibebankan oleh konsumsi layanan (mis. provider berhenti beroperasi, kebocoran keamanan)"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Risiko mencakup jauh lebih banyak dari kegagalan hardware — termasuk risiko bisnis, keamanan, dan operasional.",
+        "Salah. Pembagian finansial/hukum terlalu sempit; framework-nya adalah reduced vs imposed.",
+        "Salah. Pembagian internal/eksternal provider bukan kerangka yang dipakai ITIL untuk risiko consumer.",
+        "Benar. Definisi risk di buku: possible event that could cause harm/loss or make objectives harder; consumer peduli pada risiko yang dihilangkan layanan dan yang justru dibebankan oleh layanan."
+      ],
+      "topic": "service"
+    },
+    {
+      "id": "itil-service-utility-warranty",
+      "prompt": "Dalam ITIL v5, service value dipandang sebagai kombinasi dari…",
+      "options": [
+        "Fitur, harga, dan kecepatan",
+        "Ketersediaan, kinerja, dan kapasitas",
+        "Utility, warranty, sustainability, dan experience",
+        "Utility dan warranty saja, seperti versi ITIL lama"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Fitur/harga/kecepatan adalah atribut, bukan kerangka value ITIL v5.",
+        "Salah. Ketersediaan/kinerja/kapasitas adalah aspek warranty, bukan keseluruhan value.",
+        "Benar. ITIL v5 memperluas konsep klasik utility+warranty dengan sustainability dan experience — service value dippersepsikan sebagai kombinasi keempatnya.",
+        "Salah. Itu model ITIL 4 awal; v5 menambahkan sustainability dan experience sebagai bagian persepsi value."
+      ],
+      "topic": "service"
+    },
+    {
+      "id": "itil-service-utility-def",
+      "prompt": "'Utility' sebuah layanan merujuk pada…",
+      "options": [
+        "Pengalaman emosional user saat memakai layanan",
+        "Fitur dan fungsi yang memenuhi kebutuhan consumer — 'what it does'",
+        "Jaminan level layanan yang disediakan",
+        "Keberlanjutan lingkungan dari layanan"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Pengalaman emosional adalah dimensi experience (UX).",
+        "Benar. Utility adalah kemampuan layanan memenuhi kebutuhan (what it does); warranty baru bicara level/jaminan (how it performs).",
+        "Salah. Jaminan level adalah domain warranty.",
+        "Salah. Itu dimensi sustainability."
+      ],
+      "topic": "service"
+    },
+    {
+      "id": "itil-service-warranty-def",
+      "prompt": "'Warranty' sebuah layanan adalah…",
+      "options": [
+        "Jaminan bahwa layanan akan tersedia dan beroperasi pada level yang disepakati — aspek 'how it performs'",
+        "Daftar fitur layanan yang bisa digunakan consumer",
+        "Periode garansi hardware",
+        "Pajak yang dibebankan ke consumer"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Warranty memastikan layanan beroperasi sesuai yang dijanjikan (availability, keamanan, kapasitas, continuity) — melengkapi utility.",
+        "Salah. Daftar fitur adalah utility.",
+        "Salah. Garansi hardware adalah produk; warranty ITIL bicara kinerja layanan yang disepakati.",
+        "Salah. Pajak tidak ada kaitannya dengan definisi warranty."
+      ],
+      "topic": "service"
+    },
+    {
+      "id": "itil-service-ux-def",
+      "prompt": "Definisi User Experience (UX) dalam ITIL adalah…",
+      "options": [
+        "Kecepatan respons aplikasi diukur dalam milidetik",
+        "Total tiket dukungan yang diselesaikan",
+        "Skor kepuasan dari survei tahunan",
+        "Jumlah interaksi fungsional dan emosional dengan layanan dan service provider, sebagaimana dipersepsikan service user"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Latensi adalah metrik teknis; UX jauh lebih luas dan subjektif.",
+        "Salah. Volume tiket adalah metrik operasional, bukan pengalaman.",
+        "Salah. Survei tahunan adalah satu cara menangkap UX, bukan definisinya.",
+        "Benar. Definisi persis di buku — UX dipersepsikan user dan mencakup aspek fungsional dan emosional; faktor positif termasuk ease of use, relevansi terhadap tujuan, akses dukungan, dan persepsi value."
+      ],
+      "topic": "service"
+    },
+    {
+      "id": "itil-service-sla-def",
+      "prompt": "Definisi Service Level Agreement (SLA) adalah…",
+      "options": [
+        "Daftar harga layanan publik",
+        "Dokumen internal tim pengembang",
+        "Perjanjian tertulis antara service provider dan customer yang mengidentifikasi layanan yang disediakan dan level disepakati tiap layanan",
+        "Kontrak kerja karyawan IT"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Daftar harga bukan perjanjian level layanan.",
+        "Salah. SLA adalah perjanjian antara provider dan customer, bukan dokumen internal.",
+        "Benar. Definisi persis di buku — SLA adalah cara umum membangun pemahaman bersama tentang kualitas layanan yang diharapkan dan dicapai, serta mengelola perbaikan layanan.",
+        "Salah. SLA menyangkut hubungan layanan, bukan hubungan kerja."
+      ],
+      "topic": "service"
+    },
+    {
+      "id": "itil-service-sla-minimal",
+      "prompt": "Menurut ITIL v5, minimal apa yang harus dideskripsikan SLA untuk sebuah digital service?",
+      "options": [
+        "Hanya daftar fitur yang tersedia",
+        "Utility, warranty, dan sustainability layanan; untuk layanan dengan user touchpoint, sebaiknya termasuk metrik user experience",
+        "Hanya metrik availability dan response time",
+        "Hanya harga dan masa berlaku kontrak"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Daftar fitur (utility) saja tidak cukup — warranty dan sustainability wajib.",
+        "Benar. Buku: setidaknya SLA digital service harus mendeskripsikan utility, warranty, dan sustainability; praktik baik menambahkan UX metrics (sebaiknya dalam SLA, bukan perjanjian experience terpisah).",
+        "Salah. Availability/response time hanya bagian warranty; SLA v5 lebih luas.",
+        "Salah. Harga dan durasi adalah条款 komersial, bukan isi minimal SLA."
+      ],
+      "topic": "service"
+    },
+    {
+      "id": "itil-service-service-quality",
+      "prompt": "Tentang kualitas layanan, pernyataan yang benar adalah…",
+      "options": [
+        "Tidak ada satu kategori level layanan yang lebih penting dari lainnya; fokus berlebihan pada satu (mis. experience) tidak menjamin yang lain",
+        "Experience paling penting — jika user senang, sisanya mengikut",
+        "Availability selalu yang terpenting untuk semua layanan",
+        "Kualitas cukup diukur dari performa teknis"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Buku memberi contoh: pengalaman indah bisa pada layanan yang tidak memberi manfaat; availability tinggi sia-sia untuk layanan yang tidak butuh akses real-time; fungsionalitas hebat percuma jika infrastruktur lambat.",
+        "Salah. Buku eksplisit menyangkal asumsi itu — fokus satu kategori tidak otomatis mengurus kategori lain.",
+        "Salah. Ketersediaan krusial hanya untuk layanan yang memang butuh real-time.",
+        "Salah. Mengukur hanya performa teknis tidak cukup — buku menyebut harus memantau sentimen dan feedback user juga."
+      ],
+      "topic": "service"
+    },
+    {
+      "id": "itil-service-journey",
+      "prompt": "'Service journey' adalah…",
+      "options": [
+        "Rute fisik pengiriman barang",
+        "Alur approval internal sebelum rilis",
+        "Jadwal pemeliharaan berkala",
+        "Urutan pengalaman dan interaksi yang dilalui service user/customer dari awal hingga akhir penggunaan layanan"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Rute fisik logistik bukan journey dalam arti ITIL.",
+        "Salah. Alur approval internal adalah process/workflow, bukan journey consumer.",
+        "Salah. Jadwal maintenance adalah aktivitas operasional, bukan journey.",
+        "Benar. Service journey menggambarkan perjalanan stakeholder melalui layanan — informasi dari consumer harus ditangkap di semua tahap journey mereka."
+      ],
+      "topic": "service"
+    },
+    {
+      "id": "itil-service-value-cocreation",
+      "prompt": "Dua perspektif co-creation of value menurut ITIL adalah…",
+      "options": [
+        "Value diciptakan oleh integrator tunggal yang bertanggung jawab end-to-end",
+        "Value hanya muncul saat semua penyedia berkoordinasi rapat",
+        "Selalu kombinasi konsumsi (oleh consumer) dan penyediaan (oleh provider); bisa melibatkan banyak penyedia dengan sedikit koordinasi satu sama lain",
+        "Value sepenuhnya diciptakan provider; consumer hanya menerima"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Sering tidak ada satu provider yang bertanggung jawab end-to-end (contoh keluarga nonton konser: kereta, venue, pertunjukan, makan, kereta pulang).",
+        "Salah. Justru realitanya minim koordinasi antar penyedia — itulah mengapa service integrator dipakai.",
+        "Benar. Buku: co-creation selalu gabungan consumption+provision, dan bisa mencakup banyak provider yang satu sama lain minim pengetahuan/kepentingan — kegagalan satu saja bisa merusak pengalaman keseluruhan.",
+        "Salah. Co-creation menegaskan peran aktif consumer, bukan penerima pasif."
+      ],
+      "topic": "service"
+    },
+    {
+      "id": "itil-service-integrator",
+      "prompt": "Siapa 'service integrator' dalam konteks ITIL?",
+      "options": [
+        "Auditor independen layanan",
+        "Penyedia khusus yang menyatukan banyak layanan agar value consumer tidak rusak akibat integrasi yang buruk — contoh operator paket wisata",
+        "Karyawan yang mengintegrasikan sistem TI internal",
+        "Developer yang menulis API antar sistem"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Auditor menilai; integrator menyatukan layanan.",
+        "Benar. Buku memberi contoh umum: operator packaged tours — integrator mengurangi risiko buruk integrasi antar penyedia yang melayani satu customer.",
+        "Salah. Integrasi sistem internal adalah aktivitas operasional, bukan peran integrator value.",
+        "Salah. Developer API bekerja di level teknis, bukan penyatuan pengalaman multi-penyedia."
+      ],
+      "topic": "service"
+    },
+    {
+      "id": "itil-service-digital-product",
+      "prompt": "'Digital product vendor' adalah organisasi yang bertanggung jawab untuk…",
+      "options": [
+        "Penciptaan dan perbaikan berkelanjutan produk digital dan penawaran layanan terkait",
+        "Penyediaan data center saja",
+        "Menjual lisensi software ke ritel",
+        "Menjalankan call center konsumen"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Definisi di buku — dan untuk digital services, peran vendor ini sering digabung dengan peran service provider.",
+        "Salah. Data center adalah infrastruktur; vendor digital jauh lebih luas (penciptaan produk + improvement berkelanjutan).",
+        "Salah. Penjualan lisensi adalah salah satu channel, bukan definisi peran.",
+        "Salah. Call center adalah operasional dukungan, bukan penciptaan produk."
+      ],
+      "topic": "service"
+    },
+    {
+      "id": "itil-service-cost-imposed",
+      "prompt": "Sebuah layanan cloud baru membebankan biaya training staff pada consumer. Dalam kerangka ITIL, biaya itu termasuk…",
+      "options": [
+        "Biaya yang dihilangkan oleh layanan sehingga tidak perlu dipikirkan",
+        "Biaya internal provider yang tidak relevan",
+        "Sanksi karena consumer tidak siap teknologi",
+        "Risiko/biaya yang dibebankan oleh layanan (cost of service consumption) — tetap harus dipahami consumer saat menilai value"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Biaya training justru termasuk yang dibebankan, bukan dihilangkan.",
+        "Salah. Dari sisi consumer, biaya ini sangat relevan untuk keputusan value.",
+        "Salah. Itu bukan sanksi; dia bagian normal dari biaya konsumsi yang harus transparan.",
+        "Benar. Buku: total biaya konsumsi = harga tagihan provider PLUS biaya lain seperti staff training, utilisasi resource, procurement — kedua jenis cost (reduced dan imposed) dipertimbangkan consumer saat menilai value."
+      ],
+      "topic": "service"
+    },
+    {
+      "id": "itil-roles-customer-def",
+      "prompt": "Role 'customer' dalam hubungan layanan adalah…",
+      "options": [
+        "Role yang menyetujui anggaran",
+        "Role yang mendesain layanan",
+        "Role yang mendefinisikan persyaratan produk/layanan dan bertanggung jawab atas outcome konsumsi layanan",
+        "Role yang memakai layanan sehari-hari"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Menyetujui anggaran adalah role sponsor.",
+        "Salah. Mendesain layanan adalah tugas provider.",
+        "Benar. Definisi persis di buku — customer mendefinisikan requirements dan memikul tanggung jawab outcome.",
+        "Salah. Memakai layanan sehari-hari adalah role user."
+      ],
+      "topic": "roles"
+    },
+    {
+      "id": "itil-roles-user-def",
+      "prompt": "Role 'user' adalah…",
+      "options": [
+        "Role yang mengaudit kualitas layanan",
+        "Role yang menggunakan (memakai) layanan",
+        "Role yang bernegosiasi kontrak dengan provider",
+        "Role yang menanggung biaya layanan"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Audit bukan role standar dalam model hubungan ITIL.",
+        "Benar. Definisi sederhana di buku: user adalah role yang memakai layanan.",
+        "Salah. Negosiasi kontrak dilakukan customer.",
+        "Salah. Biaya diotorisasi sponsor."
+      ],
+      "topic": "roles"
+    },
+    {
+      "id": "itil-roles-sponsor-def",
+      "prompt": "Role 'sponsor' adalah…",
+      "options": [
+        "Role yang mengotorisasi anggaran untuk konsumsi layanan",
+        "Role yang menulis spesifikasi teknis layanan",
+        "Role yang menangani keluhan teknis user",
+        "Role yang menandatangani SLA"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Definisi di buku — sponsor mengotorisasi budget untuk service consumption (contoh: CFO yang menyetujui biaya kontrak).",
+        "Salah. Spesifikasi teknis adalah ranah customer.",
+        "Salah. Keluhan teknis ditangani user support, bukan sponsor.",
+        "Salah. SLA ditandatangani customer dan provider."
+      ],
+      "topic": "roles"
+    },
+    {
+      "id": "itil-roles-tiga-role",
+      "prompt": "Tiga role spesifik yang mewakili organisasi service consumer adalah…",
+      "options": [
+        "Vendor, integrator, dan auditor",
+        "Manajer, analis, dan operator",
+        "Direktur, staf, dan konsultan",
+        "Sponsor, customer, dan user"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Itu role di sisi penyedia/ekosistem, bukan representasi consumer.",
+        "Salah. Itu jabatan kerja umum, bukan role hubungan layanan.",
+        "Salah. Itu hierarki organisasi, bukan role ITIL.",
+        "Benar. Buku: service consumer adalah role generik organisasi; dalam praktik diwakili tiga role spesifik — sponsor, customer, user — yang bisa dipisah atau digabung."
+      ],
+      "topic": "roles"
+    },
+    {
+      "id": "itil-roles-consumer-individu",
+      "prompt": "Konsumen individu (bukan korporasi) yang memakai layanan operator seluler biasanya…",
+      "options": [
+        "Hanya sebagai customer, karena individu tidak punya anggaran",
+        "Tidak memiliki role apa pun dalam model ITIL",
+        "Bertindak sebagai user, customer, dan sponsor secara bersamaan",
+        "Hanya sebagai user, karena customer dan sponsor selalu perusahaan"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Individu tetap mengotorisasi anggarannya sendiri (sponsor).",
+        "Salah. Semua pelaku hubungan layanan punya role.",
+        "Benar. Buku: konsumen individu biasanya mengambil ketiga role sekaligus; pada B2B ketiganya bisa terpisah (procurement=customer, CFO=sponsor, karyawan=user).",
+        "Salah. Individu justru menggabungkan ketiga role."
+      ],
+      "topic": "roles"
+    },
+    {
+      "id": "itil-roles-provider-def",
+      "prompt": "'Service provider' adalah organisasi yang bertanggung jawab untuk…",
+      "options": [
+        "Pemeriksaan independen kualitas layanan",
+        "Penyediaan (delivery) dan dukungan (support) layanan",
+        "Pembelian layanan untuk karyawannya",
+        "Penciptaan produk digital dan perbaikan berkelanjutan-nya"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Pemeriksaan independen adalah peran auditor.",
+        "Benar. Definisi di buku — delivery dan support; penciptaan produk digital adalah domain digital product vendor (yang sering digabung dengan provider untuk digital services).",
+        "Salah. Pembelian adalah sisi consumer.",
+        "Salah. Itu definisi digital product vendor."
+      ],
+      "topic": "roles"
+    },
+    {
+      "id": "itil-roles-consumer-def",
+      "prompt": "'Service consumer' adalah organisasi yang bertanggung jawab untuk…",
+      "options": [
+        "Pengadaan (procurement) dan pemakaian (use) layanan",
+        "Penyediaan dan dukungan layanan",
+        "Penciptaan produk digital",
+        "Penagihan biaya kepada provider"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Definisi di buku — procurement dan use; delivery & support adalah sisi provider.",
+        "Salah. Itu definisi service provider.",
+        "Salah. Itu definisi digital product vendor.",
+        "Salah. Consumer yang membayar, bukan menagih."
+      ],
+      "topic": "roles"
+    },
+    {
+      "id": "itil-roles-role-relatif",
+      "prompt": "Tentang organisasi dalam hubungan layanan, hal yang benar adalah…",
+      "options": [
+        "Setiap organisasi selamanya tertambat di satu role",
+        "Hanya perusahaan besar yang bisa menjadi provider",
+        "Individu tidak bisa berperan dalam hubungan layanan",
+        "Role berlaku untuk hubungan tertentu — organisasi yang provider di satu hubungan bisa jadi consumer di hubungan lain"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Role kontekstual per hubungan, bukan identitas tetap.",
+        "Salah. Organisasi kecil dan individu pun bisa provider.",
+        "Salah. Individu berperan sebagai user/customer/sponsor.",
+        "Benar. Buku: semua organisasi memainkan role provider dan consumer; banyak yang juga product vendor — dan role-nya relatif terhadap hubungan tertentu."
+      ],
+      "topic": "roles"
+    },
+    {
+      "id": "itil-roles-basic-rel",
+      "prompt": "Karakteristik 'basic relationship' adalah…",
+      "options": [
+        "Melibatkan level strategis dan outcome-based agreements",
+        "Layanan kustom dengan value proposition unik",
+        "Fokus dukungan dan efisiensi, level operasional, layanan standar/commodity, kontrak standar & SLA mass market",
+        "Fokus inovasi dan pertumbuhan dengan kontrak bespoke"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Level strategis dan outcome-based ada di cooperative/collaborative.",
+        "Salah. Layanan kustom = collaborative, bukan basic.",
+        "Benar. Tabel di buku: basic = support & efficiency, operasional, COTS/standar, standard contracts/SLA mass market (contoh operator seluler, cloud storage).",
+        "Salah. Inovasi+pertumbuhan dan kontrak bespoke adalah collaborative (partnership)."
+      ],
+      "topic": "roles"
+    },
+    {
+      "id": "itil-roles-cooperative-rel",
+      "prompt": "Karakteristik 'cooperative relationship' adalah…",
+      "options": [
+        "Hanya melibatkan level strategis",
+        "Fokus improvement dan effectiveness, level operasional dan taktis, layanan yang dikonfigurasi/dikustomisasi, advanced SLA/outcome-based",
+        "Layanan commodity standar dengan kontrak mass market",
+        "Fokus inovasi dengan kontrak bespoke tanpa perjanjian formal"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Cooperative melibatkan operasional dan taktis, tidak terbatas strategis.",
+        "Benar. Tabel: cooperative = improvement & effectiveness, operasional+taktis, layanan perlu konfigurasi/kustomisasi, advanced SLA/experience-based/outcome-based (contoh managed service provider).",
+        "Salah. Commodity mass market adalah basic relationship.",
+        "Salah. Bespoke tanpa formal agreement adalah collaborative."
+      ],
+      "topic": "roles"
+    },
+    {
+      "id": "itil-roles-collaborative-rel",
+      "prompt": "'Collaborative relationship' (partnership) berbeda dari dua tipe lain karena…",
+      "options": [
+        "Fokus inovasi dan pertumbuhan, melibatkan level operasional-taktis-strategis, layanan kustom dengan value proposition unik, kontrak bespoke/outcome-based/tanpa formal agreement",
+        "Fokus dukungan dan efisiensi dengan kontrak standar",
+        "Selalu memakai SLA mass market",
+        "Hanya melibatkan level operasional"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Tabel: collaborative = innovation & growth, semua level organisasi, custom/bespoke services, bespoke contracts/outcome-based/no formal agreement.",
+        "Salah. Itu deskripsi basic relationship.",
+        "Salah. SLA mass market adalah basic.",
+        "Salah. Partnership justru melibatkan semua level sampai strategis."
+      ],
+      "topic": "roles"
+    },
+    {
+      "id": "itil-roles-identitas-role",
+      "prompt": "Mengapa penting mengidentifikasi role (sponsor/customer/user) dalam hubungan layanan?",
+      "options": [
+        "Agar tagihan bisa dikirim ke alamat yang tepat",
+        "Supaya provider tahu siapa yang menulis kode",
+        "Untuk memenuhi syarat pajak",
+        "Untuk memastikan komunikasi dan pengelolaan stakeholder efektif — tiap role punya ekspektasi, definisi value, dan journey yang berbeda"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Pengiriman tagihan bukan tujuan identifikasi role.",
+        "Salah. Itu pertanyaan staffing internal, bukan role hubungan.",
+        "Salah. Pajak tidak kaitannya dengan model role ITIL.",
+        "Benar. Buku: identifikasi role memastikan komunikasi & stakeholder management efektif karena role punya ekspektasi berbeda (bahkan bertentangan), definisi value berbeda, dan service journey berbeda."
+      ],
+      "topic": "roles"
+    },
+    {
+      "id": "itil-lifecycle-delapan-stage",
+      "prompt": "Delapan stage ITIL Product and Service Lifecycle (urutan sesuai buku) adalah…",
+      "options": [
+        "Strategize, Source, Design, Deliver, Monitor, Close",
+        "Initiate, Scope, Develop, Test, Release, Migrate, Operate, Improve",
+        "Discover, Design, Acquire, Build, Transition, Operate, Deliver, Support",
+        "Plan, Do, Check, Act, Review, Retire, Archive, Report"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Hanya enam item dan bukan istilah ITIL.",
+        "Salah. Delapan istilah itu mirip tapi bukan model ITIL v5.",
+        "Benar. Daftar persis di buku — delapan stage dengan fokus manajemen bergeser antara digital product dan digital service.",
+        "Salah. Itu variasi siklus umum, bukan model lifecycle ITIL v5."
+      ],
+      "topic": "lifecycle"
+    },
+    {
+      "id": "itil-lifecycle-discover-def",
+      "prompt": "Stage 'Discover' adalah…",
+      "options": [
+        "Menjalankan produk di lingkungan produksi",
+        "Eksplorasi dan prioritas kebutuhan serta peluang untuk produk dan layanan",
+        "Membuat solusi produk yang memenuhi persyaratan",
+        "Membeli resource yang dibutuhkan"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Menjalankan di produksi adalah stage Operate.",
+        "Benar. Definisi di buku: explore and prioritize needs and opportunities — stage awal lifecycle yang menangkap kebutuhan customer dan peluang.",
+        "Salah. Membuat solusi adalah stage Design.",
+        "Salah. Membeli resource adalah stage Acquire."
+      ],
+      "topic": "lifecycle"
+    },
+    {
+      "id": "itil-lifecycle-design-def",
+      "prompt": "Stage 'Design' adalah…",
+      "options": [
+        "Menciptakan solusi produk dan layanan yang memenuhi atau melampaui persyaratan",
+        "Mengumpulkan data tentang kebutuhan market",
+        "Menguji solusi di lingkungan staging",
+        "Mendukung user saat layanan berjalan"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Definisi di buku — design menekankan solusi yang meeting/exceeding requirements, termasuk human-centred design.",
+        "Salah. Pengumpulan kebutuhan adalah Discover.",
+        "Salah. Pengujian adalah bagian Build (create, configure, and test).",
+        "Salah. Mendukung user adalah Support/Deliver."
+      ],
+      "topic": "lifecycle"
+    },
+    {
+      "id": "itil-lifecycle-acquire-def",
+      "prompt": "Stage 'Acquire' adalah…",
+      "options": [
+        "Merancang arsitektur produk",
+        "Mengirim produk ke consumer",
+        "Memulihkan operasi setelah insiden",
+        "Memperoleh (procure) atau mengalokasikan resource yang dibutuhkan untuk membangun produk"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Arsitektur adalah Design.",
+        "Salah. Mengirim layanan adalah Deliver.",
+        "Salah. Pemulihan operasi adalah Support.",
+        "Benar. Definisi di buku: procure or allocate resources required to build the product."
+      ],
+      "topic": "lifecycle"
+    },
+    {
+      "id": "itil-lifecycle-build-def",
+      "prompt": "Stage 'Build' adalah…",
+      "options": [
+        "Memindahkan produk ke lingkungan live",
+        "Mengoperasikan produk untuk performa yang disepakati",
+        "Menciptakan, mengonfigurasi, dan menguji solusi teknologi yang membentuk produk",
+        "Mendeklarasikan fitur produk ke publik"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Pemindahan ke live adalah Transition.",
+        "Salah. Operasional adalah Operate.",
+        "Benar. Definisi di buku: create, configure, and test technology solutions constituting the product.",
+        "Salah. Deklarasi publik bukan stage build."
+      ],
+      "topic": "lifecycle"
+    },
+    {
+      "id": "itil-lifecycle-transition-def",
+      "prompt": "Stage 'Transition' adalah…",
+      "options": [
+        "Mengarsipkan produk yang pensiun",
+        "Mendeploykan produk baru ke lingkungan live",
+        "Merencanakan anggaran proyek",
+        "Melatih user tentang cara pakai layanan"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Arsip produk pensiun bukan stage di model delapan.",
+        "Benar. Definisi di buku: deploy the new product into the live environment.",
+        "Salah. Anggaran adalah Acquire.",
+        "Salah. Pelatihan bisa bagian Deliver/Support, bukan inti Transition."
+      ],
+      "topic": "lifecycle"
+    },
+    {
+      "id": "itil-lifecycle-operate-def",
+      "prompt": "Stage 'Operate' adalah…",
+      "options": [
+        "Mengoperasikan produk untuk memastikan performa yang disepakati",
+        "Menjual produk ke consumer",
+        "Merancang solusi baru",
+        "Menghapus produk dari layanan"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Definisi di buku: operate the product to ensure agreed performance.",
+        "Salah. Penjualan lebih ke Deliver (layanan).",
+        "Salah. Merancang adalah Design.",
+        "Salah. Penghapusan produk bukan stage eksplisit di model delapan."
+      ],
+      "topic": "lifecycle"
+    },
+    {
+      "id": "itil-lifecycle-deliver-def",
+      "prompt": "Stage 'Deliver' adalah…",
+      "options": [
+        "Membangun produk dari nol",
+        "Menemukan kebutuhan consumer",
+        "Memulihkan layanan setelah gangguan",
+        "Menyediakan layanan digital yang berbasis pada produk yang sudah live"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Membangun adalah Build.",
+        "Salah. Menemukan kebutuhan adalah Discover.",
+        "Salah. Pemulihan adalah Support.",
+        "Benar. Definisi di buku: deliver digital services based on the live products — di sinilah fokus bergeser ke digital service."
+      ],
+      "topic": "lifecycle"
+    },
+    {
+      "id": "itil-lifecycle-support-def",
+      "prompt": "Stage 'Support' adalah…",
+      "options": [
+        "Merancang program loyalitas",
+        "Melakukan riset pasar",
+        "Memulihkan operasi normal produk dan penyediaan layanan saat dibutuhkan",
+        "Menyediakan layanan sehari-hari tanpa gangguan"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Program loyalitas bukan stage lifecycle.",
+        "Salah. Riset pasar bagian Discover.",
+        "Benar. Definisi di buku: restore normal operation of products and delivery of services when needed — termasuk problem investigation dan continual improvement.",
+        "Salah. Penyediaan rutin adalah Operate/Deliver; Support khusus pemulihan."
+      ],
+      "topic": "lifecycle"
+    },
+    {
+      "id": "itil-lifecycle-bukan-siklus",
+      "prompt": "Tentang delapan aktivitas lifecycle, hal yang benar adalah…",
+      "options": [
+        "Stage yang sudah selesai tidak boleh ditinjau ulang",
+        "Tidak dilakukan sebagai siklus kaku — dari perspektif organisasi, aktivitas-aktivitas ini membentuk value chain (seperti stepping stones)",
+        "Harus dilakukan berurutan ketat tanpa boleh bolak-balik",
+        "Setiap organisasi harus menjalankan semua delapan stage sendiri"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Iterasi dan peninjauan ulang adalah inti cara kerja.",
+        "Benar. Buku eksplisit: aktivitas lifecycle 'not performed as a cycle' — scope dan urutannya bervariasi sesuai arsitektur dan konteks; praktisnya dibayangkan sebagai stepping stones, dan membentuk value chain organisasi.",
+        "Salah. Urutan boleh bervariasi; nilai 'chain' bukan berarti rigid sekuensial.",
+        "Salah. Produk/layanan bisa dikelola lintas satu atau beberapa organisasi."
+      ],
+      "topic": "lifecycle"
+    },
+    {
+      "id": "itil-lifecycle-focus-shift",
+      "prompt": "Saat bergerak melalui lifecycle, fokus manajemen bergeser…",
+      "options": [
+        "Antara digital product dan digital service",
+        "Dari manajer ke supervisor",
+        "Dari IT ke departemen bisnis",
+        "Dari eksternal ke internal saja"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Buku: moving through the lifecycle, the focus of management shifts between digital product and digital service.",
+        "Salah. Pergeserannya soal objek (product vs service), bukan level jabatan.",
+        "Salah. Bukan pergeseran departemen.",
+        "Salah. Interaksi internal-eksternal berjalan sepanjang lifecycle."
+      ],
+      "topic": "lifecycle"
+    },
+    {
+      "id": "itil-lifecycle-discover-aktivitas",
+      "prompt": "Aktivitas 'Discover' yang benar dilakukan mencakup…",
+      "options": [
+        "Menulis kode produk",
+        "Menjalankan pemeliharaan harian",
+        "Menandatangani kontrak vendor",
+        "Menangkap dan memproses kebutuhan, persyaratan, dan feedback customer; menemukan kebutuhan dan peluang"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Menulis kode adalah Build.",
+        "Salah. Pemeliharaan harian adalah Operate/Support.",
+        "Salah. Kontrak vendor berkaitan dengan Acquire.",
+        "Benar. Di level organisasi, Discover menangkap needs/requirements/feedback dan mengeksplorasi kebutuhan & peluang — termasuk menentukan siapa service consumer dan stakeholder kuncinya."
+      ],
+      "topic": "lifecycle"
+    },
+    {
+      "id": "itil-lifecycle-support-incident",
+      "prompt": "Tiga insiden serupa (mobil listrik kandas karena baterai) dianalisis dan aturan assignment diperbarui. Dalam lifecycle, ini termasuk…",
+      "options": [
+        "Transition — karena sistem diperbarui",
+        "Discover — karena ditemukan kebutuhan baru",
+        "Support — investigasi masalah dan perbaikan berkelanjutan",
+        "Build — karena aturan assignment dikode ulang"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Tidak ada produk baru yang di-deploy.",
+        "Salah. Bukan eksplorasi peluang baru; ini respons atas masalah layanan berjalan.",
+        "Benar. Contoh persis dari skenario ITIL Car Rental: insiden ditangani, akar masalah dianalisis, dan perbaikan dilakukan — buku menempatkan ini pada aktivitas 'support' (problem investigation and continual improvement).",
+        "Salah. Walau ada perubahan aturan, konteksnya pemulihan & perbaikan layanan berjalan — domain Support."
+      ],
+      "topic": "lifecycle"
+    },
+    {
+      "id": "itil-lifecycle-acquire-vs-build",
+      "prompt": "Perbedaan Acquire dan Build adalah…",
+      "options": [
+        "Tidak ada perbedaan — keduanya sinonim",
+        "Acquire = mendapat/alokasi resource; Build = membuat, mengonfigurasi, dan menguji solusi teknologi dari resource itu",
+        "Acquire = membangun dari nol; Build = membeli jadi",
+        "Acquire = tahap akhir; Build = tahap awal"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Keduanya stage berbeda dengan definisi berbeda.",
+        "Benar. Acquire menyiapkan resource (procure/allocate); Build mengubahnya jadi solusi teknologi yang diuji.",
+        "Salah. Terbalik.",
+        "Salah. Urutannya Acquire baru Build, bukan sebaliknya."
+      ],
+      "topic": "lifecycle"
+    },
+    {
+      "id": "itil-valuesystem-lima-komponen",
+      "prompt": "Lima komponen ITIL Value System (ITIL VS) adalah…",
+      "options": [
+        "Guiding principles, value chain, management practices (34), continual improvement, dan governance of digital technology",
+        "Prinsip, proses, people, teknologi, dan profit",
+        "Strategi, taktik, operasi, review, dan report",
+        "Vision, mission, values, structure, dan culture"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Buku: lima komponen management system — guiding principles; value chain (8 aktivitas); 34 management practices; continual improvement; governance of digital technology — bersama membentuk ITIL VS.",
+        "Salah. Kerangka 5P itu umum, bukan komponen ITIL VS.",
+        "Salah. Itu tingkatan manajemen generik.",
+        "Salah. Itu elemen organisasi umum, bukan arsitektur ITIL VS."
+      ],
+      "topic": "valuesystem"
+    },
+    {
+      "id": "itil-valuesystem-itil-vs-def",
+      "prompt": "Definisi ITIL Value System adalah…",
+      "options": [
+        "Rantai pasok fisik dari pabrik ke konsumen",
+        "Sistem akuntansi perusahaan",
+        "Alur kerja satu tim pengembangan",
+        "Model yang merepresentasikan bagaimana semua komponen dan aktivitas organisasi bekerja sama untuk memfasilitasi penciptaan value melalui produk dan layanan digital"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Value chain fisik/logistik berbeda dari value system ITIL.",
+        "Salah. Akuntansi bukan domain ITIL VS.",
+        "Salah. VS mencakup organisasi secara utuh, bukan satu tim.",
+        "Benar. Definisi persis di buku — model holistik governance & management yang memungkinkan value co-creation dengan consumer dan partner."
+      ],
+      "topic": "valuesystem"
+    },
+    {
+      "id": "itil-valuesystem-vs-input-output",
+      "prompt": "Input dan output ITIL Value System adalah…",
+      "options": [
+        "Input: tiket insiden; output: laporan bulanan",
+        "Input: kode sumber; output: aplikasi",
+        "Input: opportunity dan demand; output: value bagi organisasi, customer, dan stakeholder lain",
+        "Input: modal ventura; output: laporan keuangan"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Tiket dan laporan adalah artifacts operasional.",
+        "Salah. Kode dan aplikasi adalah artifacts produk.",
+        "Benar. Buku: key inputs = opportunity (option/possibility to add value) dan demand (kebutuhan/keinginan consumer); outcome = value untuk consumer dan stakeholder.",
+        "Salah. Modal ventura dan laporan keuangan bukan input/output VS."
+      ],
+      "topic": "valuesystem"
+    },
+    {
+      "id": "itil-valuesystem-vs-purpose",
+      "prompt": "Tujuan ITIL Value System adalah…",
+      "options": [
+        "Standarisasi semua proses TI",
+        "Memastikan organisasi terus-menerus dan berkelanjutan co-create value dengan semua stakeholder melalui penggunaan dan manajemen produk/layanan",
+        "Maksimalisasi pendapatan kuartal ini",
+        "Minimalkan jumlah karyawan"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Standarisasi adalah alat, bukan tujuan.",
+        "Benar. Tujuan VS: continually and sustainably co-create value with all stakeholders — kata kuncinya berkelanjutan dan co-creation.",
+        "Salah. Pendapatan kuartalan terlalu sempit dan jangka pendek.",
+        "Salah. Jumlah karyawan bukan tujuan VS."
+      ],
+      "topic": "valuesystem"
+    },
+    {
+      "id": "itil-valuesystem-valuechain-def",
+      "prompt": "Definisi 'value chain' adalah…",
+      "options": [
+        "Seluruh set aktivitas yang memungkinkan value melalui penyediaan produk atau layanan",
+        "Rantai distribusi fisik produk",
+        "Hierarki manajemen organisasi",
+        "Urutan pembayaran antar vendor"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Definisi persis di buku — dan ditekankan: aktivitas value chain tidak selalu sekuensial; cakupannya bervariasi per konteks.",
+        "Salah. Itu rantai pasok/logistik.",
+        "Salah. Hierarki management adalah struktur organisasi.",
+        "Salah. Urutan pembayaran adalah proses keuangan."
+      ],
+      "topic": "valuesystem"
+    },
+    {
+      "id": "itil-valuesystem-valuestream-def",
+      "prompt": "Definisi 'value stream' adalah…",
+      "options": [
+        "Alur dana dari investor ke perusahaan",
+        "Prosedur onboarding karyawan baru",
+        "Jaringan server antar cabang",
+        "Seri langkah yang digunakan organisasi untuk menciptakan dan menyampaikan produk/layanan kepada service consumer"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Alur dana adalah aliran finansial.",
+        "Salah. Onboarding adalah proses HR.",
+        "Salah. Jaringan server adalah infrastruktur.",
+        "Benar. Definisi persis di buku — value stream adalah kombinasi aktivitas manajemen spesifik-konteks di dalam value chain organisasi."
+      ],
+      "topic": "valuesystem"
+    },
+    {
+      "id": "itil-valuesystem-practice-def",
+      "prompt": "Dalam ITIL, 'management practice' adalah…",
+      "options": [
+        "Software yang dipakai tim IT",
+        "Dokumen SOP satu departemen",
+        "Kumpulan kapabilitas organisasi yang dirancang untuk melakukan kerja atau mencapai tujuan — ITIL mendeskripsikan 34 praktik",
+        "Jabatan manajerial di organisasi"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Tools adalah komponen practice, bukan definisinya.",
+        "Salah. SOP satu departemen terlalu sempit; practice melampaui departemen.",
+        "Benar. Definisi di buku: set of organizational capabilities combining competencies, processes, methods, techniques, tools, dan partners — jumlahnya 34 dalam ITIL.",
+        "Salah. Practice bukan jabatan."
+      ],
+      "topic": "valuesystem"
+    },
+    {
+      "id": "itil-valuesystem-governance-def",
+      "prompt": "'Governance of digital technology' adalah…",
+      "options": [
+        "Komite pengadaan hardware",
+        "Sistem governance yang berfokus pada penggunaan teknologi digital saat ini dan masa depan",
+        "Divisi IT yang mengurusi server",
+        "Kebijakan password perusahaan"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Pengadaan hardware adalah aktivitas taktis.",
+        "Benar. Komponen kelima ITIL VS — level pengawasan atas penggunaan teknologi digital; memastikan management system efektif, adaptif, dan bertanggung jawab.",
+        "Salah. Operasional server adalah aktivitas, bukan sistem governance.",
+        "Salah. Kebijakan password adalah satu kontrol, bukan sistem governance."
+      ],
+      "topic": "valuesystem"
+    },
+    {
+      "id": "itil-valuesystem-mangement-system-def",
+      "prompt": "Definisi 'management system' adalah…",
+      "options": [
+        "Sistem elemen-elemen yang saling terhubung yang menetapkan kebijakan dan tujuan serta memungkinkan tercapainya tujuan tersebut",
+        "Software ERP perusahaan",
+        "Tim manajemen senior",
+        "Kantor pusat organisasi"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Definisi persis di buku — organisasi membangun management system untuk memastikan review dan penyesuaian berkelanjutan atas tujuan di tengah konteks yang berubah.",
+        "Salah. ERP adalah tools, bukan sistem manajemen.",
+        "Salah. Tim adalah komponen organisasi, bukan definisi management system.",
+        "Salah. Lokasi fisik bukan management system."
+      ],
+      "topic": "valuesystem"
+    },
+    {
+      "id": "itil-valuesystem-vs-fleksibel",
+      "prompt": "Arsitektur ITIL VS secara spesifik…",
+      "options": [
+        "Menetapkan struktur kaku yang sama untuk semua organisasi",
+        "Membutuhkan sertifikasi untuk setiap aktivitas",
+        "Menghapus peran manajemen dari organisasi",
+        "Memungkinkan fleksibilitas dan menghalangi kerja silo — aktivitas value chain dan praktik bisa dikombinasikan ke banyak operating model dan value stream"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Justru VS menolak kekakuan satu ukuran untuk semua.",
+        "Salah. Sertifikasi tidak diwajibkan per aktivitas.",
+        "Salah. Peran manajemen tetap ada; VS mengatur cara kerja bersama, bukan menghapusnya.",
+        "Benar. Buku: VS 'enables flexibility and discourages siloed working' — bukan struktur fixed rigid; value chain + praktik dikombinasikan ke operating model dan value stream sesuai kebutuhan."
+      ],
+      "topic": "valuesystem"
+    },
+    {
+      "id": "itil-improvement-ci-model-nama",
+      "prompt": "Tujuh langkah ITIL Continual Improvement Model (urutan benar) adalah…",
+      "options": [
+        "Analisis → Rancang → Uji → Rilis → Ulangi",
+        "Identifikasi → Prioritaskan → Anggaran → Eksekusi → Evaluasi",
+        "What is the vision? → Where are we now? → Where do we want to be? → How do we get there? → Take action → Are we getting there? → How do we keep the improvements relevant?",
+        "Plan → Do → Check → Act → Plan → Do → Check"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Itu alur pengembangan umum, bukan 7 langkah CI ITIL.",
+        "Salah. Itu 4 langkah generik, bukan model CI ITIL.",
+        "Benar. Urutan persis 7 langkah model CI ITIL seperti di buku.",
+        "Salah. PDCA adalah siklus Deming 4 langkah, bukan model CI ITIL."
+      ],
+      "topic": "improvement"
+    },
+    {
+      "id": "itil-improvement-ci-step1",
+      "prompt": "Langkah 1 'What is the vision?' — mengapa langkah ini krusial?",
+      "options": [
+        "Untuk menghitung anggaran tahunan",
+        "Setiap inisiatif perbaikan harus mendukung tujuan organisasi; melangkahinya membuat perbaikan hanya dioptimalkan untuk tim yang terlibat, bukan organisasi utuh",
+        "Supaya logo organisasi muncul di semua slide",
+        "Agar perbaikan bisa dimulai lebih cepat tanpa diskusi"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Anggaran bukan fokus step 1.",
+        "Benar. Buku: jika step 1 dilewati, perbaikan bisa hanya dioptimalkan bagi orang/tim yang terlibat, aktivitas non-value bisa jadi fokus utama, dan perbaikan yang selayaknya diprioritaskan kurang terlihat.",
+        "Salah. Vision di sini tentang tujuan perbaikan, bukan branding.",
+        "Salah. Vision justru membutuhkan pemahaman konteks dan dukungan stakeholder — bukan cara cepat."
+      ],
+      "topic": "improvement"
+    },
+    {
+      "id": "itil-improvement-ci-step2",
+      "prompt": "Langkah 2 'Where are we now?' mendefinisikan apa?",
+      "options": [
+        "Titik A — assessment kondisi saat ini (objektif, terukur sejauh mungkin) sebagai baseline perbaikan",
+        "Titik B — kondisi ideal yang ingin dicapai",
+        "Rencana anggaran perbaikan",
+        "Daftar tim yang akan dilibatkan"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Buku: improvement adalah perjalanan dari Point A ke Point B; step 2 mendefinisikan Point A lewat current state assessment — tanpa baseline yang disepakati, efektifitas tidak bisa diukur.",
+        "Salah. Titik B adalah step 3.",
+        "Salah. Anggaran bukan isi step 2.",
+        "Salah. Pelibatan tim dibahas di step 1/4."
+      ],
+      "topic": "improvement"
+    },
+    {
+      "id": "itil-improvement-ci-step3",
+      "prompt": "Langkah 3 'Where do we want to be?' — target state sebaiknya…",
+      "options": [
+        "Selalu identik dengan visi organisasi jangka panjang",
+        "Tetap buram agar tim bebas berekspresi",
+        "Hanya berupa perasaan 'harus lebih baik'",
+        "Dinyatakan sebagai tujuan jelas didukung metrik/indikator (idealnya SMART); target state adalah progres menuju vision, bukan pencapaian seluruh vision"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Vision itu aspiratif dan jarang tercapai utuh; target state adalah potongan perjalanan.",
+        "Salah. Arah harus jelas agar perjalanan bisa dipetakan.",
+        "Salah. Perasaan tanpa metrik membuat kemajuan tidak terukur.",
+        "Benar. Buku: step 3 mendefinisikan target/desired state dengan objectives jelas + CSF/KPI (ikuti SMART: specific, measurable, achievable, relevant, time-bound) — dan menekankan target state = progres menuju vision, bukan vision itu sendiri."
+      ],
+      "topic": "improvement"
+    },
+    {
+      "id": "itil-improvement-csf-kpi",
+      "prompt": "Perbedaan Critical Success Factor (CSF) dan Key Performance Indicator (KPI) adalah…",
+      "options": [
+        "CSF = indikator keuangan; KPI = indikator operasional",
+        "Keduanya sinonim dan bisa dipertukarkan",
+        "CSF = precondition yang diperlukan untuk pencapaian hasil; KPI = metrik untuk mengevaluasi keberhasilan pencapaian tujuan",
+        "CSF = angka target; KPI = rencana aksi"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Pembagian keuangan/operasional bukan definisi keduanya.",
+        "Salah. Keduanya istilah berbeda dengan fungsi berbeda.",
+        "Benar. Definisi di buku: CSF necessary precondition; KPI metric untuk evaluasi keberhasilan terhadap objective — keduanya dipakai di step 3 model CI.",
+        "Salah. Terbalik dan keliru: CSF bukan angka target, KPI bukan rencana aksi."
+      ],
+      "topic": "improvement"
+    },
+    {
+      "id": "itil-improvement-ci-step4",
+      "prompt": "Langkah 4 'How do we get there?' menghasilkan…",
+      "options": [
+        "Struktur organisasi baru",
+        "Rencana/rute menuju target — bisa langsung, bisa exploratif dengan hipotesis dan eksperimen; kerja efektif dijalankan dalam serangkaian iterasi",
+        "Konsensus final seluruh organisasi",
+        "Laporan keuangan kuartalan"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Struktur organisasi bukan fokus step 4.",
+        "Benar. Buku: dengan visi + kondisi saat ini + target state, dibuat rencana — direct route atau exploratory (eksperimen menguji opsi); bahkan bila jalur jelas, iterasi memberi peluang cek progres dan ubah arah.",
+        "Salah. Konsensus penuh bukan persyaratan step 4.",
+        "Salah. Laporan keuangan bukan output perencanaan perbaikan."
+      ],
+      "topic": "improvement"
+    },
+    {
+      "id": "itil-improvement-ci-step5",
+      "prompt": "Langkah 5 'Take action' — hal yang benar menurut buku adalah…",
+      "options": [
+        "Tetap terbuka terhadap perubahan sepanjang eksekusi; mencapai hasil yang diinginkan adalah tujuan, bukan kepatuhan kaku pada satu rencana",
+        "Perubahan rencana berarti kegagalan eksekusi",
+        "Semua aksi harus selesai dalam satu sprint",
+        "Monitoring progres tidak diperlukan selama aksi berjalan"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Buku: bahkan bila jalur tampak jelas saat perencanaan, tetap terbuka pada perubahan; aksi/eksperimen sering mengindikasikan perlu iterasi ulang step 'how' bahkan 'where do we want to be' — fokus pada pengukuran progres, manajemen risiko, dan visibilitas.",
+        "Salah. Buku justru mendorong agile: eksperimen, iterasi, ubah arah, kembali ke langkah sebelumnya.",
+        "Salah. Tidak ada batasan satu sprint; iterasi sesuaikan skala.",
+        "Salah. Monitoring progres, risiko, dan visibilitas wajib selama step 5."
+      ],
+      "topic": "improvement"
+    },
+    {
+      "id": "itil-improvement-ci-step6",
+      "prompt": "Langkah 6 'Are we getting there?' — mengapa sering dilompati dan apa akibatnya?",
+      "options": [
+        "Karena butuh anggaran besar; akibatnya laporan tahunan tertunda",
+        "Karena tim sudah capek; akibatnya semua berhenti bekerja",
+        "Karena metriknya sulit; akibatnya server lambat",
+        "Karena manfaat diasumsikan tercapai begitu plan berjalan; akibatnya sulit yakin ada kemajuan, outcome yang dijanjikan tidak tercapai, dan pelajaran dari iterasi bisa hilang"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Step 6 bukan soal anggaran atau laporan tahunan.",
+        "Salah. Kelelahan bukan alasan yang disebut buku.",
+        "Salah. Kaitannya dengan validasi kemajuan, bukan performa server.",
+        "Benar. Buku: terlalu sering setelah plan dijalankan, manfaat dianggap tercapai dan perhatian beralih ke inisiatif berikutnya — padahal harus divalidasi. Jika dilewati: sulit yakin ada progres, outcome tidak tercapai, pelajaran hilang."
+      ],
+      "topic": "improvement"
+    },
+    {
+      "id": "itil-improvement-ci-step7",
+      "prompt": "Langkah 7 'How do we keep the improvements relevant?' — bila target tercapai, praktik apa yang seharusnya dipakai?",
+      "options": [
+        "Audit keuangan menyeluruh",
+        "Rekrutmen massal",
+        "Organizational Change Management dan Knowledge Management untuk menanamkan perubahan agar tidak kembali ke kondisi lama",
+        "Marketing campaign besar-besaran"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Audit keuangan tidak menanamkan perilaku baru.",
+        "Salah. Rekrutmen tidak menjamin perilaku lama bertahan.",
+        "Benar. Buku: bila target tercapai, pakai praktik OCM dan knowledge management untuk embed perubahan, memastikan perilaku baru terinstitusionalisasi dan tidak kembali (reversion).",
+        "Salah. Marketing bukan mekanisme penguatan perilaku internal."
+      ],
+      "topic": "improvement"
+    },
+    {
+      "id": "itil-improvement-ci-non-linear",
+      "prompt": "Tentang eksekusi model CI, hal yang benar adalah…",
+      "options": [
+        "Langkah 7 boleh dilewati jika target tercapai",
+        "Langkah tidak harus dijalankan sekuensial-linear; perlu re-evaluasi dan kunjungan ulang ke langkah sebelumnya sesuai kebutuhan",
+        "Setiap langkah harus selesai sempurna sebelum langkah berikutnya dimulai",
+        "Model hanya berlaku sekali per organisasi"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Step 7 penting justru untuk memastikan perbaikan tidak terisolasi dan berkelanjutan.",
+        "Benar. Buku: 'the steps do not need to be executed in a linear sequence, and it may be necessary to re-evaluate and revisit a previous step' — logika dan common sense harus selalu menang.",
+        "Salah. Iterasi dan bolak-balik adalah inti model.",
+        "Salah. Model berlaku berulang untuk semua perbaikan di semua level."
+      ],
+      "topic": "improvement"
+    },
+    {
+      "id": "itil-improvement-ci-scope",
+      "prompt": "Model continual improvement diterapkan pada…",
+      "options": [
+        "Seluruh value system — semua produk, layanan, komponen, praktik, dan hubungan — di semua level dari strategis hingga operasional",
+        "Hanya tim IT pada shift malam",
+        "Hanya proyek transformasi digital besar",
+        "Hanya layanan yang sedang di-audit"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Buku: CI terjadi di semua area organisasi dan semua level; model berlaku untuk value system secara utuh, plus tiap produk, layanan, komponen, praktik, dan hubungan.",
+        "Salah. CI bukan urusan satu tim/shift.",
+        "Salah. CI berjalan terus-menerus, bukan hanya saat proyek besar.",
+        "Salah. CI tidak terbatas pada layanan yang diaudit."
+      ],
+      "topic": "improvement"
+    },
+    {
+      "id": "itil-improvement-ci-no-blame",
+      "prompt": "Dalam review hasil perbaikan (step 7), perlakuan terhadap deviasi dari rencana adalah…",
+      "options": [
+        "Sebagai alasan menjatuhkan sanksi ke tim yang bersangkutan",
+        "Dihapus dari dokumentasi agar tidak memalukan",
+        "Diserahkan ke komite investigasi panjang",
+        "Sebagai kesempatan belajar dan memperbaiki — transparan, tanpa menyalahkan (no blame)"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Budaya no-blame justru inti step 7 agar pelajaran tidak disembunyikan.",
+        "Salah. Menyembunyikan deviasi menghilangkan pelajaran.",
+        "Salah. Investigasi panjang menghambat pembelajaran yang cepat.",
+        "Benar. Buku: semua deviasi dari rencana, asumsi, dan target diperlakukan sebagai kesempatan belajar; kegagalan harus dianalisis, didokumentasikan, dan dikomunikasikan dengan transparan tanpa blame."
+      ],
+      "topic": "improvement"
+    },
+    {
+      "id": "itil-intro-itil-apa",
+      "prompt": "ITIL adalah…",
+      "options": [
+        "Bahasa pemrograman untuk automasi",
+        "Sistem operasi khusus data center",
+        "Framework praktik manajemen produk dan layanan digital berbasis global best practice — panduan untuk menciptakan value dengan produk dan layanan digital",
+        "Standar akuntansi untuk perusahaan TI"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Bukan bahasa pemrograman.",
+        "Salah. Bukan sistem operasi.",
+        "Benar. ITIL (Information Technology Infrastructure Library) adalah framework global best practice untuk manajemen produk dan layanan — ITIL v5 berfokus pada penciptaan value dengan produk dan layanan digital.",
+        "Salah. ITIL bukan standar akuntansi."
+      ],
+      "topic": "intro"
+    },
+    {
+      "id": "itil-intro-benefit-professional",
+      "prompt": "Manfaat ITIL bagi profesional digital product & service management antara lain…",
+      "options": [
+        "Menggantikan semua pelatihan internal",
+        "Memberikan bahasa dan kerangka bersama, panduan praktis berbasis best practice, dan dukungan karier/sertifikasi untuk mengelola value",
+        "Menjamin kenaikan gaji otomatis",
+        "Menghapus kebutuhan belajar teknologi baru"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. ITIL melengkapi, bukan menggantikan, pelatihan internal.",
+        "Benar. Bab 1 menguraikan manfaat ITIL per audiens; bagi profesional: kerangka kerja bersama, praktik teruji, dan pengakuan profesional (sertifikasi) yang mendukung karier.",
+        "Salah. Kenaikan gaji bukan jaminan; nilai ITIL ada di kapabilitas dan pengakuan.",
+        "Salah. Profesional tetap perlu belajar teknologi; ITIL memberi cara mengelolanya."
+      ],
+      "topic": "intro"
+    },
+    {
+      "id": "itil-intro-evolving-itsm",
+      "prompt": "Mengapa IT service management terus berevolusi menurut ITIL v5?",
+      "options": [
+        "Karena ekonomi bergeser ke service-based economy dengan digital services yang sentral — organisasi harus terus menciptakan value dengan produk dan layanan digital",
+        "Karena vendor software memaksa update berkala",
+        "Karena jumlah server terus bertambah",
+        "Karena regulasi mewajibkan sertifikasi setiap tahun"
+      ],
+      "correctIndex": 0,
+      "explanations": [
+        "Benar. Bab 1: sejak pertengahan abad ke-20, peran dan porsi layanan terus naik (globalisasi, transformasi digital, kerja intelektual); digital services kini vital melintasi semua industri — ITSM berevolusi mengikuti itu.",
+        "Salah. Evolusi didorong ekonomi dan digitalisasi, bukan siklus vendor.",
+        "Salah. Jumlah server bukan pendorong evolusi framework.",
+        "Salah. Tidak ada regulasi yang mewajibkan sertifikasi tahunan ITIL."
+      ],
+      "topic": "intro"
+    },
+    {
+      "id": "itil-intro-kar-rental",
+      "prompt": "Skenario 'ITIL Car Rental' dalam buku digunakan untuk…",
+      "options": [
+        "Menjual mobil listrik ke pembaca buku",
+        "Mendemonstrasikan produk PeopleCert",
+        "Menunjukkan cara menghitung pajak kendaraan",
+        "Memberikan contoh nyata (naratif Max, Anna, Omar, Sam) untuk mengaitkan tiap konsep ITIL dengan situasi bisnis yang hidup"
+      ],
+      "correctIndex": 1,
+      "explanations": [
+        "Salah. Skennario alat pedagogis, bukan katalog penjualan.",
+        "Salah. Bukan demo produk vendor.",
+        "Salah. Tidak berkaitan dengan perpajakan.",
+        "Benar. ITIL Car Rental adalah skenario naratif sepanjang buku — setiap konsep (value, outcomes, roles, lifecycle, VS) dikaitkan lewat dialog para karakter agar konkret."
+      ],
+      "topic": "intro"
+    },
+    {
+      "id": "itil-intro-digital-service",
+      "prompt": "Pernyataan yang benar tentang digital services adalah…",
+      "options": [
+        "Selalu bebas risiko bagi consumer",
+        "Tidak memerlukan service level agreement",
+        "Berbasis digital products; peran service provider sering digabung dengan peran digital product vendor",
+        "Hanya bisa disediakan oleh perusahaan besar"
+      ],
+      "correctIndex": 2,
+      "explanations": [
+        "Salah. Service (digital pun) tetap memperkenalkan cost dan risiko baru.",
+        "Salah. Digital services justru sangat disarankan punya SLA (utility, warranty, sustainability, UX).",
+        "Benar. Buku: digital services berbasis digital product, dan peran provider-nya sering digabung dengan peran vendor produk digital.",
+        "Salah. Organisasi segala ukuran bisa menyediakan digital services."
+      ],
+      "topic": "intro"
+    },
+    {
+      "id": "itil-intro-ecosystem",
+      "prompt": "Setiap organisasi membentuk value system yang berinterface dengan organisasi lain membentuk…",
+      "options": [
+        "Konglomerat dengan kepemilikan silang",
+        "Ekosistem yang memfasilitasi penciptaan value bagi organisasi-organisasi itu, customer, dan stakeholder mereka",
+        "Pasar monopoli tunggal",
+        "Jaringan kompetitor yang saling eksklusif"
+      ],
+      "correctIndex": 3,
+      "explanations": [
+        "Salah. Kepemilikan silang bukan prasyarat ekosistem.",
+        "Benar. Buku: 'Each organization's value system has interfaces with other organizations, forming an ecosystem that can facilitate value for those organizations, their customers, and other stakeholders.'",
+        "Salah. Ekosistem adalah kolaborasi value, bukan monopoli.",
+        "Salah. Kompetisi bisa ada, tapi interface-nya untuk value co-creation."
+      ],
+      "topic": "intro"
+    }
+  ]
+}
