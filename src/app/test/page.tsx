@@ -40,7 +40,6 @@ export default async function TestHomePage() {
               <ul className="track-meta">
                 <li>Durasi: {fmtDuration(t.durationSec)}</li>
                 <li>Passing: {t.passingPercent}%</li>
-                <li>{t.examSize} soal dari bank {t.questions.length}</li>
               </ul>
               <Leaderboard title="Top 5" entries={boards[i].entries} limit={5} />
               <Link className="btn btn-primary track-start" href={`/test/${t.slug}`}>
