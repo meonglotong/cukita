@@ -14,9 +14,7 @@ export function Leaderboard({ title, entries, limit = 10 }: { title: string; ent
   const shown = entries.slice(0, limit);
   return (
     <div className="board">
-      <h3 className="board-title">
-        <span aria-hidden>🏆</span> {title}
-      </h3>
+      <h3 className="board-title">{title}</h3>
       {shown.length === 0 ? (
         <p className="board-empty">Belum ada yang ikut. Jadilah yang pertama!</p>
       ) : (

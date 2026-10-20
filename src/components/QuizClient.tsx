@@ -32,6 +32,7 @@ function fmtClock(sec: number): string {
 
 function fmtDuration(sec: number): string {
   const m = Math.floor(sec / 60);
+  if (m % 60 === 0) return `${m / 60} jam`;
   return m >= 60 ? `${Math.floor(m / 60)} jam ${m % 60} menit` : `${m} menit`;
 }
 

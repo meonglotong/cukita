@@ -12,7 +12,8 @@ export const dynamic = "force-dynamic";
 
 function fmtDuration(sec: number): string {
   const m = Math.floor(sec / 60);
-  return m >= 60 ? `${Math.floor(m / 60)}j ${m % 60}m` : `${m} menit`;
+  if (m % 60 === 0) return `${m / 60} jam`;
+  return m >= 60 ? `${Math.floor(m / 60)} jam ${m % 60} menit` : `${m} menit`;
 }
 
 export default async function TestHomePage() {
@@ -27,10 +28,7 @@ export default async function TestHomePage() {
       <TopBar />
       <main className="test-main">
         <h1 className="test-title">Skill Test</h1>
-        <p className="test-sub">
-          Simulasi sertifikasi berbasis soal. Pilih track, kerjakan melawan waktu, dan
-          lihat di mana posisi kamu di papan skor.
-        </p>
+        <p className="test-sub">Pilih track, kerjakan soal, lihat skormu.</p>
         <div className="track-grid">
           {tracks.map((t, i) => (
             <div className="track-card" key={t.slug}>
@@ -40,9 +38,9 @@ export default async function TestHomePage() {
               </div>
               <p className="track-desc">{t.description}</p>
               <ul className="track-meta">
-                <li>⏱ {fmtDuration(t.durationSec)}</li>
-                <li>🎯 Passing line {t.passingPercent}%</li>
-                <li>📝 {t.examSize} soal diacak dari {t.questions.length} bank</li>
+                <li>Durasi: {fmtDuration(t.durationSec)}</li>
+                <li>Passing: {t.passingPercent}%</li>
+                <li>{t.examSize} soal dari bank {t.questions.length}</li>
               </ul>
               <Leaderboard title="Top 5" entries={boards[i].entries} limit={5} />
               <Link className="btn btn-primary track-start" href={`/test/${t.slug}`}>
