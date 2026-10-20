@@ -50,6 +50,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             // Link the OAuth identity to the local account by email, so an
             // existing Gnosis user keeps one session/identity.
             allowDangerousEmailAccountLinking: true,
+            // Validates a raw id_token (Teams tab silent SSO: /api/teams/sso
+            // passes the MSAL id_token directly; browser login is unaffected).
+            idToken: true,
           }),
         ]
       : []),

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.17/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.17",
+  "version": "1.0.0",
+  "id": "3134a011-a71b-46db-b80d-db049ba468f5",
+  "packageName": "com.gnosis.knowledgebase",
+  "developer": {
+    "name": "Gnosis",
+    "websiteUrl": "https://172.31.252.197/docs",
+    "privacyUrl": "https://172.31.252.197/docs",
+    "termsOfUseUrl": "https://172.31.252.197/docs"
+  },
+  "name": {
+    "short": "Gnosis",
+    "full": "Gnosis Knowledge Base"
+  },
+  "description": {
+    "short": "Knowledge base tim",
+    "full": "Dokumentasi tim: buka dan cari knowledge base Gnosis langsung dari channel, dengan auto-login akun Microsoft."
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "accentColor": "#D01020",
+  "validDomains": [
+    "172.31.252.197"
+  ],
+  "webApplication": {
+    "webUrl": "https://172.31.252.197/docs",
+    "fallbackUrl": "https://172.31.252.197/docs"
+  },
+  "tabs": [
+    {
+      "name": "Gnosis",
+      "contentUrl": "https://172.31.252.197/teams",
+      "scopes": [
+        "team"
+      ]
+    }
+  ]
+}
